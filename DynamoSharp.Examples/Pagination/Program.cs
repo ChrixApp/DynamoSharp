@@ -25,7 +25,7 @@ public static class Program
         foreach (var organization in organizations)
             organizationContext.Organizations.Add(organization);
 
-        organizationContext.TransactWriter.WriteAsync().Wait();
+        organizationContext.TransactWriter.SaveChangesAsync().Wait();
 
         // User3, User4
         var userPage1 = organizationContext.Query<User>()

@@ -13,7 +13,8 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder();
         builder.Services.AddDynamoSharp(RegionEndpoint.USEast1, "http://localhost:4566/");
-        builder.Services.AddDynamoSharpContext<EcommerceContext>("eska", "v"); // 'v' represents the version attribute for optimistic locking
+        // 'v' represents the version attribute for optimistic locking
+        builder.Services.AddDynamoSharpContext<EcommerceContext>("eska", "v");
         var app = builder.Build();
 
         var buyerId = Guid.Parse("6dbefed7-1d09-40ca-9733-b1667efb95f3");
@@ -36,7 +37,7 @@ public class Program
         var ecommerceContext = serviceScope.ServiceProvider.GetRequiredService<EcommerceContext>();
 
         ecommerceContext.Orders.Add(order);
-        ecommerceContext.TransactWriter.WriteAsync().Wait();
+        ecommerceContext.TransactWriter.SaveChangesAsync().Wait();
 
 
         Console.ReadKey();

@@ -39,7 +39,7 @@ public static class Program
         var theLordOfTheRings = new Movie("The Lord of the Rings: The Fellowship of the Ring", 2001, "Adventure", 8.8f);
         theLordOfTheRings.AddActor(elijahWood, "Frodo");
         movieContext.Movies.AddRange(movies);
-        movieContext.TransactWriter.WriteAsync().Wait();
+        movieContext.TransactWriter.SaveChangesAsync().Wait();
 
         Console.ReadKey();
     }

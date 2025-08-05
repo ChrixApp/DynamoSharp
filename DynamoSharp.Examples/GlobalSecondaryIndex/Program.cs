@@ -24,7 +24,7 @@ public static class Program
         {
             orderContext.Orders.Add(order);
         }
-        orderContext.TransactWriter.WriteAsync().Wait();
+        orderContext.TransactWriter.SaveChangesAsync().Wait();
 
         Console.ReadKey();
     }

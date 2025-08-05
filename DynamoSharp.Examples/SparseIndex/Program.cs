@@ -24,9 +24,8 @@ public class Program
         var organizations1 = CreateOrganizations();
 
         organizationContext.Organizations.AddRange(organizations1);
-        organizationContext.BatchWriter.WriteAsync().Wait();
+        organizationContext.BatchWriter.SaveChangesAsync().Wait();
 
-        //var organizations = organizationRepository.GetList("GSI1PK-GSI1SK-index", "ORGANIZATIONS", cancellationToken: default).Result;
         var organizations2 = organizationContext.Query<Organization>()
             .IndexName("GSI1PK-GSI1SK-index")
             .PartitionKey("ORGANIZATIONS")

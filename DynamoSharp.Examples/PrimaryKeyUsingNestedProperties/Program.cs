@@ -28,11 +28,11 @@ public static class Program
             .Build();
 
         storeContext.Stores.Add(store);
-        storeContext.BatchWriter.WriteAsync().Wait();
+        storeContext.BatchWriter.SaveChangesAsync().Wait();
 
         store.ChangeAddress("new street", "new city", "new state", "111111", "new country");
 
-        storeContext.BatchWriter.WriteAsync().Wait();
+        storeContext.BatchWriter.SaveChangesAsync().Wait();
 
         Console.ReadKey();
     }

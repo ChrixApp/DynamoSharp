@@ -18,7 +18,7 @@ public static class Program
 
         using var serviceScope = app.Services.CreateScope();
         var ecommerceContext = serviceScope.ServiceProvider.GetRequiredService<EcommerceContext>();
-        //var order = orderRepository.Get("ORDER#3002781c-e6de-4035-a2a9-b0f7641305bd", cancellationToken: default).Result;
+        
         var order = ecommerceContext.Query<Order>()
             .PartitionKey("ORDER#3002781c-e6de-4035-a2a9-b0f7641305bd")
             .ToEntityAsync()

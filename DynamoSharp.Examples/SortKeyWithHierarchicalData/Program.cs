@@ -24,7 +24,7 @@ public static class Program
         foreach (var store in stores)
             storeContext.Stores.Add(store);
 
-        storeContext.BatchWriter.WriteAsync().Wait();
+        storeContext.BatchWriter.SaveChangesAsync().Wait();
 
         Console.ReadKey();
     }

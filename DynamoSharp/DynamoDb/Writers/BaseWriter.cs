@@ -13,7 +13,5 @@ public abstract class BaseWriter : IWriter
         return addedEntities.Any() || modifiedEntities.Any() || deletedEntities.Any();
     }
 
-    [Obsolete("This method is deprecated. Use SaveChangesAsync method instead.")]
-    public abstract Task WriteAsync(CancellationToken cancellationToken = default);
     public abstract Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }

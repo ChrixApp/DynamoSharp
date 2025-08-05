@@ -26,7 +26,7 @@ public static class Program
             .Build();
 
         userContext.Users.Add(newUser);
-        userContext.BatchWriter.WriteAsync().Wait();
+        userContext.BatchWriter.SaveChangesAsync().Wait();
 
         Console.ReadKey();
     }

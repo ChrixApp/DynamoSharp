@@ -20,7 +20,7 @@ public class DynamoSharpContextTests
         var dynamoChangeTrackerContext = EskaContextTestDataFactory.GetEskaContext(dynamoDbContext.Object, tableSchema);
 
         // act
-        var batchWriteAsyncTask = dynamoChangeTrackerContext.BatchWriter.WriteAsync();
+        var batchWriteAsyncTask = dynamoChangeTrackerContext.BatchWriter.SaveChangesAsync();
 
         // assert
         batchWriteAsyncTask.Status.Should().Be(TaskStatus.RanToCompletion);
@@ -37,7 +37,7 @@ public class DynamoSharpContextTests
         var dynamoChangeTrackerContext = EskaContextTestDataFactory.GetEskaContext(dynamoDbContext.Object, tableSchema);
 
         // act
-        var batchWriteAsyncTask = dynamoChangeTrackerContext.TransactWriter.WriteAsync();
+        var batchWriteAsyncTask = dynamoChangeTrackerContext.TransactWriter.SaveChangesAsync();
 
         // assert
         batchWriteAsyncTask.Status.Should().Be(TaskStatus.RanToCompletion);

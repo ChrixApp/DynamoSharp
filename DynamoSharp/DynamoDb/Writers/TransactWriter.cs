@@ -29,12 +29,6 @@ public class TransactWriter : BaseWriter
         _changeTracker = changeTracker;
         _dynamoEntityBuilder = new TransactDynamoEntityBuilder(tableSchema, modelBuilder);
     }
-
-    [Obsolete("This method is deprecated. Use SaveChangesAsync method instead.")]
-    public override async Task WriteAsync(CancellationToken cancellationToken = default)
-    {
-        await SaveChangesAsync(cancellationToken);
-    }
     
     public override async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {

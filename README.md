@@ -3,8 +3,6 @@ DynamoSharp is an **ORM (Object-Relational Mapping)** library for .NET that simp
 
 **Features**:
 
-- **Easy Configuration**: Seamless integration with .NET projects through dependency injection.
-
 - **Model Mapping**: Support for defining primary and secondary keys, global indexes, and relationships between entities.
 
 - **Efficient Queries**: Provides a query builder that allows complex searches using partition and sort keys, as well as secondary indexes.
@@ -783,22 +781,22 @@ public class AppContext : DynamoSharpContext
 appContext.Users.Add(newUser);
         
 // Save with batch 
-await _appContext.BatchWriter.WriteAsync(cancellationToken);
+await _appContext.BatchWriter.SaveChangesAsync(cancellationToken);
 // Save with transaction
-await _appContext.TransactWriter.WriteAsync(cancellationToken);
+await _appContext.TransactWriter.SaveChangesAsync(cancellationToken);
 ```
 
 ### Update
 ```csharp
 appContext.Users.Add(newUser);
-await _appContext.BatchWriter.WriteAsync(cancellationToken);
+await _appContext.BatchWriter.SaveChangesAsync(cancellationToken);
 
 newUser.Email = "example@example.com";
 
 // Update with batch
-await _appContext.BatchWriter.WriteAsync(cancellationToken);
+await _appContext.BatchWriter.SaveChangesAsync(cancellationToken);
 // Update with transaction
-await _appContext.TransactWriter.WriteAsync(cancellationToken);
+await _appContext.TransactWriter.SaveChangesAsync(cancellationToken);
 ```
 
 ### Remove
@@ -808,9 +806,9 @@ await _appContext.TransactWriter.WriteAsync(cancellationToken);
 _appContext.Users.Remove(newUser);
         
 // Save with batch 
-await _appContext.BatchWriter.WriteAsync(cancellationToken);
+await _appContext.BatchWriter.SaveChangesAsync(cancellationToken);
 // Save with transaction
-await _appContext.TransactWriter.WriteAsync(cancellationToken);
+await _appContext.TransactWriter.SaveChangesAsync(cancellationToken);
 ```
 
 ## How to query

@@ -19,9 +19,6 @@ public static class Program
         using var serviceScope = app.Services.CreateScope();
         var movieContext = serviceScope.ServiceProvider.GetRequiredService<MovieContext>();
 
-        //var theMatrix = movieRepository.Get("MOVIE#9184826c-fcea-4aaf-b4bb-283af20c76df", cancellationToken: default).Result;
-        //var keanuReeves = actorRepository.Get("GSI1PK-GSI1SK-index", "ACTOR#c9a7b7d5-7c25-4ef2-bf15-0305dd42be25", cancellationToken: default).Result;
-
         var theMatrix = movieContext.Query<Movie>()
             .PartitionKey("MOVIE#9184826c-fcea-4aaf-b4bb-283af20c76df")
             .ToEntityAsync()

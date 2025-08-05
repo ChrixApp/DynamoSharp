@@ -24,7 +24,7 @@ public static class Program
         foreach (var organization in organizations)
             organizationContext.Organizations.Add(organization);
 
-        organizationContext.BatchWriter.WriteAsync().Wait();
+        organizationContext.BatchWriter.SaveChangesAsync().Wait();
 
         // the following code to order the results in ascending order
         // User3, User4

@@ -13,7 +13,8 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder();
         builder.Services.AddDynamoSharp(RegionEndpoint.USEast1, "http://localhost:4566/");
-        builder.Services.AddDynamoSharpContext<EcommerceContext>("eska", "v");// 'v' represents the version attribute for optimistic locking
+        // 'v' represents the version attribute for optimistic locking
+        builder.Services.AddDynamoSharpContext<EcommerceContext>("eska", "v");
         var app = builder.Build();
 
         using var serviceScope = app.Services.CreateScope();
@@ -25,6 +26,6 @@ internal class Program
            .Result;
 
         order?.UpdateAddress("Street 2", "City 2", "State 2", "ZipCode 2");
-        ecommerceContext.TransactWriter.WriteAsync().Wait();
+        ecommerceContext.TransactWriter.SaveChangesAsync().Wait();
     }
 }

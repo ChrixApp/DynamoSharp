@@ -21,9 +21,6 @@ public static class Program
         using var serviceScope = app.Services.CreateScope();
         var movieContext = serviceScope.ServiceProvider.GetRequiredService<MovieContext>();
 
-        //var theMatrix = movieRepository.Get("MOVIE#The Matrix", cancellationToken: default).Result;
-        //var keanuReeves = actorRepository.Get("GSI1PK-GSI1SK-index", "ACTOR#Keanu Reeves", cancellationToken: default).Result;
-
         var theMatrix = movieContext.Query<Movie>()
             .PartitionKey("MOVIE#The Matrix")
             .ToEntityAsync()
@@ -36,7 +33,7 @@ public static class Program
             .Result;
 
         keanuReeves?.ChangeRole("The Matrix", "Neo");
-        movieContext.TransactWriter.WriteAsync().Wait();
+        movieContext.TransactWriter.SaveChangesAsync().Wait();
 
         Console.ReadKey();
     }

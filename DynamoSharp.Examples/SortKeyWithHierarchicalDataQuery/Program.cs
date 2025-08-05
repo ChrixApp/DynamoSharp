@@ -18,8 +18,7 @@ public static class Program
         var app = builder.Build();
 
         using var serviceScope = app.Services.CreateScope();
-        //var stores = storeRepository.GetList("GSI1PK-GSI1SK-index", "USA", QueryOperator.GreaterThanOrEqual, "TX#Houston", cancellationToken: default).Result;
-
+        
         var storeContext = serviceScope.ServiceProvider.GetRequiredService<StoreContext>();
         var stores = storeContext.Query<Store>()
             .IndexName("GSI1PK-GSI1SK-index")

@@ -36,7 +36,7 @@ public static class Program
         using var serviceScope = app.Services.CreateScope();
         var ecommerceContext = serviceScope.ServiceProvider.GetRequiredService<EcommerceContext>();
         ecommerceContext.Orders.Add(order);
-        ecommerceContext.TransactWriter.WriteAsync().Wait();
+        ecommerceContext.TransactWriter.SaveChangesAsync().Wait();
 
         Console.ReadKey();
     }
