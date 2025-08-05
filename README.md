@@ -33,7 +33,7 @@ DynamoSharp simplifies the use of DynamoDB in .NET applications, providing an ab
 
 ## Installation
 ```sh
-dotnet add package DynamoSharp --version 0.1.0
+dotnet add package DynamoSharp
 ```
 
 ## Configuration
