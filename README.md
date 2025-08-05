@@ -874,7 +874,8 @@ var items = await _appContext.Query<Item>()
 
 #### Add config
 ```csharp
-builder.Services.AddDynamoSharpContext<EcommerceContext>("dynamosharp", "v"); // 'v' represents the version attribute for optimistic locking
+// 'v' represents the version attribute for optimistic locking
+builder.Services.AddDynamoSharpContext<EcommerceContext>("dynamosharp", "v");
 ```
 
 #### Context
