@@ -1,23 +1,36 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <Version>0.1.0</Version>
-        <Authors>Chris Perez</Authors>
-    </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<Version>0.1.0</Version>
+		<Authors>Chris Perez</Authors>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<PackageId>$(AssemblyName)</PackageId>
+		<Description>DynamoDb ORM for Single Table Design</Description>
+		<Title>DynamoSharp</Title>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<PackageTags>DynamoDb, Dynamo, ORM, STD, Single Table Design</PackageTags>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/ChrixApp/DynamoSharp</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+	</PropertyGroup>
 
-    <ItemGroup>
-      <PackageReference Include="AWSSDK.DynamoDBv2" Version="4.0.2.3" />
-      <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="4.0.2" />
-      <PackageReference Include="EfficientDynamoDb" Version="0.9.18-alpha.0.6" />
-      <PackageReference Include="EfficientDynamoDb.Credentials.AWSSDK" Version="0.9.3" />
-      <PackageReference Include="FluentAssertions" Version="8.5.0" />
-      <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="8.0.18" />
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
-      <PackageReference Include="Moq" Version="4.20.72" />
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="AWSSDK.DynamoDBv2" Version="4.0.2.3" />
+		<PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="4.0.2" />
+		<PackageReference Include="EfficientDynamoDb" Version="0.9.18-alpha.0.6" />
+		<PackageReference Include="EfficientDynamoDb.Credentials.AWSSDK" Version="0.9.3" />
+		<PackageReference Include="FluentAssertions" Version="8.5.0" />
+		<PackageReference Include="Microsoft.AspNetCore.TestHost" Version="8.0.18" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+		<PackageReference Include="Moq" Version="4.20.72" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="$(MSBuildThisFileDirectory)..\README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
 
 </Project>
