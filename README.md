@@ -55,7 +55,8 @@ public class AppContext : DynamoSharpContext
 {
     public IDynamoDbSet<ModelItem> Items { get; private set; } = null!;
 
-    public AppContext(IDynamoDbContextAdapter dynamoDbContextAdapter,TableSchema tableSchema) : base(dynamoDbContextAdapter, tableSchema)
+    public AppContext(IDynamoDbContextAdapter dynamoDbContextAdapter,TableSchema tableSchema) 
+        : base(dynamoDbContextAdapter, tableSchema)
     { }
 
     public override void OnModelCreating(IModelBuilder modelBuilder)
@@ -86,7 +87,8 @@ public class AppContext : DynamoSharpContext
 {
     public IDynamoDbSet<User> Users { get; private set; } = null!;
 
-    public AppContext(IDynamoDbContextAdapter dynamoDbContextAdapter, TableSchema tableSchema) : base(dynamoDbContextAdapter, tableSchema)
+    public AppContext(IDynamoDbContextAdapter dynamoDbContextAdapter, TableSchema tableSchema) 
+        : base(dynamoDbContextAdapter, tableSchema)
     { }
 
     /*
@@ -126,7 +128,8 @@ public class AppContext : DynamoSharpContext
 {
     public IDynamoDbSet<User> Users { get; private set; } = null!;
 
-    public AppContext(IDynamoDbContextAdapter dynamoDbContextAdapter, TableSchema tableSchema) : base(dynamoDbContextAdapter, tableSchema)
+    public AppContext(IDynamoDbContextAdapter dynamoDbContextAdapter, TableSchema tableSchema) 
+        : base(dynamoDbContextAdapter, tableSchema)
     { }
 
     public override void OnModelCreating(IModelBuilder modelBuilder)
@@ -164,7 +167,8 @@ public class AppContext : DynamoSharpContext
 {
     public IDynamoDbSet<User> Users { get; private set; } = null!;
 
-    public AppContext(IDynamoDbContextAdapter dynamoDbContextAdapter, TableSchema tableSchema) : base(dynamoDbContextAdapter, tableSchema)
+    public AppContext(IDynamoDbContextAdapter dynamoDbContextAdapter, TableSchema tableSchema) 
+        : base(dynamoDbContextAdapter, tableSchema)
     { }
 
     public override void OnModelCreating(IModelBuilder modelBuilder)
@@ -236,7 +240,8 @@ public class AppContext : DynamoSharpContext
     public IDynamoDbSet<Organization> Organizations { get; private set; } = null!;
     public IDynamoDbSet<User> Users { get; private set; } = null!;
 
-    public AppContext(IDynamoDbContextAdapter dynamoDbContextAdapter, TableSchema tableSchema) : base(dynamoDbContextAdapter, tableSchema)
+    public AppContext(IDynamoDbContextAdapter dynamoDbContextAdapter, TableSchema tableSchema) 
+        : base(dynamoDbContextAdapter, tableSchema)
     { }
 
     public override void OnModelCreating(IModelBuilder modelBuilder)
@@ -306,7 +311,8 @@ public class AppContext : DynamoSharpContext
 {
     public IDynamoDbSet<User> Users { get; private set; } = null!;
 
-    public AppContext(IDynamoDbContextAdapter dynamoDbContextAdapter, TableSchema tableSchema) : base(dynamoDbContextAdapter, tableSchema)
+    public AppContext(IDynamoDbContextAdapter dynamoDbContextAdapter, TableSchema tableSchema) 
+        : base(dynamoDbContextAdapter, tableSchema)
     { }
 
     public override void OnModelCreating(
@@ -368,9 +374,9 @@ public class AppContext : DynamoSharpContext
 {
     public IDynamoDbSet<User> Users { get; private set; } = null!;
 
-    public AppContext(IDynamoDbContextAdapter dynamoDbContextAdapter, TableSchema tableSchema) : base(dynamoDbContextAdapter, tableSchema)
-    {
-    }
+    public AppContext(IDynamoDbContextAdapter dynamoDbContextAdapter, TableSchema tableSchema)
+        : base(dynamoDbContextAdapter, tableSchema)
+    { }
 
     public override void OnModelCreating(
         IModelBuilder modelBuilder)
@@ -435,7 +441,8 @@ public class AppContext : DynamoSharpContext
 {
     public IDynamoDbSet<Order> Orders { get; private set; } = null!;
 
-    public AppContext(IDynamoDbContextAdapter dynamoDbContextAdapter, TableSchema tableSchema) : base(dynamoDbContextAdapter, tableSchema)
+    public AppContext(IDynamoDbContextAdapter dynamoDbContextAdapter, TableSchema tableSchema) 
+        : base(dynamoDbContextAdapter, tableSchema)
     { }
 
     public override void OnModelCreating(IModelBuilder modelBuilder)
@@ -506,8 +513,8 @@ public class AppContext : DynamoSharpContext
     public IDynamoDbSet<Organization> Organizations { get; private set; } = null!;
     public IDynamoDbSet<User> Users { get; private set; } = null!;
 
-    public AppContext(IDynamoDbContextAdapter dynamoDbContextAdapterAdapter, TableSchema tableSchema) : 
-        base(dynamoDbContextAdapterAdapter, tableSchema)
+    public AppContext(IDynamoDbContextAdapter dynamoDbContextAdapterAdapter, TableSchema tableSchema)
+        : base(dynamoDbContextAdapterAdapter, tableSchema)
     { }
 
     public override void OnModelCreating(
@@ -581,9 +588,9 @@ public class AppContext : DynamoSharpContext
     public IDynamoDbSet<Movie> Movies { get; private set; } = null!;
     public IDynamoDbSet<Actor> Actors { get; private set; } = null!;
 
-    public AppContext(IDynamoDbContextAdapter dynamoDbContextAdapter, TableSchema tableSchema) : base(dynamoDbContextAdapter, tableSchema)
-    {
-    }
+    public AppContext(IDynamoDbContextAdapter dynamoDbContextAdapter, TableSchema tableSchema) 
+        : base(dynamoDbContextAdapter, tableSchema)
+    { }
 
     public override void OnModelCreating(IModelBuilder modelBuilder)
     {
@@ -675,7 +682,8 @@ public class AppContext : DynamoSharpContext
     public IDynamoDbSet<Movie> Movies { get; private set; } = null!;
     public IDynamoDbSet<Actor> Actors { get; private set; } = null!;
 
-    public AppContext(IDynamoDbContextAdapter dynamoDbContextAdapter, TableSchema tableSchema) : base(dynamoDbContextAdapter, tableSchema)
+    public AppContext(IDynamoDbContextAdapter dynamoDbContextAdapter, TableSchema tableSchema) 
+        : base(dynamoDbContextAdapter, tableSchema)
     { }
 
     public override void OnModelCreating(
