@@ -1,6 +1,6 @@
 using Amazon.DynamoDBv2;
 using Amazon.Extensions.NETCore.Setup;
-using Amazon.Runtime;
+using Amazon.Runtime.Credentials;
 using DynamoSharp.DynamoDb;
 using DynamoSharp.DynamoDb.Configs;
 using EfficientDynamoDb;
@@ -37,7 +37,7 @@ public static class ServiceCollectionExtensions
         serviceCollection.AddSingleton<IDynamoDbContext, DynamoDbContext>(context =>
         {
             var regionEndpoint = string.IsNullOrWhiteSpace(requestUri) ? EfficientDynamoDbRegionEndpoint.Create(region) : EfficientDynamoDbRegionEndpoint.Create(region, requestUri);
-            var awsSdkCredentials = FallbackCredentialsFactory.GetCredentials();
+            var awsSdkCredentials = DefaultAWSCredentialsIdentityResolver.GetCredentials();
             var effDdbCredentials = awsSdkCredentials.ToCredentialsProvider();
             var config = new DynamoDbContextConfig(regionEndpoint, effDdbCredentials);
             return new DynamoDbContext(config);

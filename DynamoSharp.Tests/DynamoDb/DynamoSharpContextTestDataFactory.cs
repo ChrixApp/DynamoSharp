@@ -1,7 +1,6 @@
-﻿using Amazon.Runtime;
+﻿using Amazon.Runtime.Credentials;
 using DynamoSharp.DynamoDb;
 using DynamoSharp.DynamoDb.Configs;
-using DynamoSharp.Tests.Contexts;
 using DynamoSharp.Tests.TestContexts;
 using EfficientDynamoDb;
 using EfficientDynamoDb.Credentials.AWSSDK;
@@ -15,18 +14,18 @@ using RegionEndpoint = EfficientDynamoDb.Configs.RegionEndpoint;
 
 namespace DynamoSharp.Tests.DynamoDb;
 
-public static class EskaContextTestDataFactory
+public static class DynamoSharpContextTestDataFactory
 {
     public static TableSchema GetTableSchema(string tableName)
     {
-        return new TableSchema.TableSchemaBuilder()
+        return new TableSchema.Builder()
             .WithTableName(tableName)
             .Build();
     }
 
     public static DynamoDbContextConfig GetDynamoDbContextConfig()
     {
-        var awsSdkCredentials = FallbackCredentialsFactory.GetCredentials();
+        var awsSdkCredentials = DefaultAWSCredentialsIdentityResolver.GetCredentials();
         var effDdbCredentials = awsSdkCredentials.ToCredentialsProvider();
         return new DynamoDbContextConfig(RegionEndpoint.USEast1, effDdbCredentials);
     }

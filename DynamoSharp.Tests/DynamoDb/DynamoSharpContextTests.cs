@@ -13,11 +13,11 @@ public class DynamoSharpContextTests
     public void BatchWriteAsync_ShouldReturnTask()
     {
         // arrange
-        var tableSchema = EskaContextTestDataFactory.GetTableSchema("orders");
-        var batchWriteItemResponse = EskaContextTestDataFactory.GetBatchWriteItemResponse();
-        var dynamoDbLowLevelContext = EskaContextTestDataFactory.GetMockDynamoDbLowLevelContext(batchWriteItemResponse);
-        var dynamoDbContext = EskaContextTestDataFactory.GetMockDynamoDbContext(dynamoDbLowLevelContext);
-        var dynamoChangeTrackerContext = EskaContextTestDataFactory.GetEskaContext(dynamoDbContext.Object, tableSchema);
+        var tableSchema = DynamoSharpContextTestDataFactory.GetTableSchema("orders");
+        var batchWriteItemResponse = DynamoSharpContextTestDataFactory.GetBatchWriteItemResponse();
+        var dynamoDbLowLevelContext = DynamoSharpContextTestDataFactory.GetMockDynamoDbLowLevelContext(batchWriteItemResponse);
+        var dynamoDbContext = DynamoSharpContextTestDataFactory.GetMockDynamoDbContext(dynamoDbLowLevelContext);
+        var dynamoChangeTrackerContext = DynamoSharpContextTestDataFactory.GetEskaContext(dynamoDbContext.Object, tableSchema);
 
         // act
         var batchWriteAsyncTask = dynamoChangeTrackerContext.BatchWriter.SaveChangesAsync();
@@ -30,11 +30,11 @@ public class DynamoSharpContextTests
     public void TransactionWriteAsync_ShouldReturnTask()
     {
         // arrange
-        var tableSchema = EskaContextTestDataFactory.GetTableSchema("orders");
-        var batchWriteItemResponse = EskaContextTestDataFactory.GetBatchWriteItemResponse();
-        var dynamoDbLowLevelContext = EskaContextTestDataFactory.GetMockDynamoDbLowLevelContext(batchWriteItemResponse);
-        var dynamoDbContext = EskaContextTestDataFactory.GetMockDynamoDbContext(dynamoDbLowLevelContext);
-        var dynamoChangeTrackerContext = EskaContextTestDataFactory.GetEskaContext(dynamoDbContext.Object, tableSchema);
+        var tableSchema = DynamoSharpContextTestDataFactory.GetTableSchema("orders");
+        var batchWriteItemResponse = DynamoSharpContextTestDataFactory.GetBatchWriteItemResponse();
+        var dynamoDbLowLevelContext = DynamoSharpContextTestDataFactory.GetMockDynamoDbLowLevelContext(batchWriteItemResponse);
+        var dynamoDbContext = DynamoSharpContextTestDataFactory.GetMockDynamoDbContext(dynamoDbLowLevelContext);
+        var dynamoChangeTrackerContext = DynamoSharpContextTestDataFactory.GetEskaContext(dynamoDbContext.Object, tableSchema);
 
         // act
         var batchWriteAsyncTask = dynamoChangeTrackerContext.TransactWriter.SaveChangesAsync();
@@ -47,11 +47,11 @@ public class DynamoSharpContextTests
     public void Query_ShouldReturnQueryBuilder()
     {
         // arrange
-        var tableSchema = EskaContextTestDataFactory.GetTableSchema("orders");
-        var batchWriteItemResponse = EskaContextTestDataFactory.GetBatchWriteItemResponse();
-        var dynamoDbLowLevelContext = EskaContextTestDataFactory.GetMockDynamoDbLowLevelContext(batchWriteItemResponse);
-        var dynamoDbContext = EskaContextTestDataFactory.GetMockDynamoDbContext(dynamoDbLowLevelContext);
-        var dynamoChangeTrackerContext = EskaContextTestDataFactory.GetEskaContext(dynamoDbContext.Object, tableSchema);
+        var tableSchema = DynamoSharpContextTestDataFactory.GetTableSchema("orders");
+        var batchWriteItemResponse = DynamoSharpContextTestDataFactory.GetBatchWriteItemResponse();
+        var dynamoDbLowLevelContext = DynamoSharpContextTestDataFactory.GetMockDynamoDbLowLevelContext(batchWriteItemResponse);
+        var dynamoDbContext = DynamoSharpContextTestDataFactory.GetMockDynamoDbContext(dynamoDbLowLevelContext);
+        var dynamoChangeTrackerContext = DynamoSharpContextTestDataFactory.GetEskaContext(dynamoDbContext.Object, tableSchema);
 
         // act
         var queryBuilder = dynamoChangeTrackerContext.Query<Order>();
@@ -66,10 +66,10 @@ public class DynamoSharpContextTests
     public void OnModelCreating_ShouldRegisterEntitiesInModelBuilder()
     {
         // arrange
-        var tableSchema = EskaContextTestDataFactory.GetTableSchema("orders");
-        var config = EskaContextTestDataFactory.GetDynamoDbContextConfig();
-        var dynamoDbContext = EskaContextTestDataFactory.GetDynamoDbContext(config);
-        var ecommerceDynamoChangeTrackerContext = EskaContextTestDataFactory.GetEcommerceDynamoChangeTrackerContext(dynamoDbContext, tableSchema);
+        var tableSchema = DynamoSharpContextTestDataFactory.GetTableSchema("orders");
+        var config = DynamoSharpContextTestDataFactory.GetDynamoDbContextConfig();
+        var dynamoDbContext = DynamoSharpContextTestDataFactory.GetDynamoDbContext(config);
+        var ecommerceDynamoChangeTrackerContext = DynamoSharpContextTestDataFactory.GetEcommerceDynamoChangeTrackerContext(dynamoDbContext, tableSchema);
 
         // act
         ecommerceDynamoChangeTrackerContext.OnModelCreating(ecommerceDynamoChangeTrackerContext.ModelBuilder);

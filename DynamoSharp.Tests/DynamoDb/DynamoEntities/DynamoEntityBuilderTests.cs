@@ -1,8 +1,7 @@
-﻿using Amazon.Runtime;
+﻿using Amazon.Runtime.Credentials;
 using DynamoSharp.DynamoDb;
 using DynamoSharp.DynamoDb.Configs;
 using DynamoSharp.DynamoDb.DynamoEntities;
-using DynamoSharp.Tests.Contexts;
 using DynamoSharp.Tests.Contexts.Models;
 using DynamoSharp.Tests.Contexts.Models.Affiliation;
 using DynamoSharp.Tests.Contexts.Models.Movies;
@@ -11,7 +10,6 @@ using EfficientDynamoDb;
 using EfficientDynamoDb.Credentials.AWSSDK;
 using FluentAssertions;
 using Newtonsoft.Json.Linq;
-using Xunit;
 using RegionEndpoint = EfficientDynamoDb.Configs.RegionEndpoint;
 
 namespace DynamoSharp.Tests.DynamoDb.DynamoEntities;
@@ -296,7 +294,7 @@ public class DynamoEntityBuilderTests
         var tableSchema = new TableSchema.TableSchemaBuilder()
             .WithTableName("order")
             .Build();
-        var awsSdkCredentials = FallbackCredentialsFactory.GetCredentials();
+        var awsSdkCredentials = DefaultAWSCredentialsIdentityResolver.GetCredentials();
         var effDdbCredentials = awsSdkCredentials.ToCredentialsProvider();
         var config = new DynamoDbContextConfig(RegionEndpoint.USEast1, effDdbCredentials);
         var dynamoDbContext = new DynamoDbContext(config);
@@ -325,7 +323,7 @@ public class DynamoEntityBuilderTests
         var tableSchema = new TableSchema.TableSchemaBuilder()
             .WithTableName("order")
             .Build();
-        var awsSdkCredentials = FallbackCredentialsFactory.GetCredentials();
+        var awsSdkCredentials = DefaultAWSCredentialsIdentityResolver.GetCredentials();
         var effDdbCredentials = awsSdkCredentials.ToCredentialsProvider();
         var config = new DynamoDbContextConfig(RegionEndpoint.USEast1, effDdbCredentials);
         var dynamoDbContext = new DynamoDbContext(config);
@@ -365,7 +363,7 @@ public class DynamoEntityBuilderTests
         var tableSchema = new TableSchema.TableSchemaBuilder()
             .WithTableName("order")
             .Build();
-        var awsSdkCredentials = FallbackCredentialsFactory.GetCredentials();
+        var awsSdkCredentials = DefaultAWSCredentialsIdentityResolver.GetCredentials();
         var effDdbCredentials = awsSdkCredentials.ToCredentialsProvider();
         var config = new DynamoDbContextConfig(RegionEndpoint.USEast1, effDdbCredentials);
         var dynamoDbContext = new DynamoDbContext(config);

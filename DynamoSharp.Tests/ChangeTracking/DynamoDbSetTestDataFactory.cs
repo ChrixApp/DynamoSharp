@@ -1,7 +1,6 @@
-﻿using Amazon.Runtime;
+﻿using Amazon.Runtime.Credentials;
 using DynamoSharp.DynamoDb;
 using DynamoSharp.DynamoDb.Configs;
-using DynamoSharp.Tests.Contexts;
 using DynamoSharp.Tests.TestContexts;
 using EfficientDynamoDb;
 using EfficientDynamoDb.Credentials.AWSSDK;
@@ -20,7 +19,7 @@ public static class DynamoDbSetTestDataFactory
 
     public static DynamoDbContextConfig GetDynamoDbContextConfig()
     {
-        var awsSdkCredentials = FallbackCredentialsFactory.GetCredentials();
+        var awsSdkCredentials = DefaultAWSCredentialsIdentityResolver.GetCredentials();
         var effDdbCredentials = awsSdkCredentials.ToCredentialsProvider();
         return new DynamoDbContextConfig(RegionEndpoint.USEast1, effDdbCredentials);
     }
