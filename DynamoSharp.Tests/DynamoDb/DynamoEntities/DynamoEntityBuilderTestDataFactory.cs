@@ -17,7 +17,7 @@ public static class DynamoEntityBuilderTestDataFactory
         string prefixSk4 = "BANK",
         string prefixSk5 = "TYPE")
     {
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("affiliations")
             .Build();
         var modelBuilder = new ModelBuilder();
@@ -64,7 +64,7 @@ public static class DynamoEntityBuilderTestDataFactory
 
     public static (TableSchema, IModelBuilder, IChangeTracker, Guid) CreateAffiliationContextForSingleEntity()
     {
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("affiliations")
             .Build();
         var modelBuilder = new ModelBuilder();
@@ -96,7 +96,7 @@ public static class DynamoEntityBuilderTestDataFactory
 
     public static (TableSchema, IModelBuilder, IChangeTracker, Guid merchantId) CreateAffiliationContextWithSortKey()
     {
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("affiliations")
             .Build();
         var modelBuilder = new ModelBuilder();
@@ -120,7 +120,7 @@ public static class DynamoEntityBuilderTestDataFactory
 
     public static (TableSchema, IModelBuilder, IChangeTracker, Guid merchantId) CreateAffiliationContextWithPrefixSortKey(string prefixSk)
     {
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("affiliations")
             .Build();
         var modelBuilder = new ModelBuilder();
@@ -144,7 +144,7 @@ public static class DynamoEntityBuilderTestDataFactory
 
     public static (TableSchema, IModelBuilder, IChangeTracker, Guid) CreateAffiliationContextWithGsiPk(string gsiPkName)
     {
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("affiliations")
             .Build();
         var modelBuilder = new ModelBuilder();
@@ -168,7 +168,7 @@ public static class DynamoEntityBuilderTestDataFactory
 
     public static (TableSchema, IModelBuilder, IChangeTracker, Guid) CreateAffiliationContextWithGsiSk(string gsiSkName)
     {
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("affiliations")
             .Build();
         var modelBuilder = new ModelBuilder();
@@ -193,7 +193,7 @@ public static class DynamoEntityBuilderTestDataFactory
 
     public static (TableSchema TableSchema, IModelBuilder ModelBuilder, IChangeTracker ChangeTracker, Order Order) CreateOrderContextWithOneToMany()
     {
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var modelBuilder = new ModelBuilder();
@@ -238,7 +238,7 @@ public static class DynamoEntityBuilderTestDataFactory
 
     public static (TableSchema TableSchema, IModelBuilder ModelBuilder, IChangeTracker ChangeTracker, Order Order) CreateOrderContextWithoutOneToMany()
     {
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var modelBuilder = new ModelBuilder();

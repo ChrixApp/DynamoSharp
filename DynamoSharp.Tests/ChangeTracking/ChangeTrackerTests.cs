@@ -13,7 +13,7 @@ public class ChangeTrackerTests
     public void CreateChangeTracker_ShouldCreateSuccessfully()
     {
         // arrange
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var modelBuilder = new ModelBuilder();
@@ -34,7 +34,7 @@ public class ChangeTrackerTests
     public void Track_AddsNewEntity_WhenEntityIsNotTracked()
     {
         // Arrange
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var modelBuilder = ChangeTrackerTestDataFactory.CreateModelBuilderForAffiliation();
@@ -55,7 +55,7 @@ public class ChangeTrackerTests
     public void Track_UpdatesState_WhenEntityIsAlreadyTracked()
     {
         // Arrange
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var modelBuilder = ChangeTrackerTestDataFactory.CreateModelBuilderForAffiliation();
@@ -77,7 +77,7 @@ public class ChangeTrackerTests
     public void Track_AddsNewEntityWithParent_WhenEntityIsNotTracked()
     {
         // Arrange
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var modelBuilder = ChangeTrackerTestDataFactory.CreateModelBuilderForOrder();
@@ -100,7 +100,7 @@ public class ChangeTrackerTests
     public void Track_UpdatesStateWithParent_WhenEntityIsAlreadyTracked()
     {
         // Arrange
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var modelBuilder = ChangeTrackerTestDataFactory.CreateModelBuilderForOrder();
@@ -129,7 +129,7 @@ public class ChangeTrackerTests
     public void AddEntities_ShouldAddEntities(int addedEntities)
     {
         // arrange
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var modelBuilder = ChangeTrackerTestDataFactory.CreateModelBuilderForAffiliation();
@@ -152,7 +152,7 @@ public class ChangeTrackerTests
     public void Untrack_RemovesEntity_WhenEntityIsTracked()
     {
         // Arrange
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var modelBuilder = ChangeTrackerTestDataFactory.CreateModelBuilderForAffiliation();
@@ -171,7 +171,7 @@ public class ChangeTrackerTests
     public void Untrack_DoesNothing_WhenEntityIsNotTracked()
     {
         // Arrange
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var modelBuilder = ChangeTrackerTestDataFactory.CreateModelBuilderForAffiliation();
@@ -192,7 +192,7 @@ public class ChangeTrackerTests
     public void RemoveRootEntities_ShouldRemoveEntities(int addedEntities, int removeEntities)
     {
         // arrange
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var modelBuilder = ChangeTrackerTestDataFactory.CreateModelBuilderForOrder();
@@ -223,7 +223,7 @@ public class ChangeTrackerTests
     public void GetAddedEntities_ShouldReturnAddedEntities(int totalOrders, int totalEntities)
     {
         // arrange
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var modelBuilder = ChangeTrackerTestDataFactory.CreateModelBuilderForOrder();
@@ -250,7 +250,7 @@ public class ChangeTrackerTests
     public void GetDeletedEntities_ShouldReturnDeletedEntities(int totalOrders, int totalProducts, int deletedOrders, int totalEntities)
     {
         // arrange
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var modelBuilder = ChangeTrackerTestDataFactory.CreateModelBuilderForOrder();
@@ -288,7 +288,7 @@ public class ChangeTrackerTests
     public void GetModifiedEntities_WithSeveralPropertiesModified_ShouldReturnModifiedEntities(int totalOrders, int totalProducts, int totalModifiedRootEntities, int totalModifiedEntities)
     {
         // arrange
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var modelBuilder = ChangeTrackerTestDataFactory.CreateModelBuilderForOrder();
@@ -331,7 +331,7 @@ public class ChangeTrackerTests
         int totalOrders, int totalModifiedRootEntities)
     {
         // arrange
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var modelBuilder = ChangeTrackerTestDataFactory.CreateModelBuilderForOrder();
@@ -369,7 +369,7 @@ public class ChangeTrackerTests
     public void AcceptChanges_ShouldAcceptAllChanges(int totalOrders, int productsToAdd, int rootEntitiesToModify, int removeEntities, int totalEntities)
     {
         // arrange
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var modelBuilder = ChangeTrackerTestDataFactory.CreateModelBuilderForOrder();
@@ -416,7 +416,7 @@ public class ChangeTrackerTests
     public void FetchChanges_ShouldTracksEntityWithParent_AfterChangesAccepted()
     {
         // Arrange
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var modelBuilder = ChangeTrackerTestDataFactory.CreateModelBuilderForOrder();

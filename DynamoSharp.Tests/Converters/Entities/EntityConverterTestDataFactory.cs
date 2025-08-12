@@ -9,7 +9,7 @@ public static class EntityConverterTestDataFactory
 {
     public static TableSchema CreateTableSchema()
     {
-        return new TableSchema.TableSchemaBuilder()
+        return new TableSchema.Builder()
             .WithTableName("TableName")
             .Build();
     }

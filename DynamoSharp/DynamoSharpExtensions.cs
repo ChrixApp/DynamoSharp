@@ -50,7 +50,7 @@ public static class ServiceCollectionExtensions
         string tableName)
     where TContext : class, IDynamoSharpContext
     {
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName(tableName)
             .Build();
         serviceCollection.AddSingleton(tableSchema);
@@ -63,7 +63,7 @@ public static class ServiceCollectionExtensions
         string versionName)
     where TContext : class, IDynamoSharpContext
     {
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName(tableName)
             .WithVersionName(versionName)
             .Build();
@@ -78,7 +78,7 @@ public static class ServiceCollectionExtensions
         string sortKey)
     where TContext : class, IDynamoSharpContext
     {
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName(tableName)
             .WithPartitionKeyName(partitionKey)
             .WithSortKeyName(sortKey)
@@ -95,7 +95,7 @@ public static class ServiceCollectionExtensions
         string versionName)
     where TContext : class, IDynamoSharpContext
     {
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName(tableName)
             .WithPartitionKeyName(partitionKey)
             .WithSortKeyName(sortKey)
@@ -111,7 +111,7 @@ public static class ServiceCollectionExtensions
         params GlobalSecondaryIndexSchema[] globalSecondaryIndices)
     where TContext : class, IDynamoSharpContext
     {
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName(tableName)
             .AddGlobalSecondaryIndex(globalSecondaryIndices)
             .Build();
@@ -126,7 +126,7 @@ public static class ServiceCollectionExtensions
         params GlobalSecondaryIndexSchema[] globalSecondaryIndices)
     where TContext : class, IDynamoSharpContext
     {
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName(tableName)
             .AddGlobalSecondaryIndex(globalSecondaryIndices)
             .WithVersionName(versionName)
@@ -143,7 +143,7 @@ public static class ServiceCollectionExtensions
         params GlobalSecondaryIndexSchema[] globalSecondaryIndices)
     where TContext : class, IDynamoSharpContext
     {
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName(tableName)
             .WithPartitionKeyName(partitionKey)
             .WithSortKeyName(sortKey)
@@ -163,7 +163,7 @@ public static class ServiceCollectionExtensions
         params GlobalSecondaryIndexSchema[] globalSecondaryIndices)
     where TContext : class, IDynamoSharpContext
     {
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName(tableName)
             .WithPartitionKeyName(partitionKey)
             .WithSortKeyName(sortKey)

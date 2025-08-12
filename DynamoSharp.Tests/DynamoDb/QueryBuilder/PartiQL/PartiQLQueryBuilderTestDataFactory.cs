@@ -17,7 +17,7 @@ public static class PartiQLQueryBuilderTestDataFactory
     public static Query<PartiQLOrder> CreateNewQueryTestData()
     {
         var orders = QueryBuilderTestDataFactory.CreateOrderDocuments();
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("orders")
             .AddGlobalSecondaryIndex(new GlobalSecondaryIndexSchema("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK"))
             .Build();

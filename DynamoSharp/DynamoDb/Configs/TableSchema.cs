@@ -43,7 +43,7 @@ public class TableSchema
         return !string.IsNullOrWhiteSpace(VersionName);
     }
 
-    public class TableSchemaBuilder
+    public class Builder
     {
         private string _tableName = string.Empty;
         private string _partitionKeyName = "PartitionKey";
@@ -51,34 +51,33 @@ public class TableSchema
         private string _versionName = string.Empty;
         private readonly List<GlobalSecondaryIndexSchema> _globalSecondaryIndices = new();
 
-        public TableSchemaBuilder WithTableName(string tableName)
         {
             if (string.IsNullOrWhiteSpace(tableName)) throw new ArgumentNullException(nameof(tableName), "Null or empty not allowed");
             _tableName = tableName;
             return this;
         }
 
-        public TableSchemaBuilder WithPartitionKeyName(string partitionKeyName)
+        public Builder WithPartitionKeyName(string partitionKeyName)
         {
             if (string.IsNullOrWhiteSpace(partitionKeyName)) throw new ArgumentNullException(nameof(partitionKeyName), "Null or empty not allowed");
             _partitionKeyName = partitionKeyName;
             return this;
         }
 
-        public TableSchemaBuilder WithSortKeyName(string sortKeyName)
+        public Builder WithSortKeyName(string sortKeyName)
         {
             if (string.IsNullOrWhiteSpace(sortKeyName)) throw new ArgumentNullException(nameof(sortKeyName), "Null or empty not allowed");
             _sortKeyName = sortKeyName;
             return this;
         }
 
-        public TableSchemaBuilder WithVersionName(string versionName)
+        public Builder WithVersionName(string versionName)
         {
             _versionName = versionName;
             return this;
         }
 
-        public TableSchemaBuilder AddGlobalSecondaryIndex(params GlobalSecondaryIndexSchema[] globalSecondaryIndices)
+        public Builder AddGlobalSecondaryIndex(params GlobalSecondaryIndexSchema[] globalSecondaryIndices)
         {
             if (globalSecondaryIndices is null) throw new ArgumentNullException(nameof(globalSecondaryIndices), "Null not allowed");
             foreach (var gsi in globalSecondaryIndices)

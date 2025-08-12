@@ -291,7 +291,7 @@ public class DynamoEntityBuilderTests
     public void GetEntityTypeBuilder_ShouldCreatePrimaryKeyForEntity()
     {
         // arrange
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var awsSdkCredentials = DefaultAWSCredentialsIdentityResolver.GetCredentials();
@@ -320,7 +320,7 @@ public class DynamoEntityBuilderTests
     public void GetEntityTypeBuilder_ShouldCreatePrimaryKeyForOneToMany()
     {
         // arrange
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var awsSdkCredentials = DefaultAWSCredentialsIdentityResolver.GetCredentials();
@@ -360,7 +360,7 @@ public class DynamoEntityBuilderTests
     public void GetEntityTypeBuilder_ShouldCreatePrimaryKeyForManyToMany()
     {
         // arrange
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var awsSdkCredentials = DefaultAWSCredentialsIdentityResolver.GetCredentials();

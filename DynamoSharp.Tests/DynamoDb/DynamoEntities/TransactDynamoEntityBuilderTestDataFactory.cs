@@ -9,7 +9,7 @@ public static class TransactDynamoEntityBuilderTestDataFactory
 {
     public static (TableSchema, IModelBuilder, IChangeTracker, Guid) CreateAffiliationContextForSingleEntity()
     {
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("affiliations")
             .Build();
         var modelBuilder = new ModelBuilder();
@@ -43,7 +43,7 @@ public static class TransactDynamoEntityBuilderTestDataFactory
 
     public static (TableSchema, IModelBuilder, IChangeTracker, Guid) CreateAffiliationContextForSingleEntity(int version)
     {
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("affiliations")
             .WithVersionName("v")
             .Build();

@@ -12,7 +12,7 @@ public static class DynamoDbSetTestDataFactory
 {
     public static TableSchema GetTableSchema(string tableName)
     {
-        return new TableSchema.TableSchemaBuilder()
+        return new TableSchema.Builder()
             .WithTableName(tableName)
             .Build();
     }

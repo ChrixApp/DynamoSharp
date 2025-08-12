@@ -23,7 +23,7 @@ public class QueryBuilderTests
     {
         // Arrange
         var dynamoChangeTrackerContext = new Mock<IDynamoSharpContext>();
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
 
@@ -41,7 +41,7 @@ public class QueryBuilderTests
     {
         // Arrange
         var dynamoChangeTrackerContext = new Mock<IDynamoSharpContext>();
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var queryBuilder = (IQueryBuilder<Order>)new Query<Order>.Builder(dynamoChangeTrackerContext.Object, tableSchema);
@@ -58,7 +58,7 @@ public class QueryBuilderTests
     {
         // Arrange
         var dynamoChangeTrackerContext = new Mock<IDynamoSharpContext>();
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var queryBuilder = (IQueryBuilder<Order>)new Query<Order>.Builder(dynamoChangeTrackerContext.Object, tableSchema);
@@ -75,7 +75,7 @@ public class QueryBuilderTests
     {
         // Arrange
         var dynamoChangeTrackerContext = new Mock<IDynamoSharpContext>();
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var queryBuilder = (IQueryBuilder<Order>)new Query<Order>.Builder(dynamoChangeTrackerContext.Object, tableSchema);
@@ -92,7 +92,7 @@ public class QueryBuilderTests
     {
         // Arrange
         var dynamoChangeTrackerContext = new Mock<IDynamoSharpContext>();
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var queryBuilder = (IQueryBuilder<Order>)new Query<Order>.Builder(dynamoChangeTrackerContext.Object, tableSchema);
@@ -109,7 +109,7 @@ public class QueryBuilderTests
     {
         // Arrange
         var dynamoChangeTrackerContext = new Mock<IDynamoSharpContext>();
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var queryBuilder = (IQueryBuilder<Order>)new Query<Order>.Builder(dynamoChangeTrackerContext.Object, tableSchema);
@@ -126,7 +126,7 @@ public class QueryBuilderTests
     {
         // Arrange
         var dynamoChangeTrackerContext = new Mock<IDynamoSharpContext>();
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("orders")
             .WithPartitionKeyName("PK")
             .WithSortKeyName("SK")
@@ -146,7 +146,7 @@ public class QueryBuilderTests
     {
         // Arrange
         var dynamoChangeTrackerContext = new Mock<IDynamoSharpContext>();
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("orders")
             .WithPartitionKeyName("PK")
             .WithSortKeyName("SK")
@@ -169,7 +169,7 @@ public class QueryBuilderTests
         var buyerId = Guid.NewGuid();
         var filterExpected = (Expression<Func<Order, bool>>?)(x => x.BuyerId == buyerId);
         var dynamoChangeTrackerContext = new Mock<IDynamoSharpContext>();
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("orders")
             .WithPartitionKeyName("PK")
             .WithSortKeyName("SK")
@@ -190,7 +190,7 @@ public class QueryBuilderTests
     {
         // Arrange
         var orders = QueryBuilderTestDataFactory.CreateOrderDocuments();
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var dynamoDbLowLevelPartiQLContext = new Mock<IDynamoDbLowLevelPartiQLContext>();
@@ -244,7 +244,7 @@ public class QueryBuilderTests
     {
         // Arrange
         var orders = new List<Document>();
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var dynamoDbLowLevelPartiQLContext = new Mock<IDynamoDbLowLevelPartiQLContext>();
@@ -281,7 +281,7 @@ public class QueryBuilderTests
     {
         // Arrange
         var orders = QueryBuilderTestDataFactory.CreateOrderDocuments().GetRange(0, 1);
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var dynamoDbLowLevelPartiQLContext = new Mock<IDynamoDbLowLevelPartiQLContext>();
@@ -329,7 +329,7 @@ public class QueryBuilderTests
     {
         // Arrange
         var affiliations = QueryBuilderTestDataFactory.CreateAffiliationDocuments();
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
         var dynamoDbLowLevelPartiQLContext = new Mock<IDynamoDbLowLevelPartiQLContext>();
@@ -380,7 +380,7 @@ public class QueryBuilderTests
     {
         // Arrange
         var orders = QueryBuilderTestDataFactory.CreateOrderDocumentsForListTest();
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("orders")
             .AddGlobalSecondaryIndex(new GlobalSecondaryIndexSchema("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK"))
             .Build();
@@ -442,7 +442,7 @@ public class QueryBuilderTests
     {
         // Arrange
         var orders = new List<Document>();
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("orders")
             .AddGlobalSecondaryIndex(new GlobalSecondaryIndexSchema("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK"))
             .Build();

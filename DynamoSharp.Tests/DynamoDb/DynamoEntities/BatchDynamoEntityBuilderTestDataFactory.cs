@@ -9,7 +9,7 @@ public static class BatchDynamoEntityBuilderTestDataFactory
 {
     public static (TableSchema, IModelBuilder, IChangeTracker, Guid) CreateAffiliationContextForSingleEntity()
     {
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("affiliations")
             .Build();
         var modelBuilder = new ModelBuilder();

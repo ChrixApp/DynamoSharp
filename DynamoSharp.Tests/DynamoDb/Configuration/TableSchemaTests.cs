@@ -1,5 +1,4 @@
 ﻿using DynamoSharp.DynamoDb.Configs;
-using Xunit;
 
 namespace DynamoSharp.Tests.DynamoDb.Configuration;
 
@@ -12,7 +11,7 @@ public class TableSchemaTests
         var tableName = "Movies";
 
         // Act
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName(tableName)
             .Build();
 
@@ -26,7 +25,7 @@ public class TableSchemaTests
     [Fact]
     public void CreateTableSchema_WithPartitionKeyAndSortKey_InitializesCorrectly()
     {
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("Movies")
             .WithPartitionKeyName("PK")
             .WithSortKeyName("SK")
@@ -44,7 +43,7 @@ public class TableSchemaTests
         var gsi1 = new GlobalSecondaryIndexSchema("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK");
         var gsi2 = new GlobalSecondaryIndexSchema("GSI2PK-GSI2SK-index", "GSI2PK", "GSI2SK");
 
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("Movies")
             .AddGlobalSecondaryIndex(gsi1, gsi2)
             .Build();
@@ -67,7 +66,7 @@ public class TableSchemaTests
         var gsi1 = new GlobalSecondaryIndexSchema("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK");
         var gsi2 = new GlobalSecondaryIndexSchema("GSI2PK-GSI2SK-index", "GSI2PK", "GSI2SK");
 
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("Movies")
             .WithPartitionKeyName("PK")
             .WithSortKeyName("SK")
@@ -89,36 +88,36 @@ public class TableSchemaTests
     [Fact]
     public void CreateTableSchema_WithNullOrEmptyTableName_ThrowsArgumentNullException()
     {
-        Assert.Throws<InvalidOperationException>(() => new TableSchema.TableSchemaBuilder().Build());
-        Assert.Throws<ArgumentNullException>(() => new TableSchema.TableSchemaBuilder().WithTableName(null!));
-        Assert.Throws<ArgumentNullException>(() => new TableSchema.TableSchemaBuilder().WithTableName(string.Empty));
+        Assert.Throws<InvalidOperationException>(() => new TableSchema.Builder().Build());
+        Assert.Throws<ArgumentNullException>(() => new TableSchema.Builder().WithTableName(null!));
+        Assert.Throws<ArgumentNullException>(() => new TableSchema.Builder().WithTableName(string.Empty));
     }
 
     [Fact]
     public void CreateTableSchema_WithNullOrEmptyPartitionKey_ThrowsArgumentNullException()
     {
-        Assert.Throws<ArgumentNullException>(() => new TableSchema.TableSchemaBuilder().WithPartitionKeyName(null!));
-        Assert.Throws<ArgumentNullException>(() => new TableSchema.TableSchemaBuilder().WithPartitionKeyName(string.Empty));
+        Assert.Throws<ArgumentNullException>(() => new TableSchema.Builder().WithPartitionKeyName(null!));
+        Assert.Throws<ArgumentNullException>(() => new TableSchema.Builder().WithPartitionKeyName(string.Empty));
     }
 
     [Fact]
     public void CreateTableSchema_WithNullOrEmptySortKey_ThrowsArgumentNullException()
     {
-        Assert.Throws<ArgumentNullException>(() => new TableSchema.TableSchemaBuilder().WithSortKeyName(null!));
-        Assert.Throws<ArgumentNullException>(() => new TableSchema.TableSchemaBuilder().WithSortKeyName(string.Empty));
+        Assert.Throws<ArgumentNullException>(() => new TableSchema.Builder().WithSortKeyName(null!));
+        Assert.Throws<ArgumentNullException>(() => new TableSchema.Builder().WithSortKeyName(string.Empty));
     }
 
     [Fact]
     public void CreateTableSchema_WithNullGlobalSecondaryIndices_ThrowsArgumentNullException()
     {
-        Assert.Throws<ArgumentNullException>(() => new TableSchema.TableSchemaBuilder().AddGlobalSecondaryIndex(null!));
+        Assert.Throws<ArgumentNullException>(() => new TableSchema.Builder().AddGlobalSecondaryIndex(null!));
     }
 
     [Fact]
     public void CreateTableSchema_WithNullGlobalSecondaryIndex_ThrowsArgumentNullException()
     {
         var gsi1 = new GlobalSecondaryIndexSchema("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK");
-        Assert.Throws<ArgumentNullException>(() => new TableSchema.TableSchemaBuilder().AddGlobalSecondaryIndex(gsi1, null!));
+        Assert.Throws<ArgumentNullException>(() => new TableSchema.Builder().AddGlobalSecondaryIndex(gsi1, null!));
     }
 
     [Fact]
@@ -127,7 +126,7 @@ public class TableSchemaTests
         var gsi1 = new GlobalSecondaryIndexSchema("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK");
         var gsi2 = new GlobalSecondaryIndexSchema("GSI2PK-GSI2SK-index", "GSI2PK", "GSI2SK");
 
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("Movies")
             .AddGlobalSecondaryIndex(gsi1, gsi2)
             .Build();
@@ -142,7 +141,7 @@ public class TableSchemaTests
         var gsi1 = new GlobalSecondaryIndexSchema("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK");
         var gsi2 = new GlobalSecondaryIndexSchema("GSI2PK-GSI2SK-index", "GSI2PK", "GSI2SK");
 
-        var tableSchema = new TableSchema.TableSchemaBuilder()
+        var tableSchema = new TableSchema.Builder()
             .WithTableName("Movies")
             .AddGlobalSecondaryIndex(gsi1, gsi2)
             .Build();
