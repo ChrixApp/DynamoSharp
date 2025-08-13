@@ -42,8 +42,13 @@ dotnet add package DynamoSharp
 
 builder.Services.AddDynamoSharp(); //Add internal dependencies
 builder.Services.AddDynamoSharpContext<AppContext>(
-    "{DynamoDb_table_name}",
-    new GlobalSecondaryIndexSchema("{Index_name}", "{Partitionkey_name}", "{Sortkey_name}"));
+    new TableSchema.Builder()
+        .WithTableName("dynamosharp")
+        .WithPartitionKeyName("PK")
+        .WithSortKeyName("SK")
+        .AddGlobalSecondaryIndex("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK")
+        .Build()
+);
 ```
 
 ## Implementation

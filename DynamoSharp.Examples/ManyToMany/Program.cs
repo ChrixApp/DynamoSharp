@@ -13,7 +13,11 @@ public static class Program
     {
         var builder = WebApplication.CreateBuilder();
         builder.Services.AddDynamoSharp(RegionEndpoint.USEast1, "http://localhost:4566/");
-        builder.Services.AddDynamoSharpContext<MovieContext>("eska");
+        builder.Services.AddDynamoSharpContext<MovieContext>(
+            new TableSchema.Builder()
+                .WithTableName("dynamosharp")
+                .Build()
+        );
         var app = builder.Build();
 
         using var serviceScope = app.Services.CreateScope();

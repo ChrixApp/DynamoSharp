@@ -45,6 +45,7 @@ public static class ServiceCollectionExtensions
         return serviceCollection;
     }
 
+    [Obsolete("Use AddDynamoSharpContext<TContext>(this IServiceCollection serviceCollection, TableSchema tableSchema) instead.")]
     public static IServiceCollection AddDynamoSharpContext<TContext>(
         this IServiceCollection serviceCollection,
         string tableName)
@@ -57,6 +58,7 @@ public static class ServiceCollectionExtensions
         return AddDynamoSharpContext<TContext>(serviceCollection, tableSchema);
     }
 
+    [Obsolete("Use AddDynamoSharpContext<TContext>(this IServiceCollection serviceCollection, TableSchema tableSchema) instead.")]
     public static IServiceCollection AddDynamoSharpContext<TContext>(
         this IServiceCollection serviceCollection,
         string tableName,
@@ -71,6 +73,7 @@ public static class ServiceCollectionExtensions
         return AddDynamoSharpContext<TContext>(serviceCollection, tableSchema);
     }
 
+    [Obsolete("Use AddDynamoSharpContext<TContext>(this IServiceCollection serviceCollection, TableSchema tableSchema) instead.")]
     public static IServiceCollection AddDynamoSharpContext<TContext>(
         this IServiceCollection serviceCollection,
         string tableName,
@@ -87,6 +90,7 @@ public static class ServiceCollectionExtensions
         return AddDynamoSharpContext<TContext>(serviceCollection, tableSchema);
     }
 
+    [Obsolete("Use AddDynamoSharpContext<TContext>(this IServiceCollection serviceCollection, TableSchema tableSchema) instead.")]
     public static IServiceCollection AddDynamoSharpContext<TContext>(
         this IServiceCollection serviceCollection,
         string tableName,
@@ -105,6 +109,7 @@ public static class ServiceCollectionExtensions
         return AddDynamoSharpContext<TContext>(serviceCollection, tableSchema);
     }
 
+    [Obsolete("Use AddDynamoSharpContext<TContext>(this IServiceCollection serviceCollection, TableSchema tableSchema) instead.")]
     public static IServiceCollection AddDynamoSharpContext<TContext>(
         this IServiceCollection serviceCollection,
         string tableName,
@@ -119,6 +124,7 @@ public static class ServiceCollectionExtensions
         return AddDynamoSharpContext<TContext>(serviceCollection, tableSchema);
     }
 
+    [Obsolete("Use AddDynamoSharpContext<TContext>(this IServiceCollection serviceCollection, TableSchema tableSchema) instead.")]
     public static IServiceCollection AddDynamoSharpContext<TContext>(
         this IServiceCollection serviceCollection,
         string tableName,
@@ -135,6 +141,7 @@ public static class ServiceCollectionExtensions
         return AddDynamoSharpContext<TContext>(serviceCollection, tableSchema);
     }
 
+    [Obsolete("Use AddDynamoSharpContext<TContext>(this IServiceCollection serviceCollection, TableSchema tableSchema) instead.")]
     public static IServiceCollection AddDynamoSharpContext<TContext>(
         this IServiceCollection serviceCollection,
         string tableName,
@@ -154,6 +161,7 @@ public static class ServiceCollectionExtensions
         return AddDynamoSharpContext<TContext>(serviceCollection, tableSchema);
     }
 
+    [Obsolete("Use AddDynamoSharpContext<TContext>(this IServiceCollection serviceCollection, TableSchema tableSchema) instead.")]
     public static IServiceCollection AddDynamoSharpContext<TContext>(
         this IServiceCollection serviceCollection,
         string tableName,
@@ -175,7 +183,7 @@ public static class ServiceCollectionExtensions
         return AddDynamoSharpContext<TContext>(serviceCollection, tableSchema);
     }
 
-    private static IServiceCollection AddDynamoSharpContext<TContext>(
+    public static IServiceCollection AddDynamoSharpContext<TContext>(
         this IServiceCollection serviceCollection,
         TableSchema tableSchema)
     where TContext : class, IDynamoSharpContext

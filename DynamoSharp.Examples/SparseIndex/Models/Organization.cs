@@ -18,4 +18,13 @@ public class Organization
     {
         _users.Add(new User(name, subscriptionLevel, Name));
     }
+
+    public void RemoveUser(string name)
+    {
+        var user = _users.FirstOrDefault(u => u.Name == name);
+        if (user != null)
+        {
+            _users.Remove(user);
+        }
+    }
 }

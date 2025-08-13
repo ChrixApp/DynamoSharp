@@ -51,6 +51,7 @@ public class TableSchema
         private string _versionName = string.Empty;
         private readonly List<GlobalSecondaryIndexSchema> _globalSecondaryIndices = new();
 
+        public Builder WithTableName(string tableName)
         {
             if (string.IsNullOrWhiteSpace(tableName)) throw new ArgumentNullException(nameof(tableName), "Null or empty not allowed");
             _tableName = tableName;
@@ -80,11 +81,20 @@ public class TableSchema
         public Builder AddGlobalSecondaryIndex(params GlobalSecondaryIndexSchema[] globalSecondaryIndices)
         {
             if (globalSecondaryIndices is null) throw new ArgumentNullException(nameof(globalSecondaryIndices), "Null not allowed");
+            if (_globalSecondaryIndices.Count + globalSecondaryIndices.Length > 20) throw new InvalidOperationException("Cannot add more than 20 Global Secondary Indices to a TableSchema.");
             foreach (var gsi in globalSecondaryIndices)
             {
                 if (gsi is null) throw new ArgumentNullException(nameof(globalSecondaryIndices), "Null not allowed");
                 _globalSecondaryIndices.Add(gsi);
             }
+            return this;
+        }
+
+        public Builder AddGlobalSecondaryIndex(string indexName, string partitionKeyName, string sortKeyName)
+        {
+            if (_globalSecondaryIndices.Count > 20) throw new InvalidOperationException("Cannot add more than 20 Global Secondary Indices to a TableSchema.");
+            var gsi = new GlobalSecondaryIndexSchema(indexName, partitionKeyName, sortKeyName);
+            _globalSecondaryIndices.Add(gsi);
             return this;
         }
 

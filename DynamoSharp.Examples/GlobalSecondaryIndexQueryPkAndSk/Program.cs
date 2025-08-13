@@ -14,7 +14,11 @@ public static class Program
     {
         var builder = WebApplication.CreateBuilder();
         builder.Services.AddDynamoSharp(RegionEndpoint.USEast1);
-        builder.Services.AddDynamoSharpContext<EcommerceContext>("eska");
+        builder.Services.AddDynamoSharpContext<EcommerceContext>(
+            new TableSchema.Builder()
+                .WithTableName("dynamosharp")
+                .Build()
+        );
         var app = builder.Build();
 
         using var serviceScope = app.Services.CreateScope();

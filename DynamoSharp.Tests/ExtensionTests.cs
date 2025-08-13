@@ -82,8 +82,16 @@ public class EskaExtensionsTests
         var dynamoDbContext = Mock.Of<IDynamoDbContext>();
         var builder = WebApplication.CreateBuilder();
         builder.Services.AddSingleton(dynamoDbContext);
-        builder.Services.AddDynamoSharpContext<DynamoSharpTestContext1>(tableNameContext1);
-        builder.Services.AddDynamoSharpContext<DynamoSharpTestContext2>(tableNameContext2);
+        builder.Services.AddDynamoSharpContext<DynamoSharpTestContext1>(
+            new TableSchema.Builder()
+                .WithTableName(tableNameContext1)
+                .Build()
+        );
+        builder.Services.AddDynamoSharpContext<DynamoSharpTestContext2>(
+            new TableSchema.Builder()
+                .WithTableName(tableNameContext2)
+                .Build()
+        );
 
         var app = builder.Build();
 

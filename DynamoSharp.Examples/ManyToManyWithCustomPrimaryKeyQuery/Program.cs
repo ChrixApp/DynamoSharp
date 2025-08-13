@@ -14,8 +14,11 @@ public static class Program
         var builder = WebApplication.CreateBuilder();
         builder.Services.AddDynamoSharp(RegionEndpoint.USEast1);
         builder.Services.AddDynamoSharpContext<MovieContext>(
-            "eska",
-            new GlobalSecondaryIndexSchema("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK"));
+            new TableSchema.Builder()
+                .WithTableName("dynamosharp")
+                .AddGlobalSecondaryIndex("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK")
+                .Build()
+        );
         var app = builder.Build();
 
         using var serviceScope = app.Services.CreateScope();

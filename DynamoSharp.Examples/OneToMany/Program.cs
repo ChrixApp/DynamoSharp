@@ -13,7 +13,11 @@ public static class Program
     {
         var builder = WebApplication.CreateBuilder();
         builder.Services.AddDynamoSharp(RegionEndpoint.USEast1);
-        builder.Services.AddDynamoSharpContext<EcommerceContext>("eska");
+        builder.Services.AddDynamoSharpContext<EcommerceContext>(
+            new TableSchema.Builder()
+                .WithTableName("dynamosharp")
+                .Build()
+        );
         var app = builder.Build();
 
         var buyerId = Guid.Parse("6dbefed7-1d09-40ca-9733-b1667efb95f3");

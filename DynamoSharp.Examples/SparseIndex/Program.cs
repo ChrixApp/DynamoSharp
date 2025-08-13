@@ -14,19 +14,23 @@ public class Program
         var builder = WebApplication.CreateBuilder();
         builder.Services.AddDynamoSharp(RegionEndpoint.USEast1, "http://localhost:4566/");
         builder.Services.AddDynamoSharpContext<OrganizationContext>(
-            "eska",
-            new GlobalSecondaryIndexSchema("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK"));
+            new TableSchema.Builder()
+                .WithTableName("dynamosharp")
+                .AddGlobalSecondaryIndex("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK")
+                .Build()
+        );
+
         var app = builder.Build();
 
         using var serviceScope = app.Services.CreateScope();
 
         var organizationContext = serviceScope.ServiceProvider.GetRequiredService<OrganizationContext>();
-        var organizations1 = CreateOrganizations();
+        var organizations = CreateOrganizations();
 
-        organizationContext.Organizations.AddRange(organizations1);
+        organizationContext.Organizations.AddRange(organizations);
         organizationContext.BatchWriter.SaveChangesAsync().Wait();
 
-        var organizations2 = organizationContext.Query<Organization>()
+        var onlyOrganizations = organizationContext.Query<Organization>()
             .IndexName("GSI1PK-GSI1SK-index")
             .PartitionKey("ORGANIZATIONS")
             .ToListAsync()

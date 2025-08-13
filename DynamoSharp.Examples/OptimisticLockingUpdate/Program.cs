@@ -14,7 +14,12 @@ internal class Program
         var builder = WebApplication.CreateBuilder();
         builder.Services.AddDynamoSharp(RegionEndpoint.USEast1, "http://localhost:4566/");
         // 'v' represents the version attribute for optimistic locking
-        builder.Services.AddDynamoSharpContext<EcommerceContext>("eska", "v");
+        builder.Services.AddDynamoSharpContext<EcommerceContext>(
+            new TableSchema.Builder()
+                .WithTableName("dynamosharp")
+                .WithVersionName("v")
+                .Build()
+        );
         var app = builder.Build();
 
         using var serviceScope = app.Services.CreateScope();
