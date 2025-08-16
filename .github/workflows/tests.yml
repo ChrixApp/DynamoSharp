@@ -1,4 +1,4 @@
-name: Tests Passing
+name: tests passing
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  tests:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -16,10 +16,13 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0
+          dotnet-version: 8.0.x
 
       - name: Restore dependencies
         run: dotnet restore
+
+      - name: Build project
+        run: dotnet build --configuration Release --no-restore
 
       - name: Run tests
         run: dotnet test --configuration Release --no-build --verbosity normal
