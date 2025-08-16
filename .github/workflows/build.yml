@@ -1,4 +1,4 @@
-name: Build Passing
+name: build passing
 
 on:
   push:
