@@ -1,5 +1,4 @@
-﻿using Amazon.Runtime.Credentials;
-using DynamoSharp.DynamoDb;
+﻿using DynamoSharp.DynamoDb;
 using DynamoSharp.DynamoDb.Configs;
 using DynamoSharp.DynamoDb.DynamoEntities;
 using DynamoSharp.Tests.Contexts.Models;
@@ -7,10 +6,8 @@ using DynamoSharp.Tests.Contexts.Models.Affiliation;
 using DynamoSharp.Tests.Contexts.Models.Movies;
 using DynamoSharp.Tests.TestContexts;
 using EfficientDynamoDb;
-using EfficientDynamoDb.Credentials.AWSSDK;
 using FluentAssertions;
 using Newtonsoft.Json.Linq;
-using RegionEndpoint = EfficientDynamoDb.Configs.RegionEndpoint;
 
 namespace DynamoSharp.Tests.DynamoDb.DynamoEntities;
 
@@ -294,10 +291,8 @@ public class DynamoEntityBuilderTests
         var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
-        var awsSdkCredentials = DefaultAWSCredentialsIdentityResolver.GetCredentials();
-        var effDdbCredentials = awsSdkCredentials.ToCredentialsProvider();
-        var config = new DynamoDbContextConfig(RegionEndpoint.USEast1, effDdbCredentials);
-        var dynamoDbContext = new DynamoDbContext(config);
+        var dynamoDbContextConfig = DynamoEntityBuilderTestDataFactory.GetDynamoDbContextConfig();
+        var dynamoDbContext = new DynamoDbContext(dynamoDbContextConfig);
         var dynamoDbContextAdapter = new DynamoDbContextAdapter(dynamoDbContext);
         var ecommerceContext = new EcommerceContext(dynamoDbContextAdapter, tableSchema);
         ecommerceContext.OnModelCreating(ecommerceContext.ModelBuilder);
@@ -323,10 +318,8 @@ public class DynamoEntityBuilderTests
         var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
-        var awsSdkCredentials = DefaultAWSCredentialsIdentityResolver.GetCredentials();
-        var effDdbCredentials = awsSdkCredentials.ToCredentialsProvider();
-        var config = new DynamoDbContextConfig(RegionEndpoint.USEast1, effDdbCredentials);
-        var dynamoDbContext = new DynamoDbContext(config);
+        var dynamoDbContextConfig = DynamoEntityBuilderTestDataFactory.GetDynamoDbContextConfig();
+        var dynamoDbContext = new DynamoDbContext(dynamoDbContextConfig);
         var dynamoDbContextAdapter = new DynamoDbContextAdapter(dynamoDbContext);
         var ecommerceOneToManyContext = new EcommerceOneToManyContext(dynamoDbContextAdapter, tableSchema);
         ecommerceOneToManyContext.OnModelCreating(ecommerceOneToManyContext.ModelBuilder);
@@ -363,10 +356,8 @@ public class DynamoEntityBuilderTests
         var tableSchema = new TableSchema.Builder()
             .WithTableName("order")
             .Build();
-        var awsSdkCredentials = DefaultAWSCredentialsIdentityResolver.GetCredentials();
-        var effDdbCredentials = awsSdkCredentials.ToCredentialsProvider();
-        var config = new DynamoDbContextConfig(RegionEndpoint.USEast1, effDdbCredentials);
-        var dynamoDbContext = new DynamoDbContext(config);
+        var dynamoDbContextConfig = DynamoEntityBuilderTestDataFactory.GetDynamoDbContextConfig();
+        var dynamoDbContext = new DynamoDbContext(dynamoDbContextConfig);
         var dynamoDbContextAdapter = new DynamoDbContextAdapter(dynamoDbContext);
         var movieContext = new MovieContext(dynamoDbContextAdapter, tableSchema);
         movieContext.OnModelCreating(movieContext.ModelBuilder);

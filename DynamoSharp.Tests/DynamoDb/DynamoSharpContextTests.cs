@@ -1,9 +1,7 @@
 ﻿using DynamoSharp.DynamoDb.QueryBuilder;
 using DynamoSharp.Tests.Contexts.Models;
-using DynamoSharp.DynamoDb;
-using DynamoSharp.Exceptions;
+using DynamoSharp.Tests.DynamoDb.DynamoEntities;
 using FluentAssertions;
-using Xunit;
 
 namespace DynamoSharp.Tests.DynamoDb;
 
@@ -67,8 +65,8 @@ public class DynamoSharpContextTests
     {
         // arrange
         var tableSchema = DynamoSharpContextTestDataFactory.GetTableSchema("orders");
-        var config = DynamoSharpContextTestDataFactory.GetDynamoDbContextConfig();
-        var dynamoDbContext = DynamoSharpContextTestDataFactory.GetDynamoDbContext(config);
+        var dynamoDbContextConfig = DynamoSharpContextTestDataFactory.GetDynamoDbContextConfig();
+        var dynamoDbContext = DynamoSharpContextTestDataFactory.GetDynamoDbContext(dynamoDbContextConfig);
         var ecommerceDynamoChangeTrackerContext = DynamoSharpContextTestDataFactory.GetEcommerceDynamoChangeTrackerContext(dynamoDbContext, tableSchema);
 
         // act

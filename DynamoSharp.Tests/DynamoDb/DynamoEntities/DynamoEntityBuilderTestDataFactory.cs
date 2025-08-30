@@ -1,8 +1,13 @@
-﻿using DynamoSharp.ChangeTracking;
+﻿using Amazon.Runtime;
+using DynamoSharp.ChangeTracking;
 using DynamoSharp.DynamoDb.Configs;
 using DynamoSharp.DynamoDb.ModelsBuilder;
 using DynamoSharp.Tests.Contexts.Models;
 using DynamoSharp.Tests.Contexts.Models.Affiliation;
+using EfficientDynamoDb;
+using EfficientDynamoDb.Credentials.AWSSDK;
+
+using RegionEndpoint = EfficientDynamoDb.Configs.RegionEndpoint;
 
 namespace DynamoSharp.Tests.DynamoDb.DynamoEntities;
 
@@ -258,5 +263,12 @@ public static class DynamoEntityBuilderTestDataFactory
         changeTracker.Track(order, EntityState.Added);
 
         return (tableSchema, modelBuilder, changeTracker, order);
+    }
+
+    public static DynamoDbContextConfig GetDynamoDbContextConfig()
+    {
+        var mockCredentials = new BasicAWSCredentials("fake-access-key", "fake-secret-key");
+        var effDdbCredentials = mockCredentials.ToCredentialsProvider();
+        return new DynamoDbContextConfig(RegionEndpoint.USEast1, effDdbCredentials);
     }
 }

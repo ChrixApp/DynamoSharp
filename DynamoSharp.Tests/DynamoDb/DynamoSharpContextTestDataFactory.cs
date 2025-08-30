@@ -1,4 +1,5 @@
-﻿using Amazon.Runtime.Credentials;
+﻿using Amazon.Runtime;
+using Amazon.Runtime.Credentials;
 using DynamoSharp.DynamoDb;
 using DynamoSharp.DynamoDb.Configs;
 using DynamoSharp.Tests.TestContexts;
@@ -25,8 +26,8 @@ public static class DynamoSharpContextTestDataFactory
 
     public static DynamoDbContextConfig GetDynamoDbContextConfig()
     {
-        var awsSdkCredentials = DefaultAWSCredentialsIdentityResolver.GetCredentials();
-        var effDdbCredentials = awsSdkCredentials.ToCredentialsProvider();
+        var mockCredentials = new BasicAWSCredentials("fake-access-key", "fake-secret-key");
+        var effDdbCredentials = mockCredentials.ToCredentialsProvider();
         return new DynamoDbContextConfig(RegionEndpoint.USEast1, effDdbCredentials);
     }
 
