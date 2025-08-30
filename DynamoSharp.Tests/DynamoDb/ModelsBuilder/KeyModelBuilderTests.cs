@@ -1,7 +1,6 @@
 ﻿using DynamoSharp.DynamoDb.ModelsBuilder;
 using DynamoSharp.Tests.Contexts.Models;
 using FluentAssertions;
-using Xunit;
 
 namespace DynamoSharp.Tests.DynamoDb.ModelsBuilder;
 

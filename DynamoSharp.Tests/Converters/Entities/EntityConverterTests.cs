@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using Newtonsoft.Json.Linq;
-using Xunit;
 
 namespace DynamoSharp.Tests.Converters.Entities;
 

@@ -1,7 +1,6 @@
 using Amazon.DynamoDBv2.DocumentModel;
 using DynamoSharp.DynamoDb.QueryBuilder;
 using DynamoSharp.DynamoDb.QueryBuilder.PartiQL;
-using Xunit;
 
 namespace DynamoSharp.Tests.DynamoDb.QueryBuilder.PartiQL;
 

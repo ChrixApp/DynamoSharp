@@ -2,7 +2,6 @@
 using DynamoSharp.Tests.Contexts.Models.Affiliation;
 using FluentAssertions;
 using Newtonsoft.Json.Linq;
-using Xunit;
 
 namespace DynamoSharp.Tests.DynamoDb.DynamoEntities;
 

@@ -1,7 +1,6 @@
 ﻿using DynamoSharp.Converters.Jsons;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Xunit;
 
 namespace DynamoSharp.Tests.Converters.Jsons;
 

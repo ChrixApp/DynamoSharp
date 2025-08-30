@@ -2,7 +2,6 @@
 using EfficientDynamoDb.DocumentModel;
 using Moq;
 using Newtonsoft.Json.Linq;
-using Xunit;
 
 namespace DynamoSharp.Tests.Converters.Jsons;
 

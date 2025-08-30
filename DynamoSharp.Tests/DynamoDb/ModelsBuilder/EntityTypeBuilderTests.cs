@@ -2,7 +2,6 @@
 using DynamoSharp.Tests.Contexts.Models;
 using DynamoSharp.Tests.Contexts.Models.Affiliation;
 using FluentAssertions;
-using Xunit;
 
 namespace DynamoSharp.Tests.DynamoDb.ModelsBuilder;
 

@@ -1,7 +1,6 @@
 ﻿using DynamoSharp.DynamoDb.DynamoEntities;
 using DynamoSharp.Tests.Contexts.Models.Affiliation;
 using FluentAssertions;
-using Xunit;
 
 namespace DynamoSharp.Tests.DynamoDb.DynamoEntities;
 

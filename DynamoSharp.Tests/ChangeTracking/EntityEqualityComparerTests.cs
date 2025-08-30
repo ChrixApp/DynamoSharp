@@ -1,7 +1,6 @@
-﻿using System.Collections.Concurrent;
-using DynamoSharp.ChangeTracking;
+﻿using DynamoSharp.ChangeTracking;
 using DynamoSharp.DynamoDb.ModelsBuilder;
-using Xunit;
+using System.Collections.Concurrent;
 
 namespace DynamoSharp.Tests.ChangeTracking;
 

@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace DynamoSharp.Tests.Contexts.Models;
+﻿namespace DynamoSharp.Tests.Contexts.Models;
 
 public class Address : IValueObject
 {

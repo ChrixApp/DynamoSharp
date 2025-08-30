@@ -1,9 +1,8 @@
-﻿using EfficientDynamoDb.DocumentModel;
+﻿using DynamoSharp.Converters.Objects;
+using EfficientDynamoDb.DocumentModel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Globalization;
-using DynamoSharp.Converters.Objects;
-using Xunit;
 
 namespace DynamoSharp.Tests.Converters.Objects;
 

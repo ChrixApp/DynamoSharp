@@ -1,9 +1,8 @@
-﻿using EfficientDynamoDb.DocumentModel;
+﻿using DynamoSharp.Converters.Documents;
+using DynamoSharp.Tests.Contexts.Models;
+using EfficientDynamoDb.DocumentModel;
 using FluentAssertions;
 using System.Globalization;
-using DynamoSharp.Converters.Documents;
-using DynamoSharp.Tests.Contexts.Models;
-using Xunit;
 
 namespace DynamoSharp.Tests.Converters.Documents;
 

@@ -1,6 +1,5 @@
-﻿using System.Linq.Expressions;
-using DynamoSharp.DynamoDb.ModelsBuilder;
-using Xunit;
+﻿using DynamoSharp.DynamoDb.ModelsBuilder;
+using System.Linq.Expressions;
 
 namespace DynamoSharp.Tests.DynamoDb.ModelsBuilder;
 

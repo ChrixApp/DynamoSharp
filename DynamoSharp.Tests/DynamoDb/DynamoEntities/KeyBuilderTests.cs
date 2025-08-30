@@ -1,6 +1,5 @@
 ﻿using DynamoSharp.DynamoDb.DynamoEntities;
 using Newtonsoft.Json.Linq;
-using Xunit;
 
 namespace DynamoSharp.Tests.DynamoDb.DynamoEntities;
 

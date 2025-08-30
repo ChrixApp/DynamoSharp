@@ -1,8 +1,6 @@
-﻿using DynamoSharp.DynamoDb.Configs;
-using System.Runtime.CompilerServices;
-using DynamoSharp.Converters.Objects;
+﻿using DynamoSharp.Converters.Objects;
 using DynamoSharp.Tests.Contexts.Models;
-using Xunit;
+using System.Runtime.CompilerServices;
 
 namespace DynamoSharp.Tests.Converters.Objects;
 

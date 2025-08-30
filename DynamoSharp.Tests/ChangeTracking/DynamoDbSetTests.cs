@@ -1,9 +1,8 @@
-﻿using Moq;
-using Xunit;
-using System.Collections.Concurrent;
-using DynamoSharp.ChangeTracking;
+﻿using DynamoSharp.ChangeTracking;
 using DynamoSharp.DynamoDb;
 using DynamoSharp.DynamoDb.ModelsBuilder;
+using Moq;
+using System.Collections.Concurrent;
 
 namespace DynamoSharp.Tests.ChangeTracking;
 
