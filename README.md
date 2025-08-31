@@ -1,10 +1,11 @@
 # DynamoSharp
 [![Build Passing](https://img.shields.io/github/actions/workflow/status/ChrixApp/DynamoSharp/build.yml?branch=main&label=build&logo=github)](https://github.com/ChrixApp/DynamoSharp/actions/workflows/build.yml)
 [![Test Passing](https://img.shields.io/github/actions/workflow/status/ChrixApp/DynamoSharp/test.yml?branch=main&label=test&logo=github)](https://github.com/ChrixApp/DynamoSharp/actions/workflows/test.yml)
-[![codecov](https://codecov.io/gh/ChrixApp/DynamoSharp/graph/badge.svg?token=ZBVGHBJJ5T)](https://codecov.io/gh/ChrixApp/DynamoSharp)
+![Coverage](https://img.shields.io/codecov/c/github/ChrixApp/DynamoSharp/main?token=ZBVGHBJJ5T&logo=codecov&color=brightgreen)
 [![NuGet](https://img.shields.io/nuget/v/DynamoSharp)](https://nuget.org/packages/DynamoSharp/)
 [![NuGet Downloads](https://img.shields.io/nuget/dt/DynamoSharp)](https://www.nuget.org/packages/DynamoSharp)
 [![License](https://img.shields.io/badge/license-apache_2.0-blue.svg)](https://opensource.org/licenses/apache-2.0)
+
 
 DynamoSharp is an **ORM (Object-Relational Mapping)** library for .NET that simplifies interaction with Amazon DynamoDB, with a focus on **Single-Table Design**. It offers  a simple and efficient way to map data models to DynamoDB tables and perform CRUD (Create, Read, Update, Delete) operations intuitively, as well as tracking changes in entities.
 
