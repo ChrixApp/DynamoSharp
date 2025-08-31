@@ -1,10 +1,10 @@
-name: CI
+name: test passing
 
 on:
   push:
-    branches: [ tests ]
+    branches: [ main ]
   pull_request:
-    branches: [ tests ]
+    branches: [ main ]
 
 jobs:
   build:
