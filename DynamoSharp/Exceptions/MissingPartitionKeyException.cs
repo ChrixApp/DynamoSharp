@@ -9,8 +9,4 @@ public class MissingPartitionKeyException : Exception
     public MissingPartitionKeyException(string message) : base(message)
     {
     }
-
-    public MissingPartitionKeyException(string message, Exception innerException) : base(message, innerException)
-    {
-    }
 }
