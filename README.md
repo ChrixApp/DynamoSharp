@@ -1,5 +1,6 @@
 # DynamoSharp
 [![Build Passing](https://img.shields.io/github/actions/workflow/status/ChrixApp/DynamoSharp/build.yml?branch=main&label=build&logo=github)](https://github.com/ChrixApp/DynamoSharp/actions)
+[![Test Passing](https://img.shields.io/github/actions/workflow/status/ChrixApp/DynamoSharp/test.yml?branch=main&label=test&logo=github)](https://github.com/ChrixApp/DynamoSharp/actions)
 [![NuGet](https://img.shields.io/nuget/v/DynamoSharp)](https://nuget.org/packages/DynamoSharp/)
 [![NuGet Downloads](https://img.shields.io/nuget/dt/DynamoSharp)](https://www.nuget.org/packages/DynamoSharp)
 [![License](https://img.shields.io/badge/license-apache_2.0-blue.svg)](https://opensource.org/licenses/apache-2.0)
