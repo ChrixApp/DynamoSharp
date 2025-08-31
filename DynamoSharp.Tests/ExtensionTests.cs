@@ -41,10 +41,17 @@ public class DynamoSharpTestContext2 : DynamoSharpContext
     }
 }
 
-public class EskaExtensionsTests
+public class DynamoSharpExtensionsTests
 {
+    public DynamoSharpExtensionsTests()
+    {
+        Environment.SetEnvironmentVariable("AWS_ACCESS_KEY_ID", "test-access-key");
+        Environment.SetEnvironmentVariable("AWS_SECRET_ACCESS_KEY", "test-secret-key");
+        Environment.SetEnvironmentVariable("AWS_SESSION_TOKEN", "test-session-token");
+    }
+
     [Fact]
-    public void AddEska_WithRegionEndpointAsEnum_ShouldRegisterServices()
+    public void AddDynamoSharp_WithRegionEndpointAsEnum_ShouldRegisterServices()
     {
         var builder = WebApplication.CreateBuilder();
         builder.Services.AddDynamoSharp(RegionEndpoint.USEast1);
@@ -60,7 +67,7 @@ public class EskaExtensionsTests
     }
 
     [Fact]
-    public void AddEska_WithRegionEndpointAsString_ShouldRegisterServices()
+    public void AddDynamoSharp_WithRegionEndpointAsString_ShouldRegisterServices()
     {
         var builder = WebApplication.CreateBuilder();
         builder.Services.AddDynamoSharp("us-east-1");
