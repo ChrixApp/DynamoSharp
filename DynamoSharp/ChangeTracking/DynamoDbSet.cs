@@ -1,7 +1,6 @@
 ﻿using DynamoSharp.DynamoDb;
 using DynamoSharp.DynamoDb.ModelsBuilder;
 using DynamoSharp.Exceptions;
-using GlobalSecondaryIndex = DynamoSharp.DynamoDb.ModelsBuilder.GlobalSecondaryIndex;
 using ModelsBuilder_GlobalSecondaryIndex = DynamoSharp.DynamoDb.ModelsBuilder.GlobalSecondaryIndex;
 
 namespace DynamoSharp.ChangeTracking;
@@ -85,7 +84,7 @@ public class DynamoDbSet<TEntity> : IDynamoDbSet<TEntity>
         var properties = DynamoDb.DynamoSharpContext.EntityPropertiesCache.GetOrAdd(entityType, type => type.GetProperties());
         var idPropertyInfo = properties.FirstOrDefault(p => p.Name is "Id");
 
-        if (idPropertyInfo is null) throw new IdPropertyNotFoundException($"{entityType.Name} type not contains Id");
+        Thrower.ThrowIfNull<IdPropertyNotFoundException>(idPropertyInfo, $"{entityType.Name} type not contains Id");
 
         var defaultEntityTypeBuilder = new DefaultEntityTypeBuilder();
         defaultEntityTypeBuilder.SetPartitionKey(idPropertyInfo.Name, entityType.Name.ToUpper());
@@ -98,7 +97,7 @@ public class DynamoDbSet<TEntity> : IDynamoDbSet<TEntity>
         var properties = DynamoDb.DynamoSharpContext.EntityPropertiesCache.GetOrAdd(entityType, type => type.GetProperties());
         var idPropertyInfo = properties.FirstOrDefault(p => p.Name is "Id");
 
-        if (idPropertyInfo is null) throw new IdPropertyNotFoundException($"{entityType.Name} type not contains Id");
+        Thrower.ThrowIfNull<IdPropertyNotFoundException>(idPropertyInfo, $"{entityType.Name} type not contains Id");
 
         entityTypeBuilder.PartitionKey.Add(idPropertyInfo.Name, entityType.Name.ToUpper());
         entityTypeBuilder.SortKey.Add(idPropertyInfo.Name, entityType.Name.ToUpper());
@@ -109,7 +108,7 @@ public class DynamoDbSet<TEntity> : IDynamoDbSet<TEntity>
         var properties = DynamoDb.DynamoSharpContext.EntityPropertiesCache.GetOrAdd(entityType, type => type.GetProperties());
         var idPropertyInfo = properties.FirstOrDefault(p => p.Name is "Id");
 
-        if (idPropertyInfo is null) throw new IdPropertyNotFoundException($"{entityType.Name} type not contains Id");
+        Thrower.ThrowIfNull<IdPropertyNotFoundException>(idPropertyInfo, $"{entityType.Name} type not contains Id");
 
         entityTypeBuilder.PartitionKey.Add(idPropertyInfo.Name, entityType.Name.ToUpper());
         entityTypeBuilder.SortKey.Add(idPropertyInfo.Name, entityType.Name.ToUpper());
@@ -119,7 +118,7 @@ public class DynamoDbSet<TEntity> : IDynamoDbSet<TEntity>
             var oneToManyProperties = DynamoDb.DynamoSharpContext.EntityPropertiesCache.GetOrAdd(oneToMany, type => type.GetProperties());
             var oneToManyIdPropertyInfo = oneToManyProperties.FirstOrDefault(p => p.Name is "Id");
 
-            if (oneToManyIdPropertyInfo is null) throw new IdPropertyNotFoundException($"{oneToMany.Name} type not contains Id");
+            Thrower.ThrowIfNull<IdPropertyNotFoundException>(oneToManyIdPropertyInfo, $"{entityType.Name} type not contains Id");
 
             modelBuilder.Entities.TryGetValue(oneToMany, out var entityTypeBuilderForOneToMany);
             var defaultEntityTypeBuilder = entityTypeBuilderForOneToMany ?? new DefaultEntityTypeBuilder();
@@ -134,7 +133,7 @@ public class DynamoDbSet<TEntity> : IDynamoDbSet<TEntity>
         var properties = DynamoDb.DynamoSharpContext.EntityPropertiesCache.GetOrAdd(entityType, type => type.GetProperties());
         var idPropertyInfo = properties.FirstOrDefault(p => p.Name is "Id");
 
-        if (idPropertyInfo is null) throw new IdPropertyNotFoundException($"{entityType.Name} type not contains Id");
+        Thrower.ThrowIfNull<IdPropertyNotFoundException>(idPropertyInfo, $"{entityType.Name} type not contains Id");
 
         entityTypeBuilder.PartitionKey.Add(idPropertyInfo.Name, entityType.Name.ToUpper());
         entityTypeBuilder.SortKey.Add(idPropertyInfo.Name, entityType.Name.ToUpper());
@@ -149,7 +148,7 @@ public class DynamoDbSet<TEntity> : IDynamoDbSet<TEntity>
             var manyToManyProperties = DynamoDb.DynamoSharpContext.EntityPropertiesCache.GetOrAdd(manyToMany, type => type.GetProperties());
             var manyToManyIdPropertyInfo = manyToManyProperties.FirstOrDefault(p => p.Name == $"{entityType.Name}Id");
 
-            if (manyToManyIdPropertyInfo is null) throw new IdPropertyNotFoundException($"{manyToMany.Name} type not contains {entityType.Name}Id");
+            Thrower.ThrowIfNull<IdPropertyNotFoundException>(manyToManyIdPropertyInfo, $"{entityType.Name} type not contains Id");
 
             if (!manyToManyEntityTypeBuilder.PartitionKey.Any())
             {

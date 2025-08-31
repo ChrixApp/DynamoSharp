@@ -76,18 +76,12 @@ public abstract class DynamoEntityBuilder : IDynamoEntityBuilder
 
             if (string.IsNullOrWhiteSpace(gsi.Prefix))
             {
-                if (propertyValue == null)
-                {
-                    throw new PropertyValueNullException($"Property value for '{gsi.Path}' is null.");
-                }
+                Thrower.ThrowIfNull<PropertyValueNullException>(propertyValue, $"Property value for '{gsi.Path}' is null.");
                 prefixWithValues.Add(propertyValue);
                 continue;
             }
 
-            if (propertyValue == null)
-            {
-                throw new PropertyValueNullException($"Property value for '{gsi.Path}' is null.");
-            }
+            Thrower.ThrowIfNull<PropertyValueNullException>(propertyValue, $"Property value for '{gsi.Path}' is null.");
 
             propertyValue = string.Format("{0}#{1}", gsi.Prefix, propertyValue);
             prefixWithValues.Add(propertyValue);

@@ -1,13 +1,14 @@
 ﻿using Amazon.DynamoDBv2.DocumentModel;
-using EfficientDynamoDb;
-using System.Collections;
-using System.Linq.Expressions;
 using DynamoSharp.ChangeTracking;
 using DynamoSharp.Converters.Objects;
 using DynamoSharp.DynamoDb.Configs;
 using DynamoSharp.DynamoDb.ModelsBuilder;
 using DynamoSharp.DynamoDb.QueryBuilder.PartiQL;
 using DynamoSharp.Exceptions;
+using EfficientDynamoDb;
+using System.Collections;
+using System.Linq.Expressions;
+using System.Reflection;
 using Document = EfficientDynamoDb.DocumentModel.Document;
 using ExecuteStatementRequest = EfficientDynamoDb.Operations.ExecuteStatement.ExecuteStatementRequest;
 using ExecuteStatementResponse = EfficientDynamoDb.Operations.ExecuteStatement.ExecuteStatementResponse;
@@ -362,10 +363,7 @@ public class Query<TEntity>
 
         private void Validate()
         {
-            if (_query.PartitionKey is null)
-            {
-                throw new MissingPartitionKeyException();
-            }
+            Thrower.ThrowIfNull<MissingPartitionKeyException>(_query.PartitionKey, "Partition key is required");
         }
     }
 }

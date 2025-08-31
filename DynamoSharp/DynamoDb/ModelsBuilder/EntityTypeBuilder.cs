@@ -99,7 +99,7 @@ public class EntityTypeBuilder<TEntity> : IEntityTypeBuilder
         if ( memberExpression is not null && memberExpression.Member is not null && memberExpression.Member is PropertyInfo listProperty)
         {
             var genericProperty = listProperty.PropertyType.GetGenericArguments().FirstOrDefault();
-            Thrower.ThrowIfNull<GenericPropertyNotFoundException>(genericProperty);
+            Thrower.ThrowIfNull<GenericPropertyNotFoundException>(genericProperty, $"Generic property with name {listProperty.Name} not found");
             OneToMany.Add(listProperty.Name, genericProperty);
         }
     }
@@ -112,7 +112,7 @@ public class EntityTypeBuilder<TEntity> : IEntityTypeBuilder
         if (memberExpression is not null && memberExpression.Member is not null && memberExpression.Member is PropertyInfo listProperty)
         {
             var genericProperty = listProperty.PropertyType.GetGenericArguments().FirstOrDefault();
-            Thrower.ThrowIfNull<GenericPropertyNotFoundException>(genericProperty);
+            Thrower.ThrowIfNull<GenericPropertyNotFoundException>(genericProperty, $"Generic property with name {listProperty.Name} not found");
             ManyToMany.Add(listProperty.Name, genericProperty);
         }
     }
