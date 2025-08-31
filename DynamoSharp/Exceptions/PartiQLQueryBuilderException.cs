@@ -5,11 +5,6 @@ public class PartiQLQueryBuilderException : Exception
     public PartiQLQueryBuilderException(string message) : base(message) { }
 }
 
-public class MemberExpressionNullException : PartiQLQueryBuilderException
-{
-    public MemberExpressionNullException(string message) : base(message) { }
-}
-
 public class MethodCallArgumentNullException : PartiQLQueryBuilderException
 {
     public MethodCallArgumentNullException(string message) : base(message) { }
