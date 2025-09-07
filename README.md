@@ -50,16 +50,21 @@ dotnet add package DynamoSharp
 ## Configuration
 
 ```csharp
-
-builder.Services.AddDynamoSharp(); //Add internal dependencies
+builder.Services.AddDynamoSharp(RegionEndpoint.USEast1);
 builder.Services.AddDynamoSharpContext<AppContext>(
     new TableSchema.Builder()
         .WithTableName("dynamosharp")
         .WithPartitionKeyName("PK")
         .WithSortKeyName("SK")
         .AddGlobalSecondaryIndex("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK")
+        .AddGlobalSecondaryIndex("GSI2PK-GSI2SK-index", "GSI2PK", "GSI2SK")
         .Build()
 );
+```
+
+#### Connect to DynamoDB Local
+```csharp
+builder.Services.AddDynamoSharp(RegionEndpoint.USEast1, "http://localhost:4566");
 ```
 
 ## Implementation
@@ -876,7 +881,7 @@ var items = await _appContext.Query<Item>()
 
 #### Add config
 ```csharp
-builder.Services.AddDynamoSharpContext<EcommerceContext>(
+builder.Services.AddDynamoSharpContext<AppContext>(
     new TableSchema.Builder()
         .WithTableName("dynamosharp")
         .WithVersionName("v")// attribute used for optimistic locking
