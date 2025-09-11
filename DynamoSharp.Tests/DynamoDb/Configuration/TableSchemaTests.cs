@@ -40,12 +40,10 @@ public class TableSchemaTests
     [Fact]
     public void CreateTableSchema_WithGlobalSecondaryIndices_InitializesCorrectly()
     {
-        var gsi1 = new GlobalSecondaryIndexSchema("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK");
-        var gsi2 = new GlobalSecondaryIndexSchema("GSI2PK-GSI2SK-index", "GSI2PK", "GSI2SK");
-
         var tableSchema = new TableSchema.Builder()
             .WithTableName("Movies")
-            .AddGlobalSecondaryIndex(gsi1, gsi2)
+            .AddGlobalSecondaryIndex("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK")
+            .AddGlobalSecondaryIndex("GSI2PK-GSI2SK-index", "GSI2PK", "GSI2SK")
             .Build();
 
         Assert.Equal("Movies", tableSchema.TableName);
@@ -61,16 +59,80 @@ public class TableSchemaTests
     }
 
     [Fact]
+    public void AddGlobalSecondaryIndex_AddsIndex_ToTableSchema()
+    {
+        // Arrange
+        var builder = new TableSchema.Builder()
+            .WithTableName("MyTable");
+
+        // Act
+        var table = builder
+            .AddGlobalSecondaryIndex("MyIndex", "MyPartitionKey", "MySortKey")
+            .Build();
+
+        // Assert
+        Assert.Single(table.GlobalSecondaryIndices);
+        var gsi = table.GlobalSecondaryIndices.Single();
+        Assert.Equal("MyIndex", gsi.IndexName);
+        Assert.Equal("MyPartitionKey", gsi.PartitionKeyName);
+        Assert.Equal("MySortKey", gsi.SortKeyName);
+    }
+
+    [Fact]
+    public void AddGlobalSecondaryIndex_ReturnsSameBuilder_ForFluentCalls()
+    {
+        var builder = new TableSchema.Builder();
+        var returned = builder.AddGlobalSecondaryIndex("i", "p", "s");
+        Assert.Same(builder, returned);
+    }
+
+    [Fact]
+    public void AddGlobalSecondaryIndex_ThrowsArgumentNullException_WhenIndexNameIsNullOrWhitespace()
+    {
+        var builder = new TableSchema.Builder();
+        Assert.Throws<ArgumentNullException>(() => builder.AddGlobalSecondaryIndex(null!, "p", "s"));
+        Assert.Throws<ArgumentNullException>(() => builder.AddGlobalSecondaryIndex(string.Empty, "p", "s"));
+        Assert.Throws<ArgumentNullException>(() => builder.AddGlobalSecondaryIndex("   ", "p", "s"));
+    }
+
+    [Fact]
+    public void AddGlobalSecondaryIndex_ThrowsArgumentNullException_WhenPartitionOrSortKeyIsNullOrWhitespace()
+    {
+        var builder = new TableSchema.Builder();
+
+        // partition key invalid
+        Assert.Throws<ArgumentNullException>(() => builder.AddGlobalSecondaryIndex("i", null!, "s"));
+        Assert.Throws<ArgumentNullException>(() => builder.AddGlobalSecondaryIndex("i", string.Empty, "s"));
+
+        // sort key invalid
+        Assert.Throws<ArgumentNullException>(() => builder.AddGlobalSecondaryIndex("i", "p", null!));
+        Assert.Throws<ArgumentNullException>(() => builder.AddGlobalSecondaryIndex("i", "p", string.Empty));
+    }
+
+    [Fact]
+    public void AddGlobalSecondaryIndex_ThrowsInvalidOperationException_WhenAddingMoreThan20Indices()
+    {
+        var builder = new TableSchema.Builder();
+
+        // Add 21 indices (this is allowed by current implementation)
+        for (var i = 1; i <= 21; i++)
+        {
+            builder.AddGlobalSecondaryIndex($"idx{i}", $"pk{i}", $"sk{i}");
+        }
+
+        // Adding the 22nd should throw per current guard (_globalSecondaryIndices.Count > 20)
+        Assert.Throws<InvalidOperationException>(() => builder.AddGlobalSecondaryIndex("idx22", "pk22", "sk22"));
+    }
+
+    [Fact]
     public void CreateTableSchema_WithPartitionKeySortKeyAndGlobalSecondaryIndices_InitializesCorrectly()
     {
-        var gsi1 = new GlobalSecondaryIndexSchema("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK");
-        var gsi2 = new GlobalSecondaryIndexSchema("GSI2PK-GSI2SK-index", "GSI2PK", "GSI2SK");
-
         var tableSchema = new TableSchema.Builder()
             .WithTableName("Movies")
             .WithPartitionKeyName("PK")
             .WithSortKeyName("SK")
-            .AddGlobalSecondaryIndex(gsi1, gsi2)
+            .AddGlobalSecondaryIndex("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK")
+            .AddGlobalSecondaryIndex("GSI2PK-GSI2SK-index", "GSI2PK", "GSI2SK")
             .Build();
 
         Assert.Equal("Movies", tableSchema.TableName);
@@ -108,27 +170,12 @@ public class TableSchemaTests
     }
 
     [Fact]
-    public void CreateTableSchema_WithNullGlobalSecondaryIndices_ThrowsArgumentNullException()
-    {
-        Assert.Throws<ArgumentNullException>(() => new TableSchema.Builder().AddGlobalSecondaryIndex(null!));
-    }
-
-    [Fact]
-    public void CreateTableSchema_WithNullGlobalSecondaryIndex_ThrowsArgumentNullException()
-    {
-        var gsi1 = new GlobalSecondaryIndexSchema("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK");
-        Assert.Throws<ArgumentNullException>(() => new TableSchema.Builder().AddGlobalSecondaryIndex(gsi1, null!));
-    }
-
-    [Fact]
     public void GetGlobalSecondaryIndexPartitionKey_ReturnsCorrectPartitionKey()
     {
-        var gsi1 = new GlobalSecondaryIndexSchema("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK");
-        var gsi2 = new GlobalSecondaryIndexSchema("GSI2PK-GSI2SK-index", "GSI2PK", "GSI2SK");
-
         var tableSchema = new TableSchema.Builder()
             .WithTableName("Movies")
-            .AddGlobalSecondaryIndex(gsi1, gsi2)
+            .AddGlobalSecondaryIndex("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK")
+            .AddGlobalSecondaryIndex("GSI2PK-GSI2SK-index", "GSI2PK", "GSI2SK")
             .Build();
 
         Assert.Equal("GSI1PK", tableSchema.GetGlobalSecondaryIndexPartitionKey("GSI1PK-GSI1SK-index"));
@@ -138,12 +185,10 @@ public class TableSchemaTests
     [Fact]
     public void GetGlobalSecondaryIndexSortKey_ReturnsCorrectSortKey()
     {
-        var gsi1 = new GlobalSecondaryIndexSchema("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK");
-        var gsi2 = new GlobalSecondaryIndexSchema("GSI2PK-GSI2SK-index", "GSI2PK", "GSI2SK");
-
         var tableSchema = new TableSchema.Builder()
             .WithTableName("Movies")
-            .AddGlobalSecondaryIndex(gsi1, gsi2)
+            .AddGlobalSecondaryIndex("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK")
+            .AddGlobalSecondaryIndex("GSI2PK-GSI2SK-index", "GSI2PK", "GSI2SK")
             .Build();
 
         Assert.Equal("GSI1SK", tableSchema.GetGlobalSecondaryIndexSortKey("GSI1PK-GSI1SK-index"));

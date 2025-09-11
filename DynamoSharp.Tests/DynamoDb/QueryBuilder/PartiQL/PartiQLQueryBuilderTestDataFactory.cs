@@ -19,7 +19,7 @@ public static class PartiQLQueryBuilderTestDataFactory
         var orders = QueryBuilderTestDataFactory.CreateOrderDocuments();
         var tableSchema = new TableSchema.Builder()
             .WithTableName("orders")
-            .AddGlobalSecondaryIndex(new GlobalSecondaryIndexSchema("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK"))
+            .AddGlobalSecondaryIndex("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK")
             .Build();
         var dynamoDbLowLevelPartiQLContext = new Mock<IDynamoDbLowLevelPartiQLContext>();
         dynamoDbLowLevelPartiQLContext
