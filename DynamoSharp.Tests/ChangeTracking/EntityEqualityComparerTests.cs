@@ -93,6 +93,7 @@ public class EntityEqualityComparerTests
         public IDictionary<string, Type> OneToMany { get; }
         public IDictionary<string, Type> ManyToMany { get; }
         public bool Versioning { get; } = false;
+        public IList<string> IgnoredProperties { get; }
 
         public FakeEntityTypeBuilder(string? idName)
         {
@@ -103,6 +104,7 @@ public class EntityEqualityComparerTests
             GlobalSecondaryIndexSortKey = new Dictionary<string, IList<GlobalSecondaryIndex>>();
             OneToMany = new Dictionary<string, Type>();
             ManyToMany = new Dictionary<string, Type>();
+            IgnoredProperties = new List<string>();
         }
     }
 

@@ -1,8 +1,12 @@
 ﻿using DynamoSharp.ChangeTracking;
+using DynamoSharp.DynamoDb;
 using DynamoSharp.DynamoDb.Configs;
 using DynamoSharp.DynamoDb.ModelsBuilder;
 using DynamoSharp.Tests.Contexts.Models;
 using FluentAssertions;
+using Moq;
+using System.Collections.Concurrent;
+using static DynamoSharp.Tests.Converters.Jsons.JsonSerializerBuilderTests;
 
 namespace DynamoSharp.Tests.ChangeTracking;
 
@@ -292,6 +296,10 @@ public class ChangeTrackerTests
             .Build();
         var modelBuilder = ChangeTrackerTestDataFactory.CreateModelBuilderForOrder();
         var changeTracker = new ChangeTracker(tableSchema, modelBuilder);
+        var mockDynamoSharpContext = new Mock<IDynamoSharpContext>();
+        mockDynamoSharpContext.SetupGet(x => x.ChangeTracker).Returns(changeTracker);
+        mockDynamoSharpContext.SetupGet(x => x.ModelBuilder).Returns(modelBuilder);
+        var dynamoDbSet = new DynamoDbSet<Order>(mockDynamoSharpContext.Object);
         var orders = new List<Order>();
 
         for (int i = 0; i < totalOrders; i++)
@@ -373,6 +381,10 @@ public class ChangeTrackerTests
             .Build();
         var modelBuilder = ChangeTrackerTestDataFactory.CreateModelBuilderForOrder();
         var changeTracker = new ChangeTracker(tableSchema, modelBuilder);
+        var mockDynamoSharpContext = new Mock<IDynamoSharpContext>();
+        mockDynamoSharpContext.SetupGet(x => x.ChangeTracker).Returns(changeTracker);
+        mockDynamoSharpContext.SetupGet(x => x.ModelBuilder).Returns(modelBuilder);
+        var dynamoDbSet = new DynamoDbSet<Order>(mockDynamoSharpContext.Object);
         var orders = new List<Order>();
 
         for (int i = 0; i < totalOrders; i++)
@@ -420,6 +432,10 @@ public class ChangeTrackerTests
             .Build();
         var modelBuilder = ChangeTrackerTestDataFactory.CreateModelBuilderForOrder();
         var changeTracker = new ChangeTracker(tableSchema, modelBuilder);
+        var mockDynamoSharpContext = new Mock<IDynamoSharpContext>();
+        mockDynamoSharpContext.SetupGet(x => x.ChangeTracker).Returns(changeTracker);
+        mockDynamoSharpContext.SetupGet(x => x.ModelBuilder).Returns(modelBuilder);
+        var dynamoDbSet = new DynamoDbSet<Order>(mockDynamoSharpContext.Object);
         var entity = ChangeTrackerTestDataFactory.CreateOrder(Guid.NewGuid(), productCount: 1);
         changeTracker.Track(entity, EntityState.Added);
         changeTracker.AcceptChanges();

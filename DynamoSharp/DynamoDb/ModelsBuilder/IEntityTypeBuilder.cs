@@ -10,4 +10,5 @@ public interface IEntityTypeBuilder
     IDictionary<string, Type> OneToMany { get; }
     IDictionary<string, Type> ManyToMany { get; }
     bool Versioning { get; }
+    IList<string> IgnoredProperties { get; }
 }

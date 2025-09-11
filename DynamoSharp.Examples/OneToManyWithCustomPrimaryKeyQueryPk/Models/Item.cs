@@ -7,6 +7,8 @@ public class Item
     public decimal UnitPrice { get; private set; }
     public int Units { get; private set; }
 
+    public decimal Total => UnitPrice * Units;
+
     public void AddUnits(int units)
     {
         Units += units;

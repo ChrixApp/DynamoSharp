@@ -152,8 +152,9 @@ public class EntityChangeTracker
 
     private static JsonSerializer GetJsonSerializer(IEntityTypeBuilder entityTypeBuilder)
     {
-        var collectionsToIgnore = GetCollectionsToIgnore(entityTypeBuilder);
-        return JsonSerializerBuilder.Build(collectionsToIgnore);
+        var propertiesToIgnore = GetCollectionsToIgnore(entityTypeBuilder);
+        propertiesToIgnore.AddRange(entityTypeBuilder.IgnoredProperties);
+        return JsonSerializerBuilder.Build(propertiesToIgnore);
     }
 
     private static List<string> GetCollectionsToIgnore(IEntityTypeBuilder entityTypeBuilder)

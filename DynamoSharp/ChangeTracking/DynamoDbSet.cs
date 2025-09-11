@@ -1,6 +1,8 @@
-﻿using DynamoSharp.DynamoDb;
+﻿using DynamoSharp.Converters.Objects;
+using DynamoSharp.DynamoDb;
 using DynamoSharp.DynamoDb.ModelsBuilder;
 using DynamoSharp.Exceptions;
+using System.Reflection;
 using ModelsBuilder_GlobalSecondaryIndex = DynamoSharp.DynamoDb.ModelsBuilder.GlobalSecondaryIndex;
 
 namespace DynamoSharp.ChangeTracking;
@@ -51,9 +53,12 @@ public class DynamoDbSet<TEntity> : IDynamoDbSet<TEntity>
         if (!modelBuilder.Entities.TryGetValue(entityType, out var entityTypeBuilder))
         {
             var defaultEntityTypeBuilder = CreatePrimaryKeyForEntity(typeof(TEntity));
+            FindPropertiesToIgnore(typeof(TEntity), defaultEntityTypeBuilder);
             modelBuilder.Entities.TryAdd(entityType, defaultEntityTypeBuilder);
             return;
         }
+
+        FindPropertiesToIgnore(typeof(TEntity), entityTypeBuilder);
 
         if (!entityTypeBuilder.PartitionKey.Any() &&
             !entityTypeBuilder.SortKey.Any() &&
@@ -76,6 +81,19 @@ public class DynamoDbSet<TEntity> : IDynamoDbSet<TEntity>
             entityTypeBuilder.ManyToMany.Any())
         {
             CreatePrimaryKeyForManyToMany(entityTypeBuilder, entityType, modelBuilder);
+        }
+    }
+
+    private static void FindPropertiesToIgnore(Type entityType, IEntityTypeBuilder entityTypeBuilder)
+    {
+        var properties = DynamoDb.DynamoSharpContext.EntityPropertiesCache.GetOrAdd(entityType, type => type.GetProperties());
+
+        foreach (var property in properties)
+        {
+            if (PropertyInspector.IsComputedProperty(entityType, property) && !PropertyInspector.IsCollectionProperty(entityType, property))
+            {
+                entityTypeBuilder.IgnoredProperties.Add(property.Name);
+            }
         }
     }
 

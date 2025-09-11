@@ -17,6 +17,8 @@ public class EntityTypeBuilder<TEntity> : IEntityTypeBuilder
 
     public bool Versioning { get; private set; }
 
+    public IList<string> IgnoredProperties { get; private set; }
+
     public EntityTypeBuilder()
     {
         IdName = "Id";
@@ -26,6 +28,7 @@ public class EntityTypeBuilder<TEntity> : IEntityTypeBuilder
         ManyToMany = new Dictionary<string, Type>();
         GlobalSecondaryIndexPartitionKey = new Dictionary<string, IList<GlobalSecondaryIndex>>();
         GlobalSecondaryIndexSortKey = new Dictionary<string, IList<GlobalSecondaryIndex>>();
+        IgnoredProperties = new List<string>();
     }
 
     public void HasId(Expression<Func<TEntity, object>> memberLamda)
@@ -115,5 +118,13 @@ public class EntityTypeBuilder<TEntity> : IEntityTypeBuilder
             Thrower.ThrowIfNull<GenericPropertyNotFoundException>(genericProperty, $"Generic property with name {listProperty.Name} not found");
             ManyToMany.Add(listProperty.Name, genericProperty);
         }
+    }
+
+    public EntityTypeBuilder<TEntity> IgnoreProperty(Expression<Func<TEntity, object>> memberLamda)
+    {
+        var path = ExpressionHandler.FindPath(memberLamda);
+        Thrower.ThrowIfNull<PathNotFoundException>(path);
+        IgnoredProperties.Add(path);
+        return this;
     }
 }

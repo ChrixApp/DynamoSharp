@@ -56,6 +56,8 @@ public sealed class ObjectConverter
 
         Parallel.ForEach(properties, propertyInfo =>
         {
+            if (PropertyInspector.IsComputedProperty(targetType, propertyInfo) && !PropertyInspector.IsCollectionProperty(targetType, propertyInfo)) return;
+
             if (document.ContainsKey(propertyInfo.Name))
             {
                 var attributeValue = document[propertyInfo.Name];
