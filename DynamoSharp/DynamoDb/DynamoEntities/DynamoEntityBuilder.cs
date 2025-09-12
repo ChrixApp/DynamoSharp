@@ -67,12 +67,7 @@ public abstract class DynamoEntityBuilder : IDynamoEntityBuilder
             }
 
             var property = entity.SelectToken(gsi.Path);
-            var propertyValue = property?.ToString();
-            if (property?.Type == JTokenType.Date)
-            {
-                var date = property.ToObject<DateTime>();
-                propertyValue = date.ToString("yyyy-MM-ddTHH:mm:ss.FFFFFFFK");
-            }
+            var propertyValue = JTokenConverter.ConvertToString(property);
 
             if (string.IsNullOrWhiteSpace(gsi.Prefix))
             {
