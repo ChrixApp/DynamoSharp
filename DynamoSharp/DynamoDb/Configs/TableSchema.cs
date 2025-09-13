@@ -78,18 +78,6 @@ public class TableSchema
             return this;
         }
 
-        public Builder AddGlobalSecondaryIndex(params GlobalSecondaryIndexSchema[] globalSecondaryIndices)
-        {
-            if (globalSecondaryIndices is null) throw new ArgumentNullException(nameof(globalSecondaryIndices), "Null not allowed");
-            if (_globalSecondaryIndices.Count + globalSecondaryIndices.Length > 20) throw new InvalidOperationException("Cannot add more than 20 Global Secondary Indices to a TableSchema.");
-            foreach (var gsi in globalSecondaryIndices)
-            {
-                if (gsi is null) throw new ArgumentNullException(nameof(globalSecondaryIndices), "Null not allowed");
-                _globalSecondaryIndices.Add(gsi);
-            }
-            return this;
-        }
-
         public Builder AddGlobalSecondaryIndex(string indexName, string partitionKeyName, string sortKeyName)
         {
             if (_globalSecondaryIndices.Count > 20) throw new InvalidOperationException("Cannot add more than 20 Global Secondary Indices to a TableSchema.");

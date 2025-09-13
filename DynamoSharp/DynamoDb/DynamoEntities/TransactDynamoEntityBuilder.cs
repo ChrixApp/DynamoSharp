@@ -18,8 +18,7 @@ public class TransactDynamoEntityBuilder : DynamoEntityBuilder
 
     public override JObject BuildAddedEntity(EntityChangeTracker entityEntry)
     {
-        var parentType = entityEntry.IsParentEntity ? entityEntry.Entity.GetType() : entityEntry.ParentEntity?.GetType();
-        var entityTypeBuilder = _modelBuilder.Entities[parentType!];
+        var entityTypeBuilder = _modelBuilder.Entities[entityEntry.Entity.GetType()];
         var jsonSerializer = GetJsonSerializer(_modelBuilder, entityEntry.Entity.GetType());
         var (partitionKey, sortKey) = BuildPrimaryKey(_modelBuilder, entityEntry);
         var dynamoEntity = JObject.FromObject(entityEntry.Entity, jsonSerializer);

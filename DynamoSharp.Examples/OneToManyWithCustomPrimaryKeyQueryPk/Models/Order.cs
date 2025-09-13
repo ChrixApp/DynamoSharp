@@ -11,7 +11,8 @@ public class Order
     public DateTime Date { get; private set; }
     private readonly List<Item> _items = [];
 
-    public IReadOnlyCollection<Item> Items => _items;
+    public IReadOnlyCollection<Item> Items => _items.AsReadOnly();
+
 
     public void UpdateAddress(string street, string city, string state, string zipCode)
     {

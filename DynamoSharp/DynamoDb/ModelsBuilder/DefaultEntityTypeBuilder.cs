@@ -11,6 +11,8 @@ internal class DefaultEntityTypeBuilder : IEntityTypeBuilder
     public IDictionary<string, Type> OneToMany { get; private set; } = new Dictionary<string, Type>();
     public IDictionary<string, Type> ManyToMany { get; private set; } = new Dictionary<string, Type>();
 
+    public IList<string> IgnoredProperties { get; private set; } = new List<string>();
+
     public bool Versioning { get; private set; } = false;
 
     public void SetPartitionKey(string name, string prefix)

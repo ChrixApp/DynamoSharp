@@ -271,4 +271,30 @@ public static class DynamoEntityBuilderTestDataFactory
         var effDdbCredentials = mockCredentials.ToCredentialsProvider();
         return new DynamoDbContextConfig(RegionEndpoint.USEast1, effDdbCredentials);
     }
+
+    public static (TableSchema TableSchema, IModelBuilder ModelBuilder, IChangeTracker ChangeTracker, Order Order) CreateOrderWithSparseIndex()
+    {
+        var tableSchema = new TableSchema.Builder()
+            .WithTableName("order")
+            .Build();
+        var modelBuilder = new ModelBuilder();
+        modelBuilder.Entity<Order>()
+            .HasOneToMany(o => o.Items);
+        modelBuilder.Entity<Order>()
+            .HasGlobalSecondaryIndexPartitionKey("GSI1PK", "ORDERS");
+        modelBuilder.Entity<Order>()
+            .HasGlobalSecondaryIndexSortKey("GSI1SK", o => o.Id, "ORDER");
+        modelBuilder.Entity<Item>();
+        var changeTracker = new ChangeTracker(tableSchema, modelBuilder);
+
+        var order1 = CreateOrder();
+        order1.AddProduct(Guid.NewGuid(), $"Product 1", 10);
+        changeTracker.Track(order1, EntityState.Added);
+
+        var order2 = CreateOrder();
+        order2.AddProduct(Guid.NewGuid(), $"Product 2", 15, 10);
+        changeTracker.Track(order2, EntityState.Added);
+
+        return (tableSchema, modelBuilder, changeTracker, null!);
+    }
 }

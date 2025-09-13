@@ -11,9 +11,7 @@ public static class KeyBuilder
             .Where(t => t.Token != null)
             .Select(t =>
             {
-                var value = t.Token!.Type == JTokenType.Date
-                    ? t.Token.ToObject<DateTime>().ToString("yyyy-MM-ddTHH:mm:ss.FFFFFFFK")
-                    : t.Token.ToString();
+                var value = JTokenConverter.ConvertToString(t.Token);
                 return string.IsNullOrWhiteSpace(t.Prefix) ? value : $"{t.Prefix}#{value}";
             })
             .Where(part => !string.IsNullOrWhiteSpace(part)));

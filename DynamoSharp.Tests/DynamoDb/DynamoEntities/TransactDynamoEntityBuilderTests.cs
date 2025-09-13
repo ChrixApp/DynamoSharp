@@ -309,4 +309,36 @@ public class TransactDynamoEntityBuilderTests
         rootEntity.TryGetValue(tableSchema.SortKeyName, out var rootEntitySortKey).Should().Be(true);
         rootEntitySortKey?.ToString().Should().Be($"ORDER#{order.Id}#BUYER#{order.BuyerId}");
     }
+
+    [Fact]
+    public void GetAddedEntities_ShouldReturnEntitiesWithSparseIndex()
+    {
+        // arrange
+        var result = DynamoEntityBuilderTestDataFactory.CreateOrderWithSparseIndex();
+        var tableSchema = result.TableSchema;
+        var changeTracker = result.ChangeTracker;
+        var order = result.Order;
+        var transactDynamoEntityBuilder = new TransactDynamoEntityBuilder(tableSchema, result.ModelBuilder);
+        var changes = changeTracker.FetchChanges();
+        var addedEntities = changes.AddedEntities;
+        var dynamoAddedEntities = new List<JObject>();
+
+        // act
+        foreach (var addedEntity in addedEntities)
+        {
+            var dynamoAddedEntity = transactDynamoEntityBuilder.BuildAddedEntity(addedEntity);
+            dynamoAddedEntities.Add(dynamoAddedEntity);
+        }
+
+        // assert
+        var entitiesWithSparseIndex = dynamoAddedEntities.Where(e => e.ContainsKey("GSI1PK") && e.ContainsKey("GSI1SK"));
+        entitiesWithSparseIndex.Count().Should().Be(2);
+        foreach (var entityWithSparseIndex in entitiesWithSparseIndex)
+        {
+            entityWithSparseIndex.TryGetValue("GSI1PK", out var gsi1Pk).Should().Be(true);
+            gsi1Pk?.ToString().Should().Be("ORDERS");
+            entityWithSparseIndex.TryGetValue("GSI1SK", out var gsi1Sk).Should().Be(true);
+            gsi1Sk?.ToString().Should().StartWith("ORDER#");
+        }
+    }
 }

@@ -16,6 +16,9 @@ public class OrganizationContext : DynamoSharpContext
 
     public override void OnModelCreating(IModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Organization>()
+            .HasId(o => o.Name);
+
         // Example Partition Key: ORG#Eska
         modelBuilder.Entity<Organization>()
             .HasPartitionKey(o => o.Name, "ORG");
@@ -30,11 +33,14 @@ public class OrganizationContext : DynamoSharpContext
 
         // Example Global Secondary Index Sort Key: ORG#Eska
         modelBuilder.Entity<Organization>()
-            .HasGlobalSecondaryIndexPartitionKey("GSI1SK", o => o.Name);
+            .HasGlobalSecondaryIndexSortKey("GSI1SK", o => o.Name);
 
         modelBuilder.Entity<Organization>()
             .HasOneToMany(u => u.Users);
 
+
+        modelBuilder.Entity<User>()
+            .HasId(o => o.Name);
 
         // Example Sort Key: USER#Chris
         modelBuilder.Entity<User>()

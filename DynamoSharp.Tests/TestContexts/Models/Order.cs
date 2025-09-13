@@ -9,6 +9,7 @@ public class Order : IAggregateRoot
     private readonly List<Item> _items = [];
 
     public IReadOnlyList<Item> Items => _items.AsReadOnly();
+    public decimal Total => _items.Sum(i => i.Total);
 
     public void UpdateAddress(string street, string city, string state, string zipCode)
     {

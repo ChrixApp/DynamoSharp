@@ -382,7 +382,7 @@ public class QueryBuilderTests
         var orders = QueryBuilderTestDataFactory.CreateOrderDocumentsForListTest();
         var tableSchema = new TableSchema.Builder()
             .WithTableName("orders")
-            .AddGlobalSecondaryIndex(new GlobalSecondaryIndexSchema("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK"))
+            .AddGlobalSecondaryIndex("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK")
             .Build();
         var dynamoDbLowLevelPartiQLContext = new Mock<IDynamoDbLowLevelPartiQLContext>();
         dynamoDbLowLevelPartiQLContext
@@ -444,7 +444,7 @@ public class QueryBuilderTests
         var orders = new List<Document>();
         var tableSchema = new TableSchema.Builder()
             .WithTableName("orders")
-            .AddGlobalSecondaryIndex(new GlobalSecondaryIndexSchema("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK"))
+            .AddGlobalSecondaryIndex("GSI1PK-GSI1SK-index", "GSI1PK", "GSI1SK")
             .Build();
         var dynamoDbLowLevelPartiQLContext = new Mock<IDynamoDbLowLevelPartiQLContext>();
         dynamoDbLowLevelPartiQLContext

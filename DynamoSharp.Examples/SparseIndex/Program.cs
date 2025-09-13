@@ -28,7 +28,7 @@ public class Program
         var organizations = CreateOrganizations();
 
         organizationContext.Organizations.AddRange(organizations);
-        organizationContext.BatchWriter.SaveChangesAsync().Wait();
+        organizationContext.TransactWriter.SaveChangesAsync().Wait();
 
         var onlyOrganizations = organizationContext.Query<Organization>()
             .IndexName("GSI1PK-GSI1SK-index")
