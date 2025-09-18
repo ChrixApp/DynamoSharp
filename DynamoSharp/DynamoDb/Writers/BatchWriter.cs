@@ -57,7 +57,7 @@ public class BatchWriter : BaseWriter
             var entityBuilder = entityState switch
             {
                 EntityState.Added => _dynamoEntityBuilder.BuildAddedEntity(entityChangeTracker),
-                EntityState.Modified => _dynamoEntityBuilder.BuildModifiedEntity(entityChangeTracker),
+                EntityState.Modified => _dynamoEntityBuilder.BuildAddedEntity(entityChangeTracker),
                 EntityState.Deleted => _dynamoEntityBuilder.BuildDeletedEntity(entityChangeTracker),
                 _ => throw new NotImplementedException()
             };
