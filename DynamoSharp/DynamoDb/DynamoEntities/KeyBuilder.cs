@@ -13,7 +13,6 @@ public static class KeyBuilder
             {
                 var value = JTokenConverter.ConvertToString(t.Token);
                 return string.IsNullOrWhiteSpace(t.Prefix) ? value : $"{t.Prefix}#{value}";
-            })
-            .Where(part => !string.IsNullOrWhiteSpace(part)));
+            }));
     }
 } 
