@@ -196,6 +196,31 @@ public static class DynamoEntityBuilderTestDataFactory
         return (tableSchema, modelBuilder, changeTracker, terminalId);
     }
 
+    public static (TableSchema, IModelBuilder, IChangeTracker, Guid) CreateAffiliationContextWithGsiSkAsNumber(string gsiSkName)
+    {
+        var tableSchema = new TableSchema.Builder()
+            .WithTableName("affiliations")
+            .Build();
+        var modelBuilder = new ModelBuilder();
+
+        modelBuilder.Entity<Affiliation>()
+            .HasGlobalSecondaryIndexSortKey(gsiSkName, a => a.Percentage);
+
+        var changeTracker = new ChangeTracker(tableSchema, modelBuilder);
+
+        var merchantId = Guid.NewGuid();
+        var terminalId = Guid.NewGuid();
+        var section = Section.Default;
+        var cardBrand = CardBrand.Other;
+        var countryOrRigion = CountryOrRigion.MX;
+        var bank = Bank.Default;
+        var type = AffiliationType.Default;
+        var affiliation = new Affiliation(merchantId, terminalId, section, cardBrand, countryOrRigion, bank, type);
+        changeTracker.Track(affiliation, EntityState.Added);
+
+        return (tableSchema, modelBuilder, changeTracker, terminalId);
+    }
+
     public static (TableSchema TableSchema, IModelBuilder ModelBuilder, IChangeTracker ChangeTracker, Order Order) CreateOrderContextWithOneToMany()
     {
         var tableSchema = new TableSchema.Builder()
