@@ -1,14 +1,15 @@
 ﻿using Amazon.DynamoDBv2.DocumentModel;
-using EfficientDynamoDb;
-using EfficientDynamoDb.Operations.ExecuteStatement;
-using DynamoSharp.DynamoDb.QueryBuilder.PartiQL.Filter;
-using Moq;
-using System.Linq.Expressions;
 using DynamoSharp.DynamoDb;
 using DynamoSharp.DynamoDb.Configs;
 using DynamoSharp.DynamoDb.QueryBuilder;
+using DynamoSharp.DynamoDb.QueryBuilder.PartiQL.Filter;
 using DynamoSharp.Tests.DynamoDb.QueryBuilder.PartiQL.Models;
 using DynamoSharp.Tests.TestContexts;
+using EfficientDynamoDb;
+using EfficientDynamoDb.DocumentModel;
+using EfficientDynamoDb.Operations.ExecuteStatement;
+using Moq;
+using System.Linq.Expressions;
 
 namespace DynamoSharp.Tests.DynamoDb.QueryBuilder.PartiQL;
 
@@ -162,5 +163,33 @@ public static class PartiQLQueryBuilderTestDataFactory
     public static Expression<Func<PartiQLOrder, bool>> CreateDecimalInFilter()
     {
         return (Expression<Func<PartiQLOrder, bool>>)(x => x.Total.In(10, 20, 30));
+    }
+
+    public static IEnumerable<object[]> GetInlineData()
+    {
+        yield return new object[]
+        {
+            "ORDER#1", AttributeType.String
+        };
+        yield return new object[]
+        {
+            DateTime.UtcNow, AttributeType.String
+        };
+        yield return new object[]
+        {
+            93, AttributeType.Number
+        };
+        yield return new object[]
+        {
+            26.00, AttributeType.Number
+        };
+        yield return new object[]
+        {
+            Guid.NewGuid(), AttributeType.String
+        };
+        yield return new object[]
+        {
+            DateTime.UtcNow, AttributeType.String
+        };
     }
 }

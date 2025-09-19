@@ -47,21 +47,35 @@ public class PartiQLQueryBuilder
         if (sortKey.Operator is not QueryOperator.BeginsWith && sortKey.Operator is not QueryOperator.Between)
         {
             _statement.Append($"{sortKey.AttributeName}{ParseQueryOperator(sortKey.Operator)}{QuestionMark}");
-            _parameters.Add(new StringAttributeValue(sortKey.AttributeValues[0]));
+            AddParameters(sortKey.AttributeValues[0]);
             return this;
         }
 
         if (sortKey.Operator is QueryOperator.BeginsWith)
         {
             _statement.Append($"begins_with({sortKey.AttributeName}, {QuestionMark})");
-            _parameters.Add(new StringAttributeValue(sortKey.AttributeValues[0]));
+            AddParameters(sortKey.AttributeValues[0]);
             return this;
         }
 
         _statement.Append($"{sortKey.AttributeName} between {QuestionMark} AND {QuestionMark}");
-        _parameters.Add(new StringAttributeValue(sortKey.AttributeValues[0]));
-        _parameters.Add(new StringAttributeValue(sortKey.AttributeValues[1]));
+        AddParameters(sortKey.AttributeValues[0]);
+        AddParameters(sortKey.AttributeValues[1]);
         return this;
+    }
+
+    private void AddParameters(object attributeValue)
+    {
+        if (attributeValue is null)
+            _parameters.Add(new NullAttributeValue());
+        else if (attributeValue is string strValue)
+            _parameters.Add(new StringAttributeValue(strValue));
+        else if (attributeValue is Guid guidValue)
+            _parameters.Add(new StringAttributeValue(guidValue.ToString()));
+        else if (attributeValue is DateTime dateTimeValue)
+            _parameters.Add(new StringAttributeValue(dateTimeValue.ToString("yyyy-MM-ddTHH:mm:ss.FFFFFFFK")));
+        else
+            _parameters.Add(new NumberAttributeValue(attributeValue.ToString() ?? throw new ConstantValueNullException("Constant value string is null.")));
     }
 
     public PartiQLQueryBuilder WithFilters(Expression? filters)

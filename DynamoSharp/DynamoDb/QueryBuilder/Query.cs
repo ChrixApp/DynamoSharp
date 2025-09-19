@@ -37,7 +37,7 @@ public class Query<TEntity>
         PartitionKey = new PartitionKey(attributeName, attributeValue);
     }
 
-    private void SetSortKey(string attributeName, QueryOperator queryOperator, params string[] attributeValues)
+    private void SetSortKey(string attributeName, QueryOperator queryOperator, params object[] attributeValues)
     {
         SortKey = new SortKey(attributeName, queryOperator, attributeValues);
     }
@@ -85,13 +85,13 @@ public class Query<TEntity>
             return this;
         }
 
-        public IQueryBuilder<TEntity> SortKey(QueryOperator queryOperator, params string[] attributeValues)
+        public IQueryBuilder<TEntity> SortKey(QueryOperator queryOperator, params object[] attributeValues)
         {
             var sortKey = string.IsNullOrWhiteSpace(_query.IndexName) ? _tableSchema.SortKeyName : _tableSchema.GetGlobalSecondaryIndexSortKey(_query.IndexName);
             return SortKey(sortKey, queryOperator, attributeValues);
         }
 
-        private IQueryBuilder<TEntity> SortKey(string attributeName, QueryOperator queryOperator, params string[] attributeValues)
+        private IQueryBuilder<TEntity> SortKey(string attributeName, QueryOperator queryOperator, params object[] attributeValues)
         {
             _query.SetSortKey(attributeName, queryOperator, attributeValues);
             return this;

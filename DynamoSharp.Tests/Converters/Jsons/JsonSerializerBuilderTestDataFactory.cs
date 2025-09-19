@@ -6,18 +6,18 @@ public static class JsonSerializerBuilderTestDataFactory
     {
         yield return new object[]
         {
-        new string[] { "Property2", "Property3" },
-        1
+            new string[] { "Property2", "Property3" },
+            1
         };
         yield return new object[]
         {
-        new string[] { "Property2" },
-        2
+            new string[] { "Property2" },
+            2
         };
         yield return new object[]
         {
-        new string[] { },
-        3
+            new string[] { },
+            3
         };
     }
 }
