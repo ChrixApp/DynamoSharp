@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="https://dynamosharp.s3.us-east-1.amazonaws.com/logo.png">
-</p>
+![DynamoSharp logo](https://i.imgur.com/o2RqyLC.png "DynamoSharp Logo")
 
 [![Build Passing](https://img.shields.io/github/actions/workflow/status/ChrixApp/DynamoSharp/build.yml?branch=main&label=build&logo=github)](https://github.com/ChrixApp/DynamoSharp/actions/workflows/build.yml)
 [![Test Passing](https://img.shields.io/github/actions/workflow/status/ChrixApp/DynamoSharp/test.yml?branch=main&label=test&logo=github)](https://github.com/ChrixApp/DynamoSharp/actions/workflows/test.yml)
