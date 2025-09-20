@@ -54,9 +54,9 @@ public abstract class DynamoEntityBuilder : IDynamoEntityBuilder
         }
     }
 
-    private static string BuildIndexKey(IList<GlobalSecondaryIndex> globalSecondaryIndices, JObject entity)
+    private static JToken BuildIndexKey(IList<GlobalSecondaryIndex> globalSecondaryIndices, JObject entity)
     {
-        var prefixWithValues = new List<string>();
+        var prefixWithValues = new List<object>();
 
         foreach (var gsi in globalSecondaryIndices)
         {
@@ -67,8 +67,9 @@ public abstract class DynamoEntityBuilder : IDynamoEntityBuilder
             }
 
             var property = entity.SelectToken(gsi.Path);
-            var propertyValue = JTokenConverter.ConvertToString(property);
+            if (globalSecondaryIndices.Count is 1 && property?.Type is JTokenType.Integer || property?.Type == JTokenType.Float) return property;
 
+            var propertyValue = JTokenConverter.ConvertToString(property);
             if (string.IsNullOrWhiteSpace(gsi.Prefix))
             {
                 Thrower.ThrowIfNull<PropertyValueNullException>(propertyValue, $"Property value for '{gsi.Path}' is null.");

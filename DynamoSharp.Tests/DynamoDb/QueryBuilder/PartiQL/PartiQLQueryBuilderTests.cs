@@ -1,6 +1,8 @@
 using Amazon.DynamoDBv2.DocumentModel;
 using DynamoSharp.DynamoDb.QueryBuilder;
 using DynamoSharp.DynamoDb.QueryBuilder.PartiQL;
+using EfficientDynamoDb.DocumentModel;
+using FluentAssertions;
 
 namespace DynamoSharp.Tests.DynamoDb.QueryBuilder.PartiQL;
 
@@ -32,16 +34,54 @@ public class PartiQLQueryBuilderTests
     {
         // Arrange
         var partiQLQueryBuilder = new PartiQLQueryBuilder();
+        var sortKey = new SortKey("SortKey", QueryOperator.BeginsWith, "ORDER#");
 
         // Act
         var partiQLQuery = partiQLQueryBuilder
-            .WithSortKey(new SortKey("SortKey", QueryOperator.BeginsWith, "ORDER#"))
+            .WithSortKey(sortKey)
             .Build();
 
         // Assert
         Assert.Equal(" AND begins_with(SortKey, ?)", partiQLQuery.Statement);
         Assert.Single(partiQLQuery.Parameters);
         Assert.Equal("ORDER#", partiQLQuery.Parameters[0].AsString());
+    }
+
+    [Theory]
+    [MemberData(nameof(PartiQLQueryBuilderTestDataFactory.GetInlineData), MemberType = typeof(PartiQLQueryBuilderTestDataFactory))]
+    public void PartiQLQueryBuilder_AddsSingleParameterWithExpectedAttributeType(object sortKeyValue, AttributeType attributeType)
+    {
+        // Arrange
+        var partiQLQueryBuilder = new PartiQLQueryBuilder();
+        var sortKey = new SortKey("SortKey", QueryOperator.Equal, sortKeyValue);
+
+        // Act
+        var partiQLQuery = partiQLQueryBuilder
+            .WithSortKey(sortKey)
+            .Build();
+
+        // Assert
+        Assert.Single(partiQLQuery.Parameters);
+        Assert.Equal(attributeType, partiQLQuery.Parameters[0].Type);
+    }
+
+    [Theory]
+    [InlineData(26, null, AttributeType.Number, AttributeType.Null)]
+    public void PartiQLQueryBuilder_AddsTwoParametersWithExpectedAttributeTypes(object sortKeyValue1, object sortKeyValue2, AttributeType attributeType1, AttributeType attributeType2)
+    {
+        // Arrange
+        var partiQLQueryBuilder = new PartiQLQueryBuilder();
+        var sortKey = new SortKey("SortKey", QueryOperator.Between, sortKeyValue1, sortKeyValue2);
+
+        // Act
+        var partiQLQuery = partiQLQueryBuilder
+            .WithSortKey(sortKey)
+            .Build();
+
+        // Assert
+        Assert.Equal(2, partiQLQuery.Parameters.Count);
+        Assert.Equal(attributeType1, partiQLQuery.Parameters[0].Type);
+        Assert.Equal(attributeType2, partiQLQuery.Parameters[1].Type);
     }
 
     [Fact]

@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 
 namespace DynamoSharp.DynamoDb.DynamoEntities;
+
 public interface IDynamoEntityBuilder
 {
     JObject BuildAddedEntity(EntityChangeTracker entityEntry);

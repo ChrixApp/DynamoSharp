@@ -4,21 +4,26 @@ namespace DynamoSharp.DynamoDb.DynamoEntities;
 
 public class JTokenConverter
 {
-    public static string ConvertToString(JToken? property)
+    public static object ConvertToString(JToken? property)
     {
-        var propertyValue = property?.ToString() ?? string.Empty;
 
-        if (property?.Type == JTokenType.Date)
+        switch(property?.Type)
         {
-            var date = property.ToObject<DateTime>();
-            propertyValue = date.ToString("yyyy-MM-ddTHH:mm:ss.FFFFFFFK");
+            case JTokenType.String:
+            case JTokenType.Guid:
+                return property?.ToString() ?? string.Empty;
+            case JTokenType.Date:
+                var date = property.ToObject<DateTime>();
+                return date.ToString("yyyy-MM-ddTHH:mm:ss.FFFFFFFK");
+            case JTokenType.Integer:
+                return property.ToObject<long>();
+            case JTokenType.Float:
+                return property.ToObject<decimal>();
+            case JTokenType.Array:
+                var list = property.ToObject<List<object>>();
+                return string.Join("#", list!);
+            default:
+                return string.Empty;
         }
-        else if (property?.Type == JTokenType.Array)
-        {
-            var list = property.ToObject<List<object>>();
-            propertyValue = string.Join("#", list!);
-        }
-
-        return propertyValue;
     }
 }

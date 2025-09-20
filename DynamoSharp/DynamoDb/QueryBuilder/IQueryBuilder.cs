@@ -16,5 +16,5 @@ public interface IQueryBuilder<TEntity>
     IQueryBuilder<TEntity> Limit(int? limit);
     IQueryBuilder<TEntity> PartitionKey(string attributeValue);
     IQueryBuilder<TEntity> ScanIndexForward(bool scanIndexForward = false);
-    IQueryBuilder<TEntity> SortKey(QueryOperator queryOperator, params string[] attributeValues);
+    IQueryBuilder<TEntity> SortKey(QueryOperator queryOperator, params object[] attributeValues);
 }

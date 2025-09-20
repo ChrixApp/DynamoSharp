@@ -177,6 +177,24 @@ public class DynamoEntityBuilderTests
         sortKey?.ToString().Should().Be(terminalId.ToString());
     }
 
+    [Theory]
+    [InlineData("GSI1SK")]
+    [InlineData("GSI2SK")]
+    public void GetAddedEntities_ShouldReturnEntityWithGsiSkAsFloat(string gsiSkName)
+    {
+        // arrange
+        var (tableSchema, modelBuilder, changeTracker, terminalId) = DynamoEntityBuilderTestDataFactory.CreateAffiliationContextWithGsiSkAsNumber(gsiSkName);
+        var batchDynamoEntityBuilder = new BatchDynamoEntityBuilder(tableSchema, modelBuilder);
+        var result = changeTracker.FetchChanges();
+
+        // act
+        var entity = batchDynamoEntityBuilder.BuildAddedEntity(result.AddedEntities[0]);
+
+        // assert
+        entity.TryGetValue(gsiSkName, out var sortKey).Should().Be(true);
+        sortKey?.Type.Should().Be(JTokenType.Float);
+    }
+
     [Fact]
     public void GetAddedEntities_ShouldReturnEntitiesWithOneToMany()
     {
