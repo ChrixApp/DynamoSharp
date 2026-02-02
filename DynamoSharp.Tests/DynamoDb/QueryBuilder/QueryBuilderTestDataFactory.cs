@@ -32,7 +32,7 @@ public static class QueryBuilderTestDataFactory
             new Document
             {
                 ["PartitionKey"] = "ORDER#85cafc37-e6bb-4693-9283-f2eaec9828af",
-                ["SortKey"] = "ORDERITEM#3DD8F3EE-6445-4D2F-BEEE-2BED65C17ECD",
+                ["SortKey"] = "ITEM#3DD8F3EE-6445-4D2F-BEEE-2BED65C17ECD",
                 ["Id"] = "3DD8F3EE-6445-4D2F-BEEE-2BED65C17ECD",
                 ["ProductName"] = "Product 1",
                 ["UnitPrice"] = new NumberAttributeValue("10.99"),

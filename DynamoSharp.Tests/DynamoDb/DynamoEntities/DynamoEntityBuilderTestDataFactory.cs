@@ -239,7 +239,7 @@ public static class DynamoEntityBuilderTestDataFactory
             .HasOneToMany(o => o.Items);
 
         modelBuilder.Entity<Item>()
-            .HasSortKey(oi => oi.Id, "ORDERITEM")
+            .HasSortKey(oi => oi.Id, "ITEM")
             .Include(oi => oi.UnitPrice, "UNITPRICE");
 
         var changeTracker = new ChangeTracker(tableSchema, modelBuilder);

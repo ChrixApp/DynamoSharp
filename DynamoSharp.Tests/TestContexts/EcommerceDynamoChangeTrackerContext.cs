@@ -25,6 +25,6 @@ public class EcommerceDynamoChangeTrackerContext : DynamoSharpContext
             .HasOneToMany(o => o.Items);
 
         ModelBuilder.Entity<Item>()
-            .HasSortKey(oi => oi.Id, "ORDERITEM");
+            .HasSortKey(oi => oi.Id, "ITEM");
     }
 }

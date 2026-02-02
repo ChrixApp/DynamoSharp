@@ -234,7 +234,7 @@ public class DynamoEntityBuilderTests
             var isStartsWithOrder = partitionKey.ToString().StartsWith("ORDER#");
 
             if (!e.TryGetValue(tableSchema.SortKeyName, out var sortKey)) return false;
-            var isStartsWithOrderItem = sortKey.ToString().StartsWith("ORDERITEM#");
+            var isStartsWithOrderItem = sortKey.ToString().StartsWith("ITEM#");
 
             return isStartsWithOrder && isStartsWithOrderItem;
         });
@@ -246,7 +246,7 @@ public class DynamoEntityBuilderTests
 
             var orderItem = order.Items.First(oi => oneToManyEntity[tableSchema.SortKeyName]!.ToString().Contains(oi.Id.ToString()));
             oneToManyEntity.TryGetValue(tableSchema.SortKeyName, out var oneToManyEntitySortKey).Should().Be(true);
-            oneToManyEntitySortKey?.ToString().Should().Be($"ORDERITEM#{orderItem.Id}#UNITPRICE#{orderItem.UnitPrice}");
+            oneToManyEntitySortKey?.ToString().Should().Be($"ITEM#{orderItem.Id}#UNITPRICE#{orderItem.UnitPrice}");
         }
     }
 
