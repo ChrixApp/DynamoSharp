@@ -1,4 +1,6 @@
-﻿namespace DynamoSharp.Tests.Contexts.Models;
+﻿using DynamoSharp.Tests.Contexts.Models;
+
+namespace DynamoSharp.Tests.TestContexts.Models.Ecommerce;
 
 public class Address : IValueObject
 {

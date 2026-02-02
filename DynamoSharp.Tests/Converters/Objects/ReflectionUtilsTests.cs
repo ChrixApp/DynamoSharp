@@ -1,5 +1,5 @@
 ﻿using DynamoSharp.Converters.Objects;
-using DynamoSharp.Tests.Contexts.Models;
+using DynamoSharp.Tests.TestContexts.Models.Ecommerce;
 using System.Runtime.CompilerServices;
 
 namespace DynamoSharp.Tests.Converters.Objects;

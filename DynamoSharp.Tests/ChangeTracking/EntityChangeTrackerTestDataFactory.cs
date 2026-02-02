@@ -3,7 +3,7 @@ using System.Collections;
 using System.Reflection;
 using DynamoSharp.Converters.Jsons;
 using DynamoSharp.DynamoDb.ModelsBuilder;
-using DynamoSharp.Tests.Contexts.Models;
+using DynamoSharp.Tests.TestContexts.Models.Ecommerce;
 
 namespace DynamoSharp.Tests.ChangeTracking;
 

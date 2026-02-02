@@ -1,4 +1,4 @@
-﻿namespace DynamoSharp.Tests.Contexts.Models;
+﻿namespace DynamoSharp.Tests.TestContexts.Models.Ecommerce;
 
 public class Item
 {

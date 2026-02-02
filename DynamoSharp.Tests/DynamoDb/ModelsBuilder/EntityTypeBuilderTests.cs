@@ -1,6 +1,6 @@
 ﻿using DynamoSharp.DynamoDb.ModelsBuilder;
-using DynamoSharp.Tests.Contexts.Models;
 using DynamoSharp.Tests.Contexts.Models.Affiliation;
+using DynamoSharp.Tests.TestContexts.Models.Ecommerce;
 using FluentAssertions;
 
 namespace DynamoSharp.Tests.DynamoDb.ModelsBuilder;

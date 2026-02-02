@@ -7,12 +7,12 @@ using System.Linq.Expressions;
 using DynamoSharp.DynamoDb;
 using DynamoSharp.DynamoDb.Configs;
 using DynamoSharp.DynamoDb.QueryBuilder;
-using DynamoSharp.Tests.Contexts.Models;
 using DynamoSharp.Tests.Contexts.Models.Affiliation;
 using DynamoSharp.Tests.TestContexts;
 using Document = EfficientDynamoDb.DocumentModel.Document;
 using ExecuteStatementRequest = EfficientDynamoDb.Operations.ExecuteStatement.ExecuteStatementRequest;
 using ExecuteStatementResponse = EfficientDynamoDb.Operations.ExecuteStatement.ExecuteStatementResponse;
+using DynamoSharp.Tests.TestContexts.Models.Ecommerce;
 
 namespace DynamoSharp.Tests.DynamoDb.QueryBuilder;
 

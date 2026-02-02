@@ -1,5 +1,5 @@
 ﻿using DynamoSharp.Converters.Documents;
-using DynamoSharp.Tests.Contexts.Models;
+using DynamoSharp.Tests.TestContexts.Models.Ecommerce;
 using EfficientDynamoDb.DocumentModel;
 using FluentAssertions;
 using System.Globalization;

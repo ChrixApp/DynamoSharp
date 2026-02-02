@@ -2,8 +2,8 @@
 using DynamoSharp.ChangeTracking;
 using DynamoSharp.DynamoDb.Configs;
 using DynamoSharp.DynamoDb.ModelsBuilder;
-using DynamoSharp.Tests.Contexts.Models;
 using DynamoSharp.Tests.Contexts.Models.Affiliation;
+using DynamoSharp.Tests.TestContexts.Models.Ecommerce;
 using EfficientDynamoDb;
 using EfficientDynamoDb.Credentials.AWSSDK;
 

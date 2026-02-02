@@ -1,6 +1,6 @@
 ﻿using DynamoSharp.DynamoDb.QueryBuilder;
-using DynamoSharp.Tests.Contexts.Models;
 using DynamoSharp.Tests.DynamoDb.DynamoEntities;
+using DynamoSharp.Tests.TestContexts.Models.Ecommerce;
 using FluentAssertions;
 
 namespace DynamoSharp.Tests.DynamoDb;

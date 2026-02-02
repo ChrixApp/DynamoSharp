@@ -2,7 +2,7 @@
 using DynamoSharp.DynamoDb;
 using DynamoSharp.DynamoDb.Configs;
 using DynamoSharp.DynamoDb.ModelsBuilder;
-using DynamoSharp.Tests.Contexts.Models;
+using DynamoSharp.Tests.TestContexts.Models.Ecommerce;
 using FluentAssertions;
 using Moq;
 using System.Collections.Concurrent;

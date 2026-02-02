@@ -1,10 +1,10 @@
 ﻿using DynamoSharp.DynamoDb;
 using DynamoSharp.DynamoDb.Configs;
 using DynamoSharp.DynamoDb.DynamoEntities;
-using DynamoSharp.Tests.Contexts.Models;
 using DynamoSharp.Tests.Contexts.Models.Affiliation;
 using DynamoSharp.Tests.Contexts.Models.Movies;
 using DynamoSharp.Tests.TestContexts;
+using DynamoSharp.Tests.TestContexts.Models.Ecommerce;
 using EfficientDynamoDb;
 using FluentAssertions;
 using Newtonsoft.Json.Linq;
