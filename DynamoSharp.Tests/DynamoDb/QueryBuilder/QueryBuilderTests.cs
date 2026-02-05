@@ -13,6 +13,7 @@ using Document = EfficientDynamoDb.DocumentModel.Document;
 using ExecuteStatementRequest = EfficientDynamoDb.Operations.ExecuteStatement.ExecuteStatementRequest;
 using ExecuteStatementResponse = EfficientDynamoDb.Operations.ExecuteStatement.ExecuteStatementResponse;
 using DynamoSharp.Tests.TestContexts.Models.Ecommerce;
+using DynamoSharp.Tests.Contexts.Models.Movies;
 
 namespace DynamoSharp.Tests.DynamoDb.QueryBuilder;
 
@@ -373,6 +374,129 @@ public class QueryBuilderTests
         entity?.Type.Should().Be(AffiliationType.Default);
         entity?.Percentage.Should().Be(10.99f);
         entity?.CreatedAt.Should().Be(DateTime.ParseExact(affiliations[0]["CreatedAt"].ToString(), "yyyy-MM-ddTHH:mm:ss.FFFFFFFK", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind));
+    }
+
+    [Fact]
+    public async Task ToEntityAsync_ShouldPopulateOneToMany_WhenParentUsesPrivateListBackingField()
+    {
+        // Arrange
+        var orders = QueryBuilderTestDataFactory.CreateOrderDocuments();
+        var tableSchema = new TableSchema.Builder()
+            .WithTableName("order")
+            .Build();
+        var dynamoDbLowLevelPartiQLContext = new Mock<IDynamoDbLowLevelPartiQLContext>();
+        dynamoDbLowLevelPartiQLContext
+            .Setup(x => x.ExecuteStatementAsync(It.IsAny<ExecuteStatementRequest>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ExecuteStatementResponse
+            {
+                Items = orders
+            });
+        var dynamoDbLowLevelContext = new Mock<IDynamoDbLowLevelContext>();
+        dynamoDbLowLevelContext
+            .Setup(x => x.PartiQL)
+            .Returns(dynamoDbLowLevelPartiQLContext.Object);
+        var dynamoDbContext = new Mock<IDynamoDbContext>();
+        dynamoDbContext
+            .Setup(x => x.LowLevel)
+            .Returns(dynamoDbLowLevelContext.Object);
+
+        var dynamoDbContextAdapter = new DynamoDbContextAdapter(dynamoDbContext.Object);
+        var dynamoChangeTrackerContext = new NewEcommerceDynamoChangeTrackerContext(dynamoDbContextAdapter, tableSchema);
+        dynamoChangeTrackerContext.OnModelCreating(dynamoChangeTrackerContext.ModelBuilder);
+        dynamoChangeTrackerContext.Registration();
+        var queryBuilder = (IQueryBuilder<NewOrder>)new Query<NewOrder>.Builder(dynamoChangeTrackerContext, tableSchema);
+
+        // Act
+        var entity = await queryBuilder
+            .PartitionKey("ORDER#85cafc37-e6bb-4693-9283-f2eaec9828af")
+            .ToEntityAsync();
+
+        // Assert
+        entity.Should().NotBeNull();
+        entity.Should().BeOfType<NewOrder>();
+        entity?.Items.Should().HaveCount(1);
+    }
+
+    [Fact]
+    public async Task ToEntityAsync_ShouldPopulateManyToMany_WhenParentUsesPrivateListBackingField_Part1()
+    {
+        // Arrange
+        var actor = QueryBuilderTestDataFactory.CreateActorDocuments();
+        var tableSchema = new TableSchema.Builder()
+            .WithTableName("movies")
+            .Build();
+        var dynamoDbLowLevelPartiQLContext = new Mock<IDynamoDbLowLevelPartiQLContext>();
+        dynamoDbLowLevelPartiQLContext
+            .Setup(x => x.ExecuteStatementAsync(It.IsAny<ExecuteStatementRequest>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ExecuteStatementResponse
+            {
+                Items = actor
+            });
+        var dynamoDbLowLevelContext = new Mock<IDynamoDbLowLevelContext>();
+        dynamoDbLowLevelContext
+            .Setup(x => x.PartiQL)
+            .Returns(dynamoDbLowLevelPartiQLContext.Object);
+        var dynamoDbContext = new Mock<IDynamoDbContext>();
+        dynamoDbContext
+            .Setup(x => x.LowLevel)
+            .Returns(dynamoDbLowLevelContext.Object);
+
+        var dynamoDbContextAdapter = new DynamoDbContextAdapter(dynamoDbContext.Object);
+        var dynamoChangeTrackerContext = new MovieContext(dynamoDbContextAdapter, tableSchema);
+        dynamoChangeTrackerContext.OnModelCreating(dynamoChangeTrackerContext.ModelBuilder);
+        dynamoChangeTrackerContext.Registration();
+        var queryBuilder = (IQueryBuilder<Actor>)new Query<Actor>.Builder(dynamoChangeTrackerContext, tableSchema);
+
+        // Act
+        var entity = await queryBuilder
+            .PartitionKey("ACTOR#7d06c835-0ddc-4866-b42b-525221ded86c")
+            .ToEntityAsync();
+
+        // Assert
+        entity.Should().NotBeNull();
+        entity.Should().BeOfType<Actor>();
+        entity?.Movies.Should().HaveCount(2);
+    }
+
+    [Fact]
+    public async Task ToEntityAsync_ShouldPopulateManyToMany_WhenParentUsesPrivateListBackingField_Part2()
+    {
+        // Arrange
+        var movie = QueryBuilderTestDataFactory.CreateMovieDocuments();
+        var tableSchema = new TableSchema.Builder()
+            .WithTableName("movies")
+            .Build();
+        var dynamoDbLowLevelPartiQLContext = new Mock<IDynamoDbLowLevelPartiQLContext>();
+        dynamoDbLowLevelPartiQLContext
+            .Setup(x => x.ExecuteStatementAsync(It.IsAny<ExecuteStatementRequest>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ExecuteStatementResponse
+            {
+                Items = movie
+            });
+        var dynamoDbLowLevelContext = new Mock<IDynamoDbLowLevelContext>();
+        dynamoDbLowLevelContext
+            .Setup(x => x.PartiQL)
+            .Returns(dynamoDbLowLevelPartiQLContext.Object);
+        var dynamoDbContext = new Mock<IDynamoDbContext>();
+        dynamoDbContext
+            .Setup(x => x.LowLevel)
+            .Returns(dynamoDbLowLevelContext.Object);
+
+        var dynamoDbContextAdapter = new DynamoDbContextAdapter(dynamoDbContext.Object);
+        var dynamoChangeTrackerContext = new MovieContext(dynamoDbContextAdapter, tableSchema);
+        dynamoChangeTrackerContext.OnModelCreating(dynamoChangeTrackerContext.ModelBuilder);
+        dynamoChangeTrackerContext.Registration();
+        var queryBuilder = (IQueryBuilder<Movie>)new Query<Movie>.Builder(dynamoChangeTrackerContext, tableSchema);
+
+        // Act
+        var entity = await queryBuilder
+            .PartitionKey("MOVIE#dfcf58ec-0127-41df-b10c-9c3da1ce6da5")
+            .ToEntityAsync();
+
+        // Assert
+        entity.Should().NotBeNull();
+        entity.Should().BeOfType<Movie>();
+        entity?.Actors.Should().HaveCount(2);
     }
 
     [Fact]

@@ -8,7 +8,6 @@ using DynamoSharp.Exceptions;
 using EfficientDynamoDb;
 using System.Collections;
 using System.Linq.Expressions;
-using System.Reflection;
 using Document = EfficientDynamoDb.DocumentModel.Document;
 using ExecuteStatementRequest = EfficientDynamoDb.Operations.ExecuteStatement.ExecuteStatementRequest;
 using ExecuteStatementResponse = EfficientDynamoDb.Operations.ExecuteStatement.ExecuteStatementResponse;
@@ -299,12 +298,16 @@ public class Query<TEntity>
             string sortKeyName,
             IReadOnlyList<Document> documents)
         {
+            var entityToDocument = new Dictionary<object, Document>(ReferenceEqualityComparer.Instance);
             var listType = typeof(List<>).MakeGenericType(entityKeyValue.Value);
             var entities = (IList?)Activator.CreateInstance(listType);
-            ReflectionUtils.SetValue(parentEntity, parentEntity.GetType(), entityKeyValue.Key, entities);
-
             var entityTypeBuilder = modelBuilder.Entities[entityKeyValue.Value];
             var sortKeyValue = entityTypeBuilder.SortKey.First().Value;
+            AttachChildEntitiesFromDocumentsAndTrack(entityKeyValue, parentEntity, sortKeyName, documents, entityToDocument, entities, sortKeyValue);
+        }
+
+        private void AttachChildEntitiesFromDocumentsAndTrack(KeyValuePair<string, Type> entityKeyValue, object parentEntity, string sortKeyName, IReadOnlyList<Document> documents, Dictionary<object, Document> entityToDocument, IList? entities, string sortKeyValue)
+        {
             var matchingEntities = documents
                 .Where(doc => doc.ContainsKey(sortKeyName) && doc[sortKeyName].AsString().StartsWith($"{sortKeyValue}#"))
                 .ToList();
@@ -314,8 +317,13 @@ public class Query<TEntity>
                 var entity = ObjectConverter.Instance.ConvertDocumentToObject(doc, entityKeyValue.Value);
                 if (entity is null) return;
                 entities?.Add(entity);
-                AsTracking(entity, doc, parentEntity);
+                entityToDocument[entity] = doc;
             });
+            ReflectionUtils.SetValue(parentEntity, parentEntity.GetType(), entityKeyValue.Key, entities);
+            foreach (var entityKeyValuePair in entityToDocument)
+            {
+                AsTracking(entityKeyValuePair.Key, entityKeyValuePair.Value, parentEntity);
+            }
         }
 
         private void FindEntitiesInManyToMany(
@@ -324,26 +332,13 @@ public class Query<TEntity>
             IModelBuilder modelBuilder,
             IReadOnlyList<Document> documents)
         {
+            var entityToDocument = new Dictionary<object, Document>(ReferenceEqualityComparer.Instance);
             var listType = typeof(List<>).MakeGenericType(entityKeyValue.Value);
             var manyToManyList = (IList?)Activator.CreateInstance(listType);
-            ReflectionUtils.SetValue(parentEntity, parentEntity.GetType(), entityKeyValue.Key, manyToManyList);
-
             var entityTypeBuilder = modelBuilder.Entities[entityKeyValue.Value];
-
             var gsiSortKeyPreName = entityTypeBuilder.GlobalSecondaryIndexSortKey.First().Key;
             var gsiSortKeyPrefix = entityTypeBuilder.GlobalSecondaryIndexSortKey.First().Value[0].Prefix;
-
-            var matchingDocuments = documents
-                .Where(doc => doc.ContainsKey(gsiSortKeyPreName) && doc[gsiSortKeyPreName].AsString().StartsWith(gsiSortKeyPrefix))
-                .ToList();
-
-            matchingDocuments.ForEach(doc =>
-            {
-                var entity = ObjectConverter.Instance.ConvertDocumentToObject(doc, entityKeyValue.Value);
-                if (entity is null) return;
-                manyToManyList?.Add(entity);
-                AsTracking(entity, doc, parentEntity);
-            });
+            AttachChildEntitiesFromDocumentsAndTrack(entityKeyValue, parentEntity, gsiSortKeyPreName, documents, entityToDocument, manyToManyList, gsiSortKeyPrefix);
         }
 
         private List<TEntity> DocumentsToEntities(List<Document> documents)

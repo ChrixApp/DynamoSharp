@@ -18,9 +18,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AWSSDK.DynamoDBv2" Version="4.0.2.3" />
-		<PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="4.0.2" />
-		<PackageReference Include="EfficientDynamoDb" Version="0.9.18-alpha.0.6" />
+		<PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.509.22" />
+		<PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.400" />
+		<PackageReference Include="EfficientDynamoDb" Version="0.9.18" />
 		<PackageReference Include="EfficientDynamoDb.Credentials.AWSSDK" Version="0.9.3" />
 		<PackageReference Include="FluentAssertions" Version="8.5.0" />
 		<PackageReference Include="Microsoft.AspNetCore.TestHost" Version="8.0.18" />

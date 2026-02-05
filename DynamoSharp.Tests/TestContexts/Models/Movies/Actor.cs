@@ -6,9 +6,13 @@ public partial class Actor
     public string Name { get; set; }
     public DateTime BirthDate { get; set; }
 
-    private readonly List<Performance> _movies;
+    private List<Performance> _movies;
 
-    public IReadOnlyList<Performance> Movies => _movies.AsReadOnly();
+    public IReadOnlyList<Performance> Movies
+    {
+        get => _movies.AsReadOnly();
+        private set => _movies = value.ToList();
+    }
 
     public Actor(string name, DateTime birthDate)
     {

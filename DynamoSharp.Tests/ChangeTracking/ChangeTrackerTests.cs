@@ -2,7 +2,13 @@
 using DynamoSharp.DynamoDb;
 using DynamoSharp.DynamoDb.Configs;
 using DynamoSharp.DynamoDb.ModelsBuilder;
+using DynamoSharp.DynamoDb.QueryBuilder;
+using DynamoSharp.Tests.Contexts.Models.Movies;
+using DynamoSharp.Tests.DynamoDb.QueryBuilder;
+using DynamoSharp.Tests.TestContexts;
 using DynamoSharp.Tests.TestContexts.Models.Ecommerce;
+using EfficientDynamoDb;
+using EfficientDynamoDb.Operations.ExecuteStatement;
 using FluentAssertions;
 using Moq;
 using System.Collections.Concurrent;
@@ -450,5 +456,101 @@ public class ChangeTrackerTests
         changes.AddedEntities.Count.Should().Be(2);
         changes.DeletedEntities.Count.Should().Be(0);
         changes.ModifiedEntities.Count.Should().Be(0);
+    }
+
+    [Fact]
+    public async Task FetchChanges_AfterQuerying_OneToMany_ShouldTrackAddedChildEntity_AndModifiedRootEntity()
+    {
+        // Arrange
+        var orders = ChangeTrackerTestDataFactory.CreateOrderDocuments();
+        var tableSchema = new TableSchema.Builder()
+            .WithTableName("order")
+            .Build();
+        var dynamoDbLowLevelPartiQLContext = new Mock<IDynamoDbLowLevelPartiQLContext>();
+        dynamoDbLowLevelPartiQLContext
+            .Setup(x => x.ExecuteStatementAsync(It.IsAny<ExecuteStatementRequest>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ExecuteStatementResponse
+            {
+                Items = orders
+            });
+        var dynamoDbLowLevelContext = new Mock<IDynamoDbLowLevelContext>();
+        dynamoDbLowLevelContext
+            .Setup(x => x.PartiQL)
+            .Returns(dynamoDbLowLevelPartiQLContext.Object);
+        var dynamoDbContext = new Mock<IDynamoDbContext>();
+        dynamoDbContext
+            .Setup(x => x.LowLevel)
+            .Returns(dynamoDbLowLevelContext.Object);
+
+        var dynamoDbContextAdapter = new DynamoDbContextAdapter(dynamoDbContext.Object);
+        var dynamoChangeTrackerContext = new NewEcommerceDynamoChangeTrackerContext(dynamoDbContextAdapter, tableSchema);
+        dynamoChangeTrackerContext.OnModelCreating(dynamoChangeTrackerContext.ModelBuilder);
+        dynamoChangeTrackerContext.Registration();
+        var queryBuilder = (IQueryBuilder<NewOrder>)new Query<NewOrder>.Builder(dynamoChangeTrackerContext, tableSchema);
+        var order = await queryBuilder
+            .PartitionKey("ORDER#85cafc37-e6bb-4693-9283-f2eaec9828af")
+            .ToEntityAsync();
+        var item = new Item.Builder()
+            .WithId(Guid.NewGuid())
+            .WithProductName("Product X")
+            .WithUnitPrice(10)
+            .WithUnits(1)
+            .Build();
+        order?.AddItem(item);
+        order?.ChangeBuyer(Guid.NewGuid());
+
+        // Act
+        var changes = dynamoChangeTrackerContext.ChangeTracker.FetchChanges();
+
+        // Assert
+        changes.AddedEntities.Count.Should().Be(1);
+        changes.ModifiedEntities.Count.Should().Be(1);
+        changes.DeletedEntities.Count.Should().Be(0);
+    }
+
+    [Fact]
+    public async Task FetchChanges_AfterQuerying_ManyToMany_ShouldTrackAddedRelatedEntities_AndModifiedRootEntity()
+    {
+        // Arrange
+        var actorDocument = ChangeTrackerTestDataFactory.CreateActorDocuments();
+        var tableSchema = new TableSchema.Builder()
+            .WithTableName("movies")
+            .Build();
+        var dynamoDbLowLevelPartiQLContext = new Mock<IDynamoDbLowLevelPartiQLContext>();
+        dynamoDbLowLevelPartiQLContext
+            .Setup(x => x.ExecuteStatementAsync(It.IsAny<ExecuteStatementRequest>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ExecuteStatementResponse
+            {
+                Items = actorDocument
+            });
+        var dynamoDbLowLevelContext = new Mock<IDynamoDbLowLevelContext>();
+        dynamoDbLowLevelContext
+            .Setup(x => x.PartiQL)
+            .Returns(dynamoDbLowLevelPartiQLContext.Object);
+        var dynamoDbContext = new Mock<IDynamoDbContext>();
+        dynamoDbContext
+            .Setup(x => x.LowLevel)
+            .Returns(dynamoDbLowLevelContext.Object);
+        var dynamoDbContextAdapter = new DynamoDbContextAdapter(dynamoDbContext.Object);
+        var dynamoChangeTrackerContext = new MovieContext(dynamoDbContextAdapter, tableSchema);
+        dynamoChangeTrackerContext.OnModelCreating(dynamoChangeTrackerContext.ModelBuilder);
+        dynamoChangeTrackerContext.Registration();
+        var queryBuilder = (IQueryBuilder<Actor>)new Query<Actor>.Builder(dynamoChangeTrackerContext, tableSchema);
+        var actorEntity = await queryBuilder
+            .PartitionKey("ACTOR#7d06c835-0ddc-4866-b42b-525221ded86c")
+            .ToEntityAsync();
+        var theMatrixReloaded = new Movie("The Matrix Reloaded", 2003, "Science Fiction", 7.2f);
+        actorEntity?.AddMovie(theMatrixReloaded, "Neo");
+        var theMatrixRevolutions = new Movie("The Matrix Revolutions", 2003, "Science Fiction", 6.7f);
+        actorEntity?.AddMovie(theMatrixRevolutions, "Neo");
+        actorEntity?.Rename("Keanu Reeves");
+
+        // Act
+        var changes = dynamoChangeTrackerContext.ChangeTracker.FetchChanges();
+
+        // Assert
+        changes.AddedEntities.Count.Should().Be(2);
+        changes.ModifiedEntities.Count.Should().Be(1);
+        changes.DeletedEntities.Count.Should().Be(0);
     }
 }

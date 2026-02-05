@@ -41,6 +41,88 @@ public static class QueryBuilderTestDataFactory
         };
     }
 
+    public static List<Document> CreateActorDocuments()
+    {
+        return new List<Document>
+        {
+            new Document
+            {
+                ["MovieId"] = "dfcf58ec-0127-41df-b10c-9c3da1ce6da5",
+                ["ActorId"] = "7d06c835-0ddc-4866-b42b-525221ded86c",
+                ["MovieTitle"] = "3DD8F3EE-6445-4D2F-BEEE-2BED65C17ECD",
+                ["ActorName"] = "The Matrix",
+                ["RoleName"] = "Keanu Reeves",
+                ["PartitionKey"] = "MOVIE#dfcf58ec-0127-41df-b10c-9c3da1ce6da5",
+                ["SortKey"] = "ACTOR#7d06c835-0ddc-4866-b42b-525221ded86c",
+                ["GSI1PK"] = "ACTOR#7d06c835-0ddc-4866-b42b-525221ded86c",
+                ["GSI1SK"] = "MOVIE#dfcf58ec-0127-41df-b10c-9c3da1ce6da5"
+            },
+            new Document
+            {
+                ["MovieId"] = "d0316fa4-ac1b-49d4-8404-41158503721c",
+                ["ActorId"] = "7d06c835-0ddc-4866-b42b-525221ded86c",
+                ["MovieTitle"] = "John Wick",
+                ["ActorName"] = "Keanu Reeves",
+                ["RoleName"] = "John Wick",
+                ["PartitionKey"] = "MOVIE#d0316fa4-ac1b-49d4-8404-41158503721c",
+                ["SortKey"] = "ACTOR#7d06c835-0ddc-4866-b42b-525221ded86c",
+                ["GSI1PK"] = "ACTOR#7d06c835-0ddc-4866-b42b-525221ded86c",
+                ["GSI1SK"] = "MOVIE#d0316fa4-ac1b-49d4-8404-41158503721c"
+            },
+            new Document
+            {
+                ["Id"] = "7d06c835-0ddc-4866-b42b-525221ded86c",
+                ["name"] = "Keanu Reeves",
+                ["BirthDate"] = "1964-09-02T00:00:00",
+                ["PartitionKey"] = "ACTOR#7d06c835-0ddc-4866-b42b-525221ded86c",
+                ["SortKey"] = "ACTOR#7d06c835-0ddc-4866-b42b-525221ded86c",
+                ["GSI1PK"] = "ACTOR#7d06c835-0ddc-4866-b42b-525221ded86c",
+                ["GSI1SK"] = "ACTOR#7d06c835-0ddc-4866-b42b-525221ded86c"
+            }
+        };
+    }
+
+    public static List<Document> CreateMovieDocuments()
+    {
+        return new List<Document>
+        {
+            new Document
+            {
+                ["MovieId"] = "dfcf58ec-0127-41df-b10c-9c3da1ce6da5",
+                ["ActorId"] = "7d06c835-0ddc-4866-b42b-525221ded86c",
+                ["MovieTitle"] = "3DD8F3EE-6445-4D2F-BEEE-2BED65C17ECD",
+                ["ActorName"] = "The Matrix",
+                ["RoleName"] = "Keanu Reeves",
+                ["PartitionKey"] = "MOVIE#dfcf58ec-0127-41df-b10c-9c3da1ce6da5",
+                ["SortKey"] = "ACTOR#7d06c835-0ddc-4866-b42b-525221ded86c",
+                ["GSI1PK"] = "ACTOR#7d06c835-0ddc-4866-b42b-525221ded86c",
+                ["GSI1SK"] = "MOVIE#dfcf58ec-0127-41df-b10c-9c3da1ce6da5"
+            },
+            new Document
+            {
+                ["MovieId"] = "dfcf58ec-0127-41df-b10c-9c3da1ce6da5",
+                ["ActorId"] = "de85699d-0c28-4775-be9b-9210581bec45",
+                ["MovieTitle"] = "The Matrix",
+                ["ActorName"] = "Carrie-Anne Moss",
+                ["RoleName"] = "Trinity",
+                ["PartitionKey"] = "MOVIE#dfcf58ec-0127-41df-b10c-9c3da1ce6da5",
+                ["SortKey"] = "ACTOR#de85699d-0c28-4775-be9b-9210581bec45",
+                ["GSI1PK"] = "ACTOR#de85699d-0c28-4775-be9b-9210581bec45",
+                ["GSI1SK"] = "MOVIE#dfcf58ec-0127-41df-b10c-9c3da1ce6da5"
+            },
+            new Document
+            {
+                ["Id"] = "dfcf58ec-0127-41df-b10c-9c3da1ce6da5",
+                ["Title"] = "The Matrix",
+                ["Year"] = new NumberAttributeValue("1999"),
+                ["Genre"] = "Science Fiction",
+                ["IMDBScore"] = new NumberAttributeValue("8.7"),
+                ["PartitionKey"] = "MOVIE#dfcf58ec-0127-41df-b10c-9c3da1ce6da5",
+                ["SortKey"] = "MOVIE#dfcf58ec-0127-41df-b10c-9c3da1ce6da5"
+            }
+        };
+    }
+
     public static List<Document> CreateAffiliationDocuments()
     {
         var dateString = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.FFFFFFFK");

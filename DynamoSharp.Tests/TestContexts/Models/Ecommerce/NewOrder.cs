@@ -22,4 +22,15 @@ public class NewOrder
         Date = date;
         Items = new List<Item>();
     }
+
+    public void AddItem(Item item)
+    {
+        ArgumentNullException.ThrowIfNull(item, nameof(item));
+        _items.Add(item);
+    }
+
+    public void ChangeBuyer(Guid buyerId)
+    {
+        BuyerId = buyerId;
+    }
 }
