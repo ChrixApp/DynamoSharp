@@ -30,22 +30,26 @@ DynamoSharp simplifies the use of DynamoDB in .NET applications, providing an ab
 
 ## Table of Contents
 
-- [Install](#installation)
-- [Configuration](#configuration)
-- [Implementation](#implementation)
+- [Quick start](#quick-start)
+  - [Install](#installation)
+  - [Configuration](#configuration)
+  - [Implementation](#implementation)
+  - [Save](#save)
+  - [Query](#query)
 - [How to map](#how-to-map)
 - [How to save](#how-to-save)
 - [How to query](#how-to-query)
 - [Version control](#version-control)
-- [Thread Safety Considerations](#thread-safety-considerations)
+- [⚠️Thread Safety Considerations⚠️](#thread-safety-considerations)
 
 
-## Installation
+## Quick start
+### Installation
 ```sh
 dotnet add package DynamoSharp
 ```
 
-## Configuration
+### Configuration
 
 ```csharp
 builder.Services.AddDynamoSharp(RegionEndpoint.USEast1);
@@ -60,15 +64,18 @@ builder.Services.AddDynamoSharpContext<AppContext>(
 );
 ```
 
-#### Connect to DynamoDB Local
+### Connect to DynamoDB Local
 ```csharp
 builder.Services.AddDynamoSharp(RegionEndpoint.USEast1, "http://localhost:4566");
 ```
 
-## Implementation
+### Implementation
 
 ```csharp
-public class ModelItem { }
+public class ModelItem 
+{
+    public Guid Id { get; set; }
+}
 
 public class AppContext : DynamoSharpContext
 {
@@ -81,6 +88,20 @@ public class AppContext : DynamoSharpContext
     public override void OnModelCreating(IModelBuilder modelBuilder)
     { }
 }
+```
+
+### Save
+```csharp
+var newModelItem = new ModelItem { ... };
+appContext.Items.Add(newModelItem);
+await appContext.BatchWriter.SaveChangesAsync(cancellationToken);
+```
+
+### Query
+```csharp
+var user = await appContext.Query<User>()
+    .PartitionKey(id.ToString())
+    .ToEntityAsync(cancellationToken);
 ```
 
 ## How to map
@@ -213,7 +234,7 @@ public class AppContext : DynamoSharpContext
         // Example Global Secondary Index Sort Key:
         // EMAIL#chris@example.com
         modelBuilder.Entity<User>()
-            .HasGlobalSecondaryIndexSortKey("GSI1SK", o => u.Email, "EMAIL");
+            .HasGlobalSecondaryIndexSortKey("GSI1SK", u => u.Email, "EMAIL");
     }
 }
 ```
@@ -271,7 +292,7 @@ public class AppContext : DynamoSharpContext
 
         // Example Sort Key: ORG#DynamoSharp
         modelBuilder.Entity<Organization>()
-            .HasSortKey(u => u.Name, "ORG");
+            .HasSortKey(o => o.Name, "ORG");
 
         // Example Global Secondary Index Partition Key: ORGANIZATIONS
         modelBuilder.Entity<Organization>()
@@ -282,7 +303,7 @@ public class AppContext : DynamoSharpContext
             .HasGlobalSecondaryIndexSortKey("GSI1SK", o => o.Name);
 
         modelBuilder.Entity<Organization>()
-            .HasOneToMany(u => u.Users);
+            .HasOneToMany(o => o.Users);
 
 
         // Example Sort Key: USER#Chris
@@ -339,21 +360,21 @@ public class AppContext : DynamoSharpContext
     {
         // Example Partition Key: COUNTRY#Mexico
         modelBuilder.Entity<Store>()
-            .HasPartitionKey(u => u.Country, "COUNTRY");
+            .HasPartitionKey(s => s.Country, "COUNTRY");
 
         // Example Sort Key: STATE#Tabasco
         modelBuilder.Entity<Store>()
-            .HasSortKey(u => u.State, "STATE");
+            .HasSortKey(s => s.State, "STATE");
 
         // Example Global Secondary Index Partition Key: 
         // CITY#Villahermosa
         modelBuilder.Entity<Store>()
-            .HasGlobalSecondaryIndexPartitionKey("GSI1PK", u => u.City, "CITY");
+            .HasGlobalSecondaryIndexPartitionKey("GSI1PK", s => s.City, "CITY");
 
         // Example Global Secondary Index Sort Key:
         // ZIPCODE#00000
         modelBuilder.Entity<Store>()
-            .HasGlobalSecondaryIndexSortKey("GSI1SK", o => u.ZipCode, "ZIPCODE");
+            .HasGlobalSecondaryIndexSortKey("GSI1SK", s => u.ZipCode, "ZIPCODE");
     }
 }
 ```
@@ -402,21 +423,21 @@ public class AppContext : DynamoSharpContext
     {
         // Example Partition Key: COUNTRY#Mexico
         modelBuilder.Entity<Store>()
-            .HasPartitionKey(u => u.Country, "COUNTRY");
+            .HasPartitionKey(s => s.Country, "COUNTRY");
 
         // Example Sort Key: STATE#Tabasco#CITY#Villahermosa#ZIPCODE#00000
         modelBuilder.Entity<Store>()
-            .HasSortKey(u => u.State, "STATE")
+            .HasSortKey(s => s.State, "STATE")
             .Include(s => s.Address.City, "CITY");
 
         // Example Global Secondary Index Partition Key: Mexico
         modelBuilder.Entity<Store>()
-            .HasGlobalSecondaryIndexPartitionKey("GSI1PK", u => u.Country);
+            .HasGlobalSecondaryIndexPartitionKey("GSI1PK", s => s.Country);
 
         // Example Global Secondary Index Sort Key:
         // Tabasco#Villahermosa#00000
         modelBuilder.Entity<Store>()
-            .HasGlobalSecondaryIndexSortKey("GSI1SK", o => u.State)
+            .HasGlobalSecondaryIndexSortKey("GSI1SK", s => s.State)
             .Include(s => s.Address.City, "CITY")
             .Include(s => s.Address.ZipCode, "ZIPCODE");
     }
@@ -545,14 +566,14 @@ public class AppContext : DynamoSharpContext
 
         // Example Sort Key: ORG#DynamoSharp
         modelBuilder.Entity<Organization>()
-            .HasSortKey(u => u.Name, "ORG");
+            .HasSortKey(o => o.Name, "ORG");
 
         modelBuilder.Entity<Organization>()
-            .HasOneToMany(u => u.Users);
+            .HasOneToMany(o => o.Users);
 
         // Example Sort Key: USER#Chris
         modelBuilder.Entity<User>()
-            .HasSortKey(u => u.Name, "USER");
+            .HasSortKey(o => o.Name, "USER");
     }
 }
 ```
@@ -788,22 +809,22 @@ public class AppContext : DynamoSharpContext
 appContext.Users.Add(newUser);
         
 // Save with batch 
-await _appContext.BatchWriter.SaveChangesAsync(cancellationToken);
+await appContext.BatchWriter.SaveChangesAsync(cancellationToken);
 // Save with transaction
-await _appContext.TransactWriter.SaveChangesAsync(cancellationToken);
+await appContext.TransactWriter.SaveChangesAsync(cancellationToken);
 ```
 
 ### Update
 ```csharp
 appContext.Users.Add(newUser);
-await _appContext.BatchWriter.SaveChangesAsync(cancellationToken);
+await appContext.BatchWriter.SaveChangesAsync(cancellationToken);
 
 newUser.Email = "example@example.com";
 
 // Update with batch
-await _appContext.BatchWriter.SaveChangesAsync(cancellationToken);
+await appContext.BatchWriter.SaveChangesAsync(cancellationToken);
 // Update with transaction
-await _appContext.TransactWriter.SaveChangesAsync(cancellationToken);
+await appContext.TransactWriter.SaveChangesAsync(cancellationToken);
 ```
 
 ### Remove
@@ -813,23 +834,23 @@ await _appContext.TransactWriter.SaveChangesAsync(cancellationToken);
 _appContext.Users.Remove(newUser);
         
 // Save with batch 
-await _appContext.BatchWriter.SaveChangesAsync(cancellationToken);
+await appContext.BatchWriter.SaveChangesAsync(cancellationToken);
 // Save with transaction
-await _appContext.TransactWriter.SaveChangesAsync(cancellationToken);
+await appContext.TransactWriter.SaveChangesAsync(cancellationToken);
 ```
 
 ## How to query
 ### Query by partition key
 
 ```csharp
-var user = await _appContext.Query<User>()
+var user = await appContext.Query<User>()
     .PartitionKey($"USER#{id}")
     .ToEntityAsync(cancellationToken);
 ```
 
 ### Query by partition key and sort key
 ```csharp
- var item = await _appContext.Query<Item>()
+ var item = await appContext.Query<Item>()
     .PartitionKey($"ORDER#{orderId}")
     .SortKey(QueryOperator.Equal, $"ITEM#{itemId}")
     .ToEntityAsync(cancellationToken);
@@ -837,7 +858,7 @@ var user = await _appContext.Query<User>()
 
 ### Query by partition key using global secondary index
 ```csharp
-var user = await _appContext.Query<User>()
+var user = await appContext.Query<User>()
     .IndexName("GSI1PK-GSI1SK-index")
     .PartitionKey("GSI1PK", $"USER#{id}")
     .ToEntityAsync(cancellationToken);
@@ -845,7 +866,7 @@ var user = await _appContext.Query<User>()
 
 ### Query by partition key and sort key using global secondary index
 ```csharp
-var item = await _appContext.Query<Item>()
+var item = await appContext.Query<Item>()
     .IndexName("GSI1PK-GSI1SK-index")
     .PartitionKey("GSI1PK", $"ORDER#{orderId}")
     .SortKey("GSI1SK", QueryOperator.BeginsWith, "ITEM#")
@@ -854,7 +875,7 @@ var item = await _appContext.Query<Item>()
 
 ### Query with filter
 ```csharp
-var item = await _appContext.Query<Item>()
+var item = await appContext.Query<Item>()
     .IndexName("GSI1PK-GSI1SK-index")
     .PartitionKey("GSI1PK", $"ORDER#{orderId}")
     .SortKey("GSI1SK", QueryOperator.BeginsWith, "ITEM#")
@@ -864,7 +885,7 @@ var item = await _appContext.Query<Item>()
 
 ### Query with Limit, ConsistentRead, ScanIndexForward and AsNoTracking
 ```csharp
-var items = await _appContext.Query<Item>()
+var items = await appContext.Query<Item>()
     .IndexName("GSI1PK-GSI1SK-index")
     .PartitionKey("GSI1PK", $"ORDER#{orderId}")
     .SortKey("GSI1SK", QueryOperator.BeginsWith, "ITEM#")
@@ -908,5 +929,5 @@ public class EcommerceContext : DynamoSharpContext
 }
 ```
 
-## Thread Safety Considerations
+## ⚠️Thread Safety Considerations⚠️
 DynamoSharp does not support concurrent operations on the same DynamoSharpContext instance. Avoid running multiple asynchronous queries in parallel or accessing the context from multiple threads simultaneously. Always await async calls immediately or use separate DynamoSharpContext instances for parallel operations.
