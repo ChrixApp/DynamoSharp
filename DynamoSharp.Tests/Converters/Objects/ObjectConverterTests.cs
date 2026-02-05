@@ -1,4 +1,6 @@
-﻿using DynamoSharp.Converters.Objects;
+﻿using Ardalis.SmartEnum;
+using DynamoSharp.Converters.Jsons;
+using DynamoSharp.Converters.Objects;
 using EfficientDynamoDb.DocumentModel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -39,13 +41,7 @@ public class ObjectConverterTests
             Name = "Test",
             NestedEntity = new NestedEntity { Value = "Nested" }
         };
-        var jsonSerializer = JsonSerializer.Create(new JsonSerializerSettings
-        {
-            NullValueHandling = NullValueHandling.Ignore,
-            Converters = new List<JsonConverter> { new StringEnumConverter() },
-            DateFormatString = "yyyy-MM-ddTHH:mm:ss.FFFFFFFK",
-            MaxDepth = 10
-        });
+        var jsonSerializer = JsonSerializerBuilder.Build();
 
         // Act
         var copiedObject = (TestEntity?)ObjectConverter.Instance.DeepCopy(originalObject, jsonSerializer);
@@ -56,6 +52,7 @@ public class ObjectConverterTests
         Assert.Equal(originalObject.Name, copiedObject?.Name);
         Assert.NotSame(originalObject.NestedEntity, copiedObject?.NestedEntity);
         Assert.Equal(originalObject.NestedEntity.Value, copiedObject?.NestedEntity?.Value);
+        Assert.Equal(EntityType.Parent, copiedObject?.EntityType);
     }
 
     [Fact]
@@ -206,7 +203,8 @@ public class ObjectConverterTests
             {
                 ["Value1"] = new StringAttributeValue("Value1"),
                 ["Value2"] = new StringAttributeValue("Value2")
-            })
+            }),
+            ["EntityType"] = new StringAttributeValue("Parent")
         };
 
         // Act
@@ -327,6 +325,8 @@ public class ObjectConverterTests
         Assert.Equal(2, result.EnumDictionary.Count);
         Assert.Equal("Value1", result.EnumDictionary[EnumTest.Value1]);
         Assert.Equal("Value2", result.EnumDictionary[EnumTest.Value2]);
+
+        Assert.Equal(EntityType.Parent, result.EntityType);
     }
 
     private class TestEntity
@@ -373,6 +373,8 @@ public class ObjectConverterTests
         public Dictionary<float, string>? FloatDictionary { get; set; } = new Dictionary<float, string>();
         public Dictionary<decimal, string>? DecimalDictionary { get; set; } = new Dictionary<decimal, string>();
         public Dictionary<EnumTest, string>? EnumDictionary { get; set; } = new Dictionary<EnumTest, string>();
+
+        public EntityType EntityType { get; set; } = EntityType.Parent;
     }
 
     private class NestedEntity
@@ -384,5 +386,29 @@ public class ObjectConverterTests
     {
         Value1,
         Value2
+    }
+
+    public abstract class EntityType : SmartEnum<EntityType>
+    {
+        public static readonly EntityType Parent = new ParentType();
+        public static readonly EntityType Child = new ChildType();
+
+        private EntityType(string name, int value) : base(name, value)
+        {
+        }
+
+        private sealed class ParentType : EntityType
+        {
+            public ParentType() : base("Parent", 0)
+            {
+            }
+        }
+
+        private sealed class ChildType : EntityType
+        {
+            public ChildType() : base("Child", 1)
+            {
+            }
+        }
     }
 }

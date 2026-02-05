@@ -1,5 +1,4 @@
-﻿using DynamoSharp.Utils;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace DynamoSharp.Converters.Jsons;
@@ -15,7 +14,7 @@ public static class JsonSerializerBuilder
         var jsonSerializerSettings = new JsonSerializerSettings
         {
             ContractResolver = new CustomIgnoreResolver(propertiesToIgnore),
-            Converters = new List<JsonConverter> { new StringEnumConverter() },
+            Converters = new List<JsonConverter> { new StringEnumConverter(), new SmartEnumNameJsonConverter() },
             DateFormatString = dateFormatString,
             MaxDepth = maxDepth,
             NullValueHandling = nullValueHandling,
@@ -30,7 +29,7 @@ public static class JsonSerializerBuilder
     {
         var jsonSerializerSettings = new JsonSerializerSettings
         {
-            Converters = new List<JsonConverter> { new StringEnumConverter() },
+            Converters = new List<JsonConverter> { new StringEnumConverter(), new SmartEnumNameJsonConverter() },
             DateFormatString = dateFormatString,
             MaxDepth = maxDepth,
             NullValueHandling = nullValueHandling,

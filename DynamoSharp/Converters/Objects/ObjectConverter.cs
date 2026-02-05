@@ -130,8 +130,12 @@ public sealed class ObjectConverter
 
     private static object? ConvertToSmartEnum(Type smartEnumType, AttributeValue attributeValue)
     {
-        var baseType = FindSmarEnumBaseType(smartEnumType);
-        var method = baseType.GetMethod("FromName", BindingFlags.Static | BindingFlags.Public);
+        var method = smartEnumType.GetMethod(
+            "FromName",
+            BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy,
+            binder: null,
+            types: new[] { typeof(string), typeof(bool) },
+            modifiers: null);
 
         if (method != null)
         {
@@ -139,19 +143,6 @@ public sealed class ObjectConverter
         }
 
         return null;
-    }
-
-    private static Type FindSmarEnumBaseType(Type? type)
-    {
-        while (type != null && type != typeof(object))
-        {
-            if (type.IsGenericType && type.GetGenericTypeDefinition().Name.Contains("SmartEnum"))
-            {
-                return type;
-            }
-            type = type.BaseType;
-        }
-        throw new InvalidOperationException("The type is not a SmartEnum.");
     }
 
     private static DateTime ConvertAttributeValueToDateTime(AttributeValue attributeValue)
