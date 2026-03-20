@@ -82,10 +82,10 @@ public class KeyBuilderTests
     {
         // Arrange
         var keyPaths = new Dictionary<string, string>
-            {
-                {"firstName", "first"},
-                {"lastName", "last"}
-            };
+        {
+            {"firstName", "first"},
+            {"lastName", "last"}
+        };
         var jObject = JObject.Parse("{ \"firstName\": \"Alice\", \"lastName\": \"Wonderland\" }");
 
         // Act
@@ -93,5 +93,26 @@ public class KeyBuilderTests
 
         // Assert
         Assert.Equal("first#Alice#last#Wonderland", result);
+    }
+
+    [Fact]
+    public void BuildKey_GivenMultipleKeyPaths_BuildsConcatenatedResult_MixedTypes()
+    {
+        // Arrange
+        var keyPaths = new Dictionary<string, string>
+        {
+            {"IsActive", "IS_ACTIVE"},
+            {"Id", "ID"},
+            {"CreatedAt", "CREATED_AT"},
+            {"Amount", "AMOUNT"},
+            {"Stock", "STOCK"},
+        };
+        var jObject = JObject.Parse("{ \"Id\": \"3cbbd765-0300-4a77-b7f7-83df4234fbf6\", \"IsActive\": true, \"CreatedAt\": \"2023-05-01T12:34:56.789Z\", \"Amount\": 26.01, \"Stock\": 5}");
+
+        // Act
+        var result = KeyBuilder.BuildKey(keyPaths, jObject);
+
+        // Assert
+        Assert.Equal("IS_ACTIVE#True#ID#3cbbd765-0300-4a77-b7f7-83df4234fbf6#CREATED_AT#2023-05-01T12:34:56.789Z#AMOUNT#26.01#STOCK#5", result);
     }
 }
