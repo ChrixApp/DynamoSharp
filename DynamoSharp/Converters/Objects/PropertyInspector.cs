@@ -5,7 +5,7 @@ namespace DynamoSharp.Converters.Objects;
 public static class PropertyInspector
 {
     private static bool HasCompilerBackingField(Type type, PropertyInfo p) =>
-        type.GetField($"<{p.Name}>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance) != null;
+        p.DeclaringType?.GetField($"<{p.Name}>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance) != null;
 
     public static bool IsComputedProperty(Type type, PropertyInfo p) =>
         p.CanRead
