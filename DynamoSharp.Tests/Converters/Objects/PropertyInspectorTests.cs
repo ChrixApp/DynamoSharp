@@ -34,50 +34,95 @@ public class PropertyInspectorTests
         public int IntProp { get; set; }
     }
 
-    [Fact]
-    public void IsComputedProperty_ReturnsTrue_ForComputedProperty()
+    private class TestChildClass : TestClass
     {
-        var type = typeof(TestClass);
-        var prop = type.GetProperty(nameof(TestClass.AutoProp))!;
+        // Auto-property (compiler-generated backing field expected)
+        public int AutoPropChild { get; set; }
+    }
+
+    [Fact]
+    public void IsComputedProperty_ReturnsFalse_ForNotComputedProperty()
+    {
+        var prop = typeof(TestClass).GetProperty(nameof(TestClass.AutoProp))!;
         Assert.False(PropertyInspector.IsComputedProperty(prop));
     }
 
     [Fact]
-    public void IsComputedProperty_ReturnsFalse_ForManualProperty()
+    public void IsComputedProperty_ReturnsTrue_ForManualProperty()
     {
-        var type = typeof(TestClass);
-        var prop = type.GetProperty(nameof(TestClass.ManualProp))!;
+        var prop = typeof(TestClass).GetProperty(nameof(TestClass.ManualProp))!;
         Assert.True(PropertyInspector.IsComputedProperty(prop));
     }
 
     [Fact]
-    public void IsComputedProperty_ReturnsFalse_ForComputedProperty()
+    public void IsComputedProperty_ReturnsTrue_ForComputedProperty()
     {
-        var type = typeof(TestClass);
-        var prop = type.GetProperty(nameof(TestClass.ComputedProp))!;
+        var prop = typeof(TestClass).GetProperty(nameof(TestClass.ComputedProp))!;
+        Assert.True(PropertyInspector.IsComputedProperty(prop));
+    }
+
+    [Theory]
+    [InlineData(nameof(TestClass.ListProp))]
+    [InlineData(nameof(TestClass.ReadOnlyListProp))]
+    [InlineData(nameof(TestClass.ReadOnlyCollectionProp))]
+    [InlineData(nameof(TestClass.DictionaryProp))]
+    [InlineData(nameof(TestClass.ReadOnlyDictionaryProp))]
+    public void IsCollectionProperty_ReturnsTrue_ForSupportedGenericCollections(string propName)
+    {
+        var prop = typeof(TestClass).GetProperty(propName)!;
+        Assert.True(PropertyInspector.IsCollectionProperty(prop));
+    }
+
+    [Theory]
+    [InlineData(nameof(TestClass.ArrayProp))]
+    [InlineData(nameof(TestClass.HashSetProp))]
+    [InlineData(nameof(TestClass.EnumerableProp))]
+    [InlineData(nameof(TestClass.IntProp))]
+    public void IsCollectionProperty_ReturnsFalse_ForUnsupportedOrNonGenericCollections(string propName)
+    {
+        var prop = typeof(TestClass).GetProperty(propName)!;
+        Assert.False(PropertyInspector.IsCollectionProperty(prop));
+    }
+
+    [Fact]
+    public void IsComputedProperty_ReturnsFalse_ForNotComputedPropertyInChildClass()
+    {
+        var prop = typeof(TestChildClass).GetProperty(nameof(TestChildClass.AutoPropChild))!;
+        Assert.False(PropertyInspector.IsComputedProperty(prop));
+    }
+
+    [Fact]
+    public void IsComputedProperty_ReturnsFalse_ForNotComputedPropertyInBaseClass()
+    {
+        var prop = typeof(TestChildClass).GetProperty(nameof(TestClass.AutoProp))!;
+        Assert.False(PropertyInspector.IsComputedProperty(prop));
+    }
+
+    [Fact]
+    public void IsComputedProperty_ReturnsTrue_ForManualProperty_UsingChildClass()
+    {
+        var prop = typeof(TestChildClass).GetProperty(nameof(TestClass.ManualProp))!;
         Assert.True(PropertyInspector.IsComputedProperty(prop));
     }
 
     [Fact]
-    public void IsCollectionProperty_ReturnsTrue_ForSupportedGenericCollections()
+    public void IsComputedProperty_ReturnsTrue_ForComputedProperty_UsingChildClass()
     {
-        var type = typeof(TestClass);
-
-        Assert.True(PropertyInspector.IsCollectionProperty(type.GetProperty(nameof(TestClass.ListProp))!));
-        Assert.True(PropertyInspector.IsCollectionProperty(type.GetProperty(nameof(TestClass.ReadOnlyListProp))!));
-        Assert.True(PropertyInspector.IsCollectionProperty(type.GetProperty(nameof(TestClass.ReadOnlyCollectionProp))!));
-        Assert.True(PropertyInspector.IsCollectionProperty(type.GetProperty(nameof(TestClass.DictionaryProp))!));
-        Assert.True(PropertyInspector.IsCollectionProperty(type.GetProperty(nameof(TestClass.ReadOnlyDictionaryProp))!));
+        var prop = typeof(TestChildClass).GetProperty(nameof(TestClass.ComputedProp))!;
+        Assert.True(PropertyInspector.IsComputedProperty(prop));
     }
 
     [Fact]
-    public void IsCollectionProperty_ReturnsFalse_ForUnsupportedOrNonGenericCollections()
+    public void IsCollectionProperty_ReturnsTrue_ForInheritedCollectionProperty()
     {
-        var type = typeof(TestClass);
+        var prop = typeof(TestChildClass).GetProperty(nameof(TestClass.ListProp))!;
+        Assert.True(PropertyInspector.IsCollectionProperty(prop));
+    }
 
-        Assert.False(PropertyInspector.IsCollectionProperty(type.GetProperty(nameof(TestClass.ArrayProp))!));
-        Assert.False(PropertyInspector.IsCollectionProperty(type.GetProperty(nameof(TestClass.HashSetProp))!));
-        Assert.False(PropertyInspector.IsCollectionProperty(type.GetProperty(nameof(TestClass.EnumerableProp))!));
-        Assert.False(PropertyInspector.IsCollectionProperty(type.GetProperty(nameof(TestClass.IntProp))!));
+    [Fact]
+    public void IsCollectionProperty_ReturnsFalse_ForUnsupportedOrNonGenericCollections_UsingChildClass()
+    {
+        var prop = typeof(TestChildClass).GetProperty(nameof(TestClass.ArrayProp))!;
+        Assert.False(PropertyInspector.IsCollectionProperty(prop));
     }
 }
