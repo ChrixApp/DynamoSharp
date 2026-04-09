@@ -1,4 +1,4 @@
-﻿using DynamoSharp.Converters.Objects;
+using DynamoSharp.Converters.Objects;
 
 namespace DynamoSharp.Tests.Converters.Objects;
 
@@ -39,7 +39,7 @@ public class PropertyInspectorTests
     {
         var type = typeof(TestClass);
         var prop = type.GetProperty(nameof(TestClass.AutoProp))!;
-        Assert.False(PropertyInspector.IsComputedProperty(type, prop));
+        Assert.False(PropertyInspector.IsComputedProperty(prop));
     }
 
     [Fact]
@@ -47,7 +47,7 @@ public class PropertyInspectorTests
     {
         var type = typeof(TestClass);
         var prop = type.GetProperty(nameof(TestClass.ManualProp))!;
-        Assert.True(PropertyInspector.IsComputedProperty(type, prop));
+        Assert.True(PropertyInspector.IsComputedProperty(prop));
     }
 
     [Fact]
@@ -55,7 +55,7 @@ public class PropertyInspectorTests
     {
         var type = typeof(TestClass);
         var prop = type.GetProperty(nameof(TestClass.ComputedProp))!;
-        Assert.True(PropertyInspector.IsComputedProperty(type, prop));
+        Assert.True(PropertyInspector.IsComputedProperty(prop));
     }
 
     [Fact]
@@ -63,11 +63,11 @@ public class PropertyInspectorTests
     {
         var type = typeof(TestClass);
 
-        Assert.True(PropertyInspector.IsCollectionProperty(type, type.GetProperty(nameof(TestClass.ListProp))!));
-        Assert.True(PropertyInspector.IsCollectionProperty(type, type.GetProperty(nameof(TestClass.ReadOnlyListProp))!));
-        Assert.True(PropertyInspector.IsCollectionProperty(type, type.GetProperty(nameof(TestClass.ReadOnlyCollectionProp))!));
-        Assert.True(PropertyInspector.IsCollectionProperty(type, type.GetProperty(nameof(TestClass.DictionaryProp))!));
-        Assert.True(PropertyInspector.IsCollectionProperty(type, type.GetProperty(nameof(TestClass.ReadOnlyDictionaryProp))!));
+        Assert.True(PropertyInspector.IsCollectionProperty(type.GetProperty(nameof(TestClass.ListProp))!));
+        Assert.True(PropertyInspector.IsCollectionProperty(type.GetProperty(nameof(TestClass.ReadOnlyListProp))!));
+        Assert.True(PropertyInspector.IsCollectionProperty(type.GetProperty(nameof(TestClass.ReadOnlyCollectionProp))!));
+        Assert.True(PropertyInspector.IsCollectionProperty(type.GetProperty(nameof(TestClass.DictionaryProp))!));
+        Assert.True(PropertyInspector.IsCollectionProperty(type.GetProperty(nameof(TestClass.ReadOnlyDictionaryProp))!));
     }
 
     [Fact]
@@ -75,9 +75,9 @@ public class PropertyInspectorTests
     {
         var type = typeof(TestClass);
 
-        Assert.False(PropertyInspector.IsCollectionProperty(type, type.GetProperty(nameof(TestClass.ArrayProp))!));
-        Assert.False(PropertyInspector.IsCollectionProperty(type, type.GetProperty(nameof(TestClass.HashSetProp))!));
-        Assert.False(PropertyInspector.IsCollectionProperty(type, type.GetProperty(nameof(TestClass.EnumerableProp))!));
-        Assert.False(PropertyInspector.IsCollectionProperty(type, type.GetProperty(nameof(TestClass.IntProp))!));
+        Assert.False(PropertyInspector.IsCollectionProperty(type.GetProperty(nameof(TestClass.ArrayProp))!));
+        Assert.False(PropertyInspector.IsCollectionProperty(type.GetProperty(nameof(TestClass.HashSetProp))!));
+        Assert.False(PropertyInspector.IsCollectionProperty(type.GetProperty(nameof(TestClass.EnumerableProp))!));
+        Assert.False(PropertyInspector.IsCollectionProperty(type.GetProperty(nameof(TestClass.IntProp))!));
     }
 }
