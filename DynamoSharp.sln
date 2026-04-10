@@ -8,6 +8,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DynamoSharp.Examples", "Dyn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AscendingAndDescenting", "DynamoSharp.Examples\AscendingAndDescenting\AscendingAndDescenting.csproj", "{69BFA68D-5538-4CAE-A92B-E20F189A23DC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChildAndParent", "DynamoSharp.Examples\ChildAndParent\ChildAndParent.csproj", "{69BFA68D-5538-4CAE-A92B-E20F189A23DE}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompositeKeysWithHierarchicalData", "DynamoSharp.Examples\CompositeKeysWithHierarchicalData\CompositeKeysWithHierarchicalData.csproj", "{AE6C4651-E12B-44A8-BCEF-B9CB9FCD647A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalSecondaryIndex", "DynamoSharp.Examples\GlobalSecondaryIndex\GlobalSecondaryIndex.csproj", "{AB422EA5-98C6-481C-845E-B783F5DB497E}"
