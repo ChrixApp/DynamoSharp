@@ -18,7 +18,11 @@ public class JTokenConverter
             case JTokenType.Integer:
                 return property.ToObject<long>();
             case JTokenType.Float:
-                return property.ToObject<decimal>();
+                return property.ToObject<float>();
+            case JTokenType.Boolean:
+                return property.ToObject<bool>();
+            case JTokenType.TimeSpan:
+                return property.ToObject<TimeSpan>();
             case JTokenType.Array:
                 var list = property.ToObject<List<object>>();
                 return string.Join("#", list!);

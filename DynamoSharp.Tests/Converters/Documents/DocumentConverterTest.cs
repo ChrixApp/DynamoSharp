@@ -75,4 +75,60 @@ public class DocumentConverterTest
         entity.Address?.ZipCode.Should().Be("ZipCode 1");
         entity.Items.Should().HaveCount(0);
     }
+
+    [Fact]
+    public void Should_ConvertToObject_And_Initialize_Relationship()
+    {
+        // Arrange
+        var item = new Document
+        {
+            ["PartitionKey"] = "ORDER#85cafc37-e6bb-4693-9283-f2eaec9828af",
+            ["SortKey"] = "ITEM#3DD8F3EE-6445-4D2F-BEEE-2BED65C17ECD",
+            ["Id"] = "3DD8F3EE-6445-4D2F-BEEE-2BED65C17ECD",
+            ["ProductName"] = "Product 1",
+            ["UnitPrice"] = new NumberAttributeValue("10.99"),
+            ["Units"] = new NumberAttributeValue("1")
+        };
+        var attributesList = new List<AttributeValue>();
+        attributesList.Add(item);
+        var itemsDocs = new AttributeValue(new ListAttributeValue(attributesList));
+        var dateString = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.FFFFFFFK");
+        var doc = new Document
+        {
+            ["PartitionKey"] = "ORDER#85cafc37-e6bb-4693-9283-f2eaec9828af",
+            ["SortKey"] = "ORDER#85cafc37-e6bb-4693-9283-f2eaec9828af",
+            ["Id"] = "85cafc37-e6bb-4693-9283-f2eaec9828af",
+            ["BuyerId"] = "68139DA0-A9F5-42FB-97FA-0585E9BCC8B1",
+            ["Address"] = new Document
+            {
+                ["Street"] = "Street 1",
+                ["City"] = "City 1",
+                ["State"] = "State 1",
+                ["ZipCode"] = "ZipCode 1"
+            },
+            ["Date"] = dateString,
+            ["Items"] = itemsDocs
+        };
+
+        var propertyType = typeof(NewOrder);
+        var documentConverter = new DocumentConverter();
+
+        // Act
+        var result = documentConverter.ConvertToObject(doc, propertyType);
+
+        // Assert
+        Assert.IsType<NewOrder>(result);
+        var entity = (NewOrder)result;
+        entity.Should().BeOfType<NewOrder>();
+        entity.Id.Should().Be("85cafc37-e6bb-4693-9283-f2eaec9828af");
+        entity.BuyerId.Should().Be("68139DA0-A9F5-42FB-97FA-0585E9BCC8B1");
+        entity.Date.Should().Be(DateTime.ParseExact(dateString, "yyyy-MM-ddTHH:mm:ss.FFFFFFFK", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind));
+        entity.Address.Should().NotBeNull();
+        entity.Address.Should().BeOfType<Address>();
+        entity.Address?.Street.Should().Be("Street 1");
+        entity.Address?.City.Should().Be("City 1");
+        entity.Address?.State.Should().Be("State 1");
+        entity.Address?.ZipCode.Should().Be("ZipCode 1");
+        entity.Items.Should().HaveCount(1);
+    }
 }
