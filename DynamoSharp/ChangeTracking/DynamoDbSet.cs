@@ -90,7 +90,7 @@ public class DynamoDbSet<TEntity> : IDynamoDbSet<TEntity>
 
         foreach (var property in properties)
         {
-            if (PropertyInspector.IsComputedProperty(entityType, property) && !PropertyInspector.IsCollectionProperty(entityType, property))
+            if (PropertyInspector.IsComputedProperty(property) && !PropertyInspector.IsCollectionProperty(property))
             {
                 entityTypeBuilder.IgnoredProperties.Add(property.Name);
             }
