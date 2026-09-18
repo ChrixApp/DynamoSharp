@@ -1,4 +1,6 @@
-﻿namespace DynamoSharp.Tests.Contexts.Models.Affiliation;
+﻿using static DynamoSharp.Tests.Converters.Objects.ObjectConverterTests;
+
+namespace DynamoSharp.Tests.Contexts.Models.Affiliation;
 
 public class Affiliation
 {
@@ -12,6 +14,7 @@ public class Affiliation
     public AffiliationType Type { get; private set; }
     public float Percentage { get; private set; }
     public DateTime CreatedAt { get; private set; }
+    public EntityType EntityType {  get; private set; }
 
     public Affiliation(
         Guid merchantId,
@@ -33,6 +36,7 @@ public class Affiliation
         Type = type;
         Percentage = percentage;
         CreatedAt = DateTime.UtcNow;
+        EntityType = EntityType.Child;
     }
 
     public void UpdateCountryOrRigion(CountryOrRigion countryOrRigion)

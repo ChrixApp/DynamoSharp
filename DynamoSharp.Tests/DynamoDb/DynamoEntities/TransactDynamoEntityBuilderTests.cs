@@ -341,4 +341,38 @@ public class TransactDynamoEntityBuilderTests
             gsi1Sk?.ToString().Should().StartWith("ORDER#");
         }
     }
+
+    [Fact]
+    public void GetAddedEntities_ShouldReturnEntityWithValueForSmartEnum()
+    {
+        // arrange
+        var (tableSchema, modelBuilder, changeTracker, merchantId) = DynamoEntityBuilderTestDataFactory.CreateAffiliationContextWithValueForSmartEnum();
+        var transactDynamoEntityBuilder = new TransactDynamoEntityBuilder(tableSchema, modelBuilder);
+        var (addedEntities, _, _) = changeTracker.FetchChanges();
+        var entity = (Affiliation)addedEntities[0].Entity;
+
+        // act
+        var entityJson = transactDynamoEntityBuilder.BuildAddedEntity(addedEntities[0]);
+
+        // assert
+        entityJson.TryGetValue("EntityType", out var entityType).Should().Be(true);
+        entityType?.ToString().Should().Be(entity.EntityType.Value.ToString());
+    }
+
+    [Fact]
+    public void GetAddedEntities_ShouldReturnEntityWithNameForSmartEnum()
+    {
+        // arrange
+        var (tableSchema, modelBuilder, changeTracker, merchantId) = DynamoEntityBuilderTestDataFactory.CreateAffiliationContextWithNameForSmartEnum();
+        var transactDynamoEntityBuilder = new TransactDynamoEntityBuilder(tableSchema, modelBuilder);
+        var (addedEntities, _, _) = changeTracker.FetchChanges();
+        var entity = (Affiliation)addedEntities[0].Entity;
+
+        // act
+        var entityJson = transactDynamoEntityBuilder.BuildAddedEntity(addedEntities[0]);
+
+        // assert
+        entityJson.TryGetValue("EntityType", out var entityType).Should().Be(true);
+        entityType?.ToString().Should().Be(entity.EntityType.ToString());
+    }
 }

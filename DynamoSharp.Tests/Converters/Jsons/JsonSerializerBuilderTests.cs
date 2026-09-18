@@ -15,7 +15,7 @@ public class JsonSerializerBuilderTests
         var nullValueHandling = NullValueHandling.Ignore;
 
         // Act
-        var serializer = JsonSerializerBuilder.Build(dateFormatString, maxDepth, nullValueHandling);
+        var serializer = JsonSerializerBuilder.Build(dateFormatString, maxDepth, nullValueHandling: nullValueHandling);
 
         // Assert
         Assert.NotNull(serializer);
@@ -34,7 +34,7 @@ public class JsonSerializerBuilderTests
         var nullValueHandling = NullValueHandling.Ignore;
 
         // Act
-        var serializer = JsonSerializerBuilder.Build(propertiesToIgnore, dateFormatString, maxDepth, nullValueHandling);
+        var serializer = JsonSerializerBuilder.Build(propertiesToIgnore, dateFormatString, maxDepth, nullValueHandling: nullValueHandling);
 
         // Assert
         Assert.NotNull(serializer);
@@ -52,7 +52,7 @@ public class JsonSerializerBuilderTests
         var dateFormatString = "yyyy-MM-ddTHH:mm:ss.FFFFFFFK";
         var maxDepth = 10;
         var nullValueHandling = NullValueHandling.Ignore;
-        var jsonSerializer = JsonSerializerBuilder.Build(propertiesToIgnore, dateFormatString, maxDepth, nullValueHandling);
+        var jsonSerializer = JsonSerializerBuilder.Build(propertiesToIgnore, dateFormatString, maxDepth, nullValueHandling: nullValueHandling);
         var entity = new TestEntity
         {
             Property1 = "Test",

@@ -194,17 +194,21 @@ public class Query<TEntity>
                 var version = doc[_tableSchema.VersionName].AsNumberAttribute().ToInt();
 
                 entityChangeTracker = new EntityChangeTracker(
-                _dynamoSharpContext.ModelBuilder,
-                entity,
-                EntityState.Unchanged,
-                version);
+                    _tableSchema,
+                    _dynamoSharpContext.ModelBuilder,
+                    entity,
+                    EntityState.Unchanged,
+                    version
+                );
             }
             else
             {
                 entityChangeTracker = new EntityChangeTracker(
-                _dynamoSharpContext.ModelBuilder,
-                entity,
-                EntityState.Unchanged);
+                    _tableSchema,
+                    _dynamoSharpContext.ModelBuilder,
+                    entity,
+                    EntityState.Unchanged
+                );
             }
 
             _dynamoSharpContext.ChangeTracker.Track(entityChangeTracker);
@@ -222,19 +226,23 @@ public class Query<TEntity>
                 var version = doc[_tableSchema.VersionName].AsNumberAttribute().ToInt();
 
                 entityChangeTracker = new EntityChangeTracker(
-                _dynamoSharpContext.ModelBuilder,
-                entity,
-                EntityState.Unchanged,
-                parentEntity,
-                version);
+                    _tableSchema,
+                    _dynamoSharpContext.ModelBuilder,
+                    entity,
+                    EntityState.Unchanged,
+                    parentEntity,
+                    version
+                );
             } 
             else
             {
                 entityChangeTracker = new EntityChangeTracker(
-                _dynamoSharpContext.ModelBuilder,
-                entity,
-                EntityState.Unchanged,
-                parentEntity);
+                    _tableSchema,
+                    _dynamoSharpContext.ModelBuilder,
+                    entity,
+                    EntityState.Unchanged,
+                    parentEntity
+                );
             }
 
             _dynamoSharpContext.ChangeTracker.Track(entityChangeTracker);

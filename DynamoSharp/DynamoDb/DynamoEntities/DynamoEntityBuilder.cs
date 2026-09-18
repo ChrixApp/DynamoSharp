@@ -31,12 +31,12 @@ public abstract class DynamoEntityBuilder : IDynamoEntityBuilder
         return dynamoEntity;
     }
 
-    protected static JsonSerializer GetJsonSerializer(IModelBuilder modelBuilder, Type type)
+    protected JsonSerializer GetJsonSerializer(IModelBuilder modelBuilder, Type type)
     {
         var entityTypeBuilder = modelBuilder.Entities[type];
         var propertiesToIgnore = new List<string>(entityTypeBuilder.OneToMany.Keys.ToList());
         propertiesToIgnore.AddRange(entityTypeBuilder.ManyToMany.Keys.ToList());
-        return JsonSerializerBuilder.Build(propertiesToIgnore);
+        return JsonSerializerBuilder.Build(propertiesToIgnore, useValueForSmartEnum: _tableSchema.UseValueForSmartEnum);
     }
 
     protected static void AddGlobalSecondaryIndexes(IEntityTypeBuilder entityTypeBuilder, JObject dynamoEntity)
@@ -98,7 +98,7 @@ public abstract class DynamoEntityBuilder : IDynamoEntityBuilder
 
     public abstract JObject BuildModifiedEntity(EntityChangeTracker entityEntry);
 
-    protected static (string, string) BuildPrimaryKey(IModelBuilder modelBuilder, EntityChangeTracker entityEntry)
+    protected (string, string) BuildPrimaryKey(IModelBuilder modelBuilder, EntityChangeTracker entityEntry)
     {
         var entityTypeBuilder = modelBuilder.Entities[entityEntry.Entity.GetType()];
         var partitionKeyPath = entityEntry.IsParentEntity ?

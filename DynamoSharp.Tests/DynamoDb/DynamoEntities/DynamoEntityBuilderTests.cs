@@ -441,4 +441,38 @@ public class DynamoEntityBuilderTests
         performanceEntityTypeBuilder.GlobalSecondaryIndexSortKey.First().Value[0].Path.Should().Be("MovieId");
         performanceEntityTypeBuilder.GlobalSecondaryIndexSortKey.First().Value[0].Prefix.Should().Be("MOVIE");
     }
+
+    [Fact]
+    public void GetAddedEntities_ShouldReturnEntityWithValueForSmartEnum()
+    {
+        // arrange
+        var (tableSchema, modelBuilder, changeTracker, merchantId) = DynamoEntityBuilderTestDataFactory.CreateAffiliationContextWithValueForSmartEnum();
+        var batchDynamoEntityBuilder = new BatchDynamoEntityBuilder(tableSchema, modelBuilder);
+        var (addedEntities, _, _) = changeTracker.FetchChanges();
+        var entity = (Affiliation)addedEntities[0].Entity;
+
+        // act
+        var entityJson = batchDynamoEntityBuilder.BuildAddedEntity(addedEntities[0]);
+
+        // assert
+        entityJson.TryGetValue("EntityType", out var entityType).Should().Be(true);
+        entityType?.ToString().Should().Be(entity.EntityType.Value.ToString());
+    }
+
+    [Fact]
+    public void GetAddedEntities_ShouldReturnEntityWithNameForSmartEnum()
+    {
+        // arrange
+        var (tableSchema, modelBuilder, changeTracker, merchantId) = DynamoEntityBuilderTestDataFactory.CreateAffiliationContextWithNameForSmartEnum();
+        var batchDynamoEntityBuilder = new BatchDynamoEntityBuilder(tableSchema, modelBuilder);
+        var (addedEntities, _, _) = changeTracker.FetchChanges();
+        var entity = (Affiliation)addedEntities[0].Entity;
+
+        // act
+        var entityJson = batchDynamoEntityBuilder.BuildAddedEntity(addedEntities[0]);
+
+        // assert
+        entityJson.TryGetValue("EntityType", out var entityType).Should().Be(true);
+        entityType?.ToString().Should().Be(entity.EntityType.ToString());
+    }
 }

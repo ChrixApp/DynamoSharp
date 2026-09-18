@@ -20,7 +20,7 @@ public class BatchDynamoEntityBuilderTests
         var dynamoModifiedEntity = batchDynamoEntityBuilder.BuildModifiedEntity(modifiedEntities[0]);
 
         // assert
-        dynamoModifiedEntity.Children().Should().HaveCount(12);
+        dynamoModifiedEntity.Children().Should().HaveCount(13);
         dynamoModifiedEntity.TryGetValue(tableSchema.PartitionKeyName, out var partitionKey).Should().Be(true);
         partitionKey?.ToString().Should().Be(merchantId.ToString());
         dynamoModifiedEntity.TryGetValue(tableSchema.SortKeyName, out var sortKey).Should().Be(true);
@@ -45,6 +45,8 @@ public class BatchDynamoEntityBuilderTests
         type?.ToString().Should().Be(entity.Type.ToString());
         dynamoModifiedEntity.TryGetValue("CreatedAt", out var createdAt).Should().Be(true);
         createdAt?.ToString().Should().Be(entity.CreatedAt.ToString());
+        dynamoModifiedEntity.TryGetValue("EntityType", out var entityType).Should().Be(true);
+        entityType?.ToString().Should().Be(entity.EntityType.Value.ToString());
     }
 
     [Fact]

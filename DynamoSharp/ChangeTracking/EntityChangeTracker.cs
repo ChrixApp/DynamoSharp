@@ -1,10 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using DynamoSharp.Converters.Jsons;
+using DynamoSharp.DynamoDb.Configs;
+using DynamoSharp.DynamoDb.ModelsBuilder;
 using Newtonsoft.Json.Linq;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
-using System.Text.Json;
-using DynamoSharp.Converters.Jsons;
-using DynamoSharp.DynamoDb.ModelsBuilder;
 using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace DynamoSharp.ChangeTracking;
@@ -31,8 +30,9 @@ public class EntityChangeTracker
     public bool IsParentEntity => ParentEntity is null;
     public JObject EntityAsJObject => JObject.FromObject(Entity, _jsonSerializer);
 
-    public EntityChangeTracker(IModelBuilder modelBuilder, object entity, EntityState state)
+    public EntityChangeTracker(TableSchema tableSchema, IModelBuilder modelBuilder, object entity, EntityState state)
     {
+        ArgumentException.ThrowIfNullOrEmpty(nameof(tableSchema));
         ArgumentException.ThrowIfNullOrEmpty(nameof(modelBuilder));
         ArgumentException.ThrowIfNullOrEmpty(nameof(entity));
         ArgumentException.ThrowIfNullOrEmpty(nameof(state));
@@ -47,12 +47,13 @@ public class EntityChangeTracker
             Version = 1;
         }
 
-        _jsonSerializer = GetJsonSerializer(_entityTypeBuilder);
+        _jsonSerializer = GetJsonSerializer(_entityTypeBuilder, tableSchema.UseValueForSmartEnum);
         TakeSnapshot();
     }
 
-    public EntityChangeTracker(IModelBuilder modelBuilder, object entity, EntityState state, int version)
+    public EntityChangeTracker(TableSchema tableSchema, IModelBuilder modelBuilder, object entity, EntityState state, int version)
     {
+        ArgumentException.ThrowIfNullOrEmpty(nameof(tableSchema));
         ArgumentException.ThrowIfNullOrEmpty(nameof(modelBuilder));
         ArgumentException.ThrowIfNullOrEmpty(nameof(entity));
         ArgumentException.ThrowIfNullOrEmpty(nameof(state));
@@ -61,12 +62,13 @@ public class EntityChangeTracker
         State = state;
         Version = version;
         _entityTypeBuilder = modelBuilder.Entities[entity.GetType()];
-        _jsonSerializer = GetJsonSerializer(_entityTypeBuilder);
+        _jsonSerializer = GetJsonSerializer(_entityTypeBuilder, tableSchema.UseValueForSmartEnum);
         TakeSnapshot();
     }
 
-    public EntityChangeTracker(IModelBuilder modelBuilder, object entity, EntityState state, object? parentEntity)
+    public EntityChangeTracker(TableSchema tableSchema, IModelBuilder modelBuilder, object entity, EntityState state, object? parentEntity)
     {
+        ArgumentException.ThrowIfNullOrEmpty(nameof(tableSchema));
         ArgumentException.ThrowIfNullOrEmpty(nameof(modelBuilder));
         ArgumentException.ThrowIfNullOrEmpty(nameof(entity));
         ArgumentException.ThrowIfNullOrEmpty(nameof(state));
@@ -82,12 +84,13 @@ public class EntityChangeTracker
             Version = 1;
         }
 
-        _jsonSerializer = GetJsonSerializer(_entityTypeBuilder);
+        _jsonSerializer = GetJsonSerializer(_entityTypeBuilder, tableSchema.UseValueForSmartEnum);
         TakeSnapshot();
     }
 
-    public EntityChangeTracker(IModelBuilder modelBuilder, object entity, EntityState state, object? parentEntity, int version)
+    public EntityChangeTracker(TableSchema tableSchema, IModelBuilder modelBuilder, object entity, EntityState state, object? parentEntity, int version)
     {
+        ArgumentException.ThrowIfNullOrEmpty(nameof(tableSchema));
         ArgumentException.ThrowIfNullOrEmpty(nameof(modelBuilder));
         ArgumentException.ThrowIfNullOrEmpty(nameof(entity));
         ArgumentException.ThrowIfNullOrEmpty(nameof(state));
@@ -98,7 +101,7 @@ public class EntityChangeTracker
         ParentEntity = parentEntity;
         Version = version;
         _entityTypeBuilder = modelBuilder.Entities[entity.GetType()];
-        _jsonSerializer = GetJsonSerializer(_entityTypeBuilder);
+        _jsonSerializer = GetJsonSerializer(_entityTypeBuilder, tableSchema.UseValueForSmartEnum);
         TakeSnapshot();
     }
 
@@ -150,11 +153,11 @@ public class EntityChangeTracker
         return ModifiedProperties.Count > 0;
     }
 
-    private static JsonSerializer GetJsonSerializer(IEntityTypeBuilder entityTypeBuilder)
+    private static JsonSerializer GetJsonSerializer(IEntityTypeBuilder entityTypeBuilder, bool useValueForSmartEnum)
     {
         var propertiesToIgnore = GetCollectionsToIgnore(entityTypeBuilder);
         propertiesToIgnore.AddRange(entityTypeBuilder.IgnoredProperties);
-        return JsonSerializerBuilder.Build(propertiesToIgnore);
+        return JsonSerializerBuilder.Build(propertiesToIgnore, useValueForSmartEnum: useValueForSmartEnum);
     }
 
     private static List<string> GetCollectionsToIgnore(IEntityTypeBuilder entityTypeBuilder)

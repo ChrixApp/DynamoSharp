@@ -5,6 +5,18 @@ namespace DynamoSharp.Converters.Jsons;
 
 public sealed class SmartEnumNameJsonConverter : JsonConverter
 {
+    private readonly bool UseValueForSmartEnum;
+
+    public SmartEnumNameJsonConverter(bool useValueForSmartEnum)
+    {
+        UseValueForSmartEnum = useValueForSmartEnum;
+    }
+
+    public SmartEnumNameJsonConverter()
+    {
+        UseValueForSmartEnum = true;
+    }
+
     public override bool CanConvert(Type objectType)
         => IsSmartEnum(objectType);
 
@@ -16,10 +28,12 @@ public sealed class SmartEnumNameJsonConverter : JsonConverter
             return;
         }
 
-        var nameProp = value.GetType().GetProperty("Name", BindingFlags.Public | BindingFlags.Instance);
-        var name = (string?)nameProp?.GetValue(value);
+        var propertyName = UseValueForSmartEnum ? "Value" : "Name";
 
-        writer.WriteValue(name);
+        var prop = value.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
+        var smartEnum = prop?.GetValue(value);
+
+        writer.WriteValue(smartEnum);
     }
 
     public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)

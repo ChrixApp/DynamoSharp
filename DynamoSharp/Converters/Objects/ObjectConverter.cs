@@ -1,12 +1,12 @@
-﻿using EfficientDynamoDb.DocumentModel;
+﻿using DynamoSharp.Converters.Jsons;
+using DynamoSharp.DynamoDb;
+using EfficientDynamoDb.DocumentModel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Globalization;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using DynamoSharp.Converters.Jsons;
-using DynamoSharp.DynamoDb;
 
 namespace DynamoSharp.Converters.Objects;
 
@@ -130,19 +130,32 @@ public sealed class ObjectConverter
 
     private static object? ConvertToSmartEnum(Type smartEnumType, AttributeValue attributeValue)
     {
-        var method = smartEnumType.GetMethod(
+        var isNumeric = attributeValue.Type == AttributeType.Number ? true : false;
+        var method = FindMethod(isNumeric, smartEnumType);
+
+        if (method is null) return null;
+
+        if (isNumeric) return method.Invoke(null, new object[] { attributeValue.AsNumberAttribute().ToInt() });
+
+        return method.Invoke(null, new object[] { attributeValue.AsString(), true });
+    }
+
+    private static MethodInfo? FindMethod(bool isNumeric,Type smartEnumType)
+    {
+        if (isNumeric)
+            return smartEnumType.GetMethod(
+                "FromValue",
+                BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy,
+                binder: null,
+                types: new[] { typeof(int) },
+                modifiers: null);
+
+        return smartEnumType.GetMethod(
             "FromName",
             BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy,
             binder: null,
             types: new[] { typeof(string), typeof(bool) },
             modifiers: null);
-
-        if (method != null)
-        {
-            return method.Invoke(null, new object[] { attributeValue.AsString(), true });
-        }
-
-        return null;
     }
 
     private static DateTime ConvertAttributeValueToDateTime(AttributeValue attributeValue)

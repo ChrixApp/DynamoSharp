@@ -1,4 +1,5 @@
 ﻿using DynamoSharp.ChangeTracking;
+using DynamoSharp.DynamoDb.Configs;
 using FluentAssertions;
 using Newtonsoft.Json.Linq;
 
@@ -12,9 +13,12 @@ public class EntityChangeTrackerTests
         // arrange
         var order = EntityChangeTrackerTestDataFactory.CreateOrder(Guid.NewGuid(), "Street 1", "City 1", "State 1", "ZipCode 1");
         var modelBuilder = EntityChangeTrackerTestDataFactory.CreateModelBuilder();
+        var tableSchema = new TableSchema.Builder()
+            .WithTableName("orders")
+            .Build();
 
         // act
-        var entityChangeTracker = new EntityChangeTracker(modelBuilder, order, EntityState.Added);
+        var entityChangeTracker = new EntityChangeTracker(tableSchema, modelBuilder, order, EntityState.Added);
 
         // assert
         entityChangeTracker.Should().NotBeNull();
@@ -33,9 +37,12 @@ public class EntityChangeTrackerTests
         var order = EntityChangeTrackerTestDataFactory.CreateOrder(Guid.NewGuid(), "Street 1", "City 1", "State 1", "ZipCode 1", 1);
         var item = order.Items[0];
         var modelBuilder = EntityChangeTrackerTestDataFactory.CreateModelBuilder();
+        var tableSchema = new TableSchema.Builder()
+            .WithTableName("orders")
+            .Build();
 
         // act
-        var entityChangeTracker = new EntityChangeTracker(modelBuilder, item, EntityState.Added, order);
+        var entityChangeTracker = new EntityChangeTracker(tableSchema, modelBuilder, item, EntityState.Added, order);
 
         // assert
         entityChangeTracker.Should().NotBeNull();
@@ -54,7 +61,10 @@ public class EntityChangeTrackerTests
         var order = EntityChangeTrackerTestDataFactory.CreateOrder(Guid.NewGuid(), "Street 1", "City 1", "State 1", "ZipCode 1", 1);
         var modelBuilder = EntityChangeTrackerTestDataFactory.CreateModelBuilder();
         var jsonSerializer = EntityChangeTrackerTestDataFactory.GetJsonSerializer(modelBuilder.Entities[order.GetType()]);
-        var entityChangeTracker = new EntityChangeTracker(modelBuilder, order, EntityState.Added);
+        var tableSchema = new TableSchema.Builder()
+            .WithTableName("orders")
+            .Build();
+        var entityChangeTracker = new EntityChangeTracker(tableSchema, modelBuilder, order, EntityState.Added);
 
         // Act
         entityChangeTracker.TakeSnapshot();
@@ -70,7 +80,10 @@ public class EntityChangeTrackerTests
         // Arrange
         var order = EntityChangeTrackerTestDataFactory.CreateOrder(Guid.NewGuid(), "Street 1", "City 1", "State 1", "ZipCode 1", 1);
         var modelBuilder = EntityChangeTrackerTestDataFactory.CreateModelBuilder();
-        var entityChangeTracker = new EntityChangeTracker(modelBuilder, order, EntityState.Added);
+        var tableSchema = new TableSchema.Builder()
+            .WithTableName("orders")
+            .Build();
+        var entityChangeTracker = new EntityChangeTracker(tableSchema, modelBuilder, order, EntityState.Added);
 
         // Act
         entityChangeTracker.TakeNavigationSnapshots();
@@ -85,7 +98,10 @@ public class EntityChangeTrackerTests
     {
         var order = EntityChangeTrackerTestDataFactory.CreateOrder(Guid.NewGuid(), "Street 1", "City 1", "State 1", "ZipCode 1");
         var modelBuilder = EntityChangeTrackerTestDataFactory.CreateModelBuilder();
-        var entityChangeTracker = new EntityChangeTracker(modelBuilder, order, EntityState.Added);
+        var tableSchema = new TableSchema.Builder()
+            .WithTableName("orders")
+            .Build();
+        var entityChangeTracker = new EntityChangeTracker(tableSchema, modelBuilder, order, EntityState.Added);
         entityChangeTracker.TakeSnapshot();
         entityChangeTracker.TakeNavigationSnapshots();
 
@@ -103,7 +119,10 @@ public class EntityChangeTrackerTests
         // Arrange
         var order = EntityChangeTrackerTestDataFactory.CreateOrder(Guid.NewGuid(), "Street 1", "City 1", "State 1", "ZipCode 1");
         var modelBuilder = EntityChangeTrackerTestDataFactory.CreateModelBuilder();
-        var entityChangeTracker = new EntityChangeTracker(modelBuilder, order, EntityState.Added);
+        var tableSchema = new TableSchema.Builder()
+            .WithTableName("orders")
+            .Build();
+        var entityChangeTracker = new EntityChangeTracker(tableSchema, modelBuilder, order, EntityState.Added);
         entityChangeTracker.TakeSnapshot();
         entityChangeTracker.TakeNavigationSnapshots();
         order.UpdateAddress("Street 2", "City 2", "State 2", "ZipCode 2");

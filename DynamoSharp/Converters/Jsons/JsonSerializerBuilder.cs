@@ -9,12 +9,13 @@ public static class JsonSerializerBuilder
         List<string> propertiesToIgnore,
         string dateFormatString = "yyyy-MM-ddTHH:mm:ss.FFFFFFFK",
         int maxDepth = 10,
+        bool useValueForSmartEnum = true,
         NullValueHandling nullValueHandling = NullValueHandling.Ignore)
     {
         var jsonSerializerSettings = new JsonSerializerSettings
         {
             ContractResolver = new CustomIgnoreResolver(propertiesToIgnore),
-            Converters = new List<JsonConverter> { new StringEnumConverter(), new SmartEnumNameJsonConverter() },
+            Converters = new List<JsonConverter> { new StringEnumConverter(), new SmartEnumNameJsonConverter(useValueForSmartEnum) },
             DateFormatString = dateFormatString,
             MaxDepth = maxDepth,
             NullValueHandling = nullValueHandling,
@@ -25,11 +26,12 @@ public static class JsonSerializerBuilder
     public static JsonSerializer Build(
         string dateFormatString = "yyyy-MM-ddTHH:mm:ss.FFFFFFFK",
         int maxDepth = 10,
+        bool useValueForSmartEnum = true,
         NullValueHandling nullValueHandling = NullValueHandling.Ignore)
     {
         var jsonSerializerSettings = new JsonSerializerSettings
         {
-            Converters = new List<JsonConverter> { new StringEnumConverter(), new SmartEnumNameJsonConverter() },
+            Converters = new List<JsonConverter> { new StringEnumConverter(), new SmartEnumNameJsonConverter(useValueForSmartEnum) },
             DateFormatString = dateFormatString,
             MaxDepth = maxDepth,
             NullValueHandling = nullValueHandling,

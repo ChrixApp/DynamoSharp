@@ -10,12 +10,14 @@ public class ChangeTracker : IChangeTracker
 {
     private readonly ConcurrentDictionary<int, EntityChangeTracker> _trackedEntities = new();
     private readonly EntityEqualityComparer _entityComparer;
+    private readonly TableSchema _tableSchema;
     private readonly IModelBuilder _modelBuilder;
 
     public ReadOnlyDictionary<int, EntityChangeTracker> Entries => new(_trackedEntities);
 
     public ChangeTracker(TableSchema tableSchema, IModelBuilder modelBuilder)
     {
+        _tableSchema = tableSchema;
         _modelBuilder = modelBuilder;
         _entityComparer = new EntityEqualityComparer(modelBuilder);
     }
@@ -25,7 +27,7 @@ public class ChangeTracker : IChangeTracker
         var entry = _trackedEntities.FirstOrDefault(e => _entityComparer.Equals(e.Value.Entity, entity)).Value;
         if (entry == null)
         {
-            entry = new EntityChangeTracker(_modelBuilder, entity, state);
+            entry = new EntityChangeTracker(_tableSchema, _modelBuilder, entity, state);
             if (state == EntityState.Unchanged)
             {
                 entry.TakeSnapshot();
@@ -45,7 +47,7 @@ public class ChangeTracker : IChangeTracker
         var entry = _trackedEntities.FirstOrDefault(e => _entityComparer.Equals(e.Value.Entity, entity)).Value;
         if (entry == null)
         {
-            entry = new EntityChangeTracker(_modelBuilder, entity, state, parentEntity);
+            entry = new EntityChangeTracker(_tableSchema, _modelBuilder, entity, state, parentEntity);
             if (state == EntityState.Unchanged)
             {
                 entry.TakeSnapshot();

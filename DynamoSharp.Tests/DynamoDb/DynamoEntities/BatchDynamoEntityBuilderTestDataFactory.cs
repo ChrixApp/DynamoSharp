@@ -11,6 +11,7 @@ public static class BatchDynamoEntityBuilderTestDataFactory
     {
         var tableSchema = new TableSchema.Builder()
             .WithTableName("affiliations")
+            .UseValueForSmartEnum()
             .Build();
         var modelBuilder = new ModelBuilder();
         modelBuilder.Entity<Affiliation>()

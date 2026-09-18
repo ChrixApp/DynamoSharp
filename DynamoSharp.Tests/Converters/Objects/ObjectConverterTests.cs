@@ -2,8 +2,6 @@
 using DynamoSharp.Converters.Jsons;
 using DynamoSharp.Converters.Objects;
 using EfficientDynamoDb.DocumentModel;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using System.Globalization;
 
 namespace DynamoSharp.Tests.Converters.Objects;
@@ -52,7 +50,8 @@ public class ObjectConverterTests
         Assert.Equal(originalObject.Name, copiedObject?.Name);
         Assert.NotSame(originalObject.NestedEntity, copiedObject?.NestedEntity);
         Assert.Equal(originalObject.NestedEntity.Value, copiedObject?.NestedEntity?.Value);
-        Assert.Equal(EntityType.Parent, copiedObject?.EntityType);
+        Assert.Equal(EntityType.Child, copiedObject?.EntityType1);
+        Assert.Equal(EntityType.Parent, copiedObject?.EntityType2);
     }
 
     [Fact]
@@ -204,7 +203,8 @@ public class ObjectConverterTests
                 ["Value1"] = new StringAttributeValue("Value1"),
                 ["Value2"] = new StringAttributeValue("Value2")
             }),
-            ["EntityType"] = new StringAttributeValue("Parent")
+            ["EntityType1"] = new StringAttributeValue("Parent"),
+            ["EntityType2"] = new NumberAttributeValue("1")
         };
 
         // Act
@@ -326,7 +326,8 @@ public class ObjectConverterTests
         Assert.Equal("Value1", result.EnumDictionary[EnumTest.Value1]);
         Assert.Equal("Value2", result.EnumDictionary[EnumTest.Value2]);
 
-        Assert.Equal(EntityType.Parent, result.EntityType);
+        Assert.Equal(EntityType.Parent, result.EntityType1);
+        Assert.Equal(EntityType.Child, result.EntityType2);
     }
 
     private class TestEntity
@@ -374,7 +375,8 @@ public class ObjectConverterTests
         public Dictionary<decimal, string>? DecimalDictionary { get; set; } = new Dictionary<decimal, string>();
         public Dictionary<EnumTest, string>? EnumDictionary { get; set; } = new Dictionary<EnumTest, string>();
 
-        public EntityType EntityType { get; set; } = EntityType.Parent;
+        public EntityType EntityType1 { get; set; } = EntityType.Child;
+        public EntityType EntityType2 { get; set; } = EntityType.Parent;
     }
 
     private class NestedEntity

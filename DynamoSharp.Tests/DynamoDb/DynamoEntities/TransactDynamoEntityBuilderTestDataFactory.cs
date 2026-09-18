@@ -72,7 +72,7 @@ public static class TransactDynamoEntityBuilderTestDataFactory
         var bank = Bank.Default;
         var type = AffiliationType.Default;
         var affiliation = new Affiliation(merchantId, terminalId, section, cardBrand, countryOrRigion, bank, type);
-        var entityChangeTracker = new EntityChangeTracker(modelBuilder, affiliation, EntityState.Unchanged, version);
+        var entityChangeTracker = new EntityChangeTracker(tableSchema, modelBuilder, affiliation, EntityState.Unchanged, version);
         changeTracker.Track(entityChangeTracker);
 
         affiliation.UpdateCountryOrRigion(CountryOrRigion.US);

@@ -6,6 +6,7 @@ public class TableSchema
     public readonly string PartitionKeyName;
     public readonly string SortKeyName;
     public readonly string VersionName;
+    public readonly bool UseValueForSmartEnum;
     private readonly List<GlobalSecondaryIndexSchema> _globalSecondaryIndices = new();
 
     public IReadOnlyList<GlobalSecondaryIndexSchema> GlobalSecondaryIndices => _globalSecondaryIndices;
@@ -15,12 +16,14 @@ public class TableSchema
         string partitionKeyName,
         string sortKeyName,
         string versionName,
+        bool useValueForSmartEnum,
         List<GlobalSecondaryIndexSchema> globalSecondaryIndices)
     {
         TableName = tableName;
         PartitionKeyName = partitionKeyName;
         SortKeyName = sortKeyName;
         VersionName = versionName;
+        UseValueForSmartEnum = useValueForSmartEnum;
         _globalSecondaryIndices = globalSecondaryIndices ?? new List<GlobalSecondaryIndexSchema>();
     }
 
@@ -49,6 +52,7 @@ public class TableSchema
         private string _partitionKeyName = "PartitionKey";
         private string _sortKeyName = "SortKey";
         private string _versionName = string.Empty;
+        private bool _useValueForSmartEnum = false;
         private readonly List<GlobalSecondaryIndexSchema> _globalSecondaryIndices = new();
 
         public Builder WithTableName(string tableName)
@@ -78,6 +82,12 @@ public class TableSchema
             return this;
         }
 
+        public Builder UseValueForSmartEnum()
+        {
+            _useValueForSmartEnum = true;
+            return this;
+        }
+
         public Builder AddGlobalSecondaryIndex(string indexName, string partitionKeyName, string sortKeyName)
         {
             if (_globalSecondaryIndices.Count > 20) throw new InvalidOperationException("Cannot add more than 20 Global Secondary Indices to a TableSchema.");
@@ -89,7 +99,7 @@ public class TableSchema
         public TableSchema Build()
         {
             if (string.IsNullOrWhiteSpace(_tableName)) throw new InvalidOperationException("TableName must be set before building the TableSchema.");
-            return new TableSchema(_tableName, _partitionKeyName, _sortKeyName, _versionName, _globalSecondaryIndices);
+            return new TableSchema(_tableName, _partitionKeyName, _sortKeyName, _versionName, _useValueForSmartEnum, _globalSecondaryIndices);
         }
     }
 }
