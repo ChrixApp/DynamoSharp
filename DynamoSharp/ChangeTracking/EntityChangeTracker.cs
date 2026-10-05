@@ -142,6 +142,8 @@ public class EntityChangeTracker
         ModifiedProperties = new JObject();
         var newEntity = JObject.FromObject(Entity, _jsonSerializer);
 
+        if (OriginalEntity.Count > 0 && newEntity.Count > OriginalEntity.Count) return true;
+
         foreach (var property in OriginalEntity)
         {
             if (!JToken.DeepEquals(property.Value, newEntity[property.Key]))

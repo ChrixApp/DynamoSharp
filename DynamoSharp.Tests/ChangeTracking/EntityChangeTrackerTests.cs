@@ -135,4 +135,25 @@ public class EntityChangeTrackerTests
         entityChangeTracker.ModifiedProperties.Count.Should().Be(1);
         entityChangeTracker.ModifiedProperties.Properties().First().Path.Should().Be("Address");
     }
+
+    [Fact]
+    public void HasChanged_ShouldReturnTrue_WhenNullPropertyIsInitialized()
+    {
+        // Arrange
+        var order = EntityChangeTrackerTestDataFactory.CreateOrder(Guid.NewGuid());
+        var modelBuilder = EntityChangeTrackerTestDataFactory.CreateModelBuilder();
+        var tableSchema = new TableSchema.Builder()
+            .WithTableName("orders")
+            .Build();
+        var entityChangeTracker = new EntityChangeTracker(tableSchema, modelBuilder, order, EntityState.Added);
+        entityChangeTracker.TakeSnapshot();
+        entityChangeTracker.TakeNavigationSnapshots();
+        order.UpdateAddress("Street 2", "City 2", "State 2", "ZipCode 2");
+
+        // Act
+        var hasChanged = entityChangeTracker.HasChanged();
+
+        // Assert
+        hasChanged.Should().BeTrue();
+    }
 }

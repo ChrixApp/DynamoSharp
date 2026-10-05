@@ -91,9 +91,6 @@ public class Order : IAggregateRoot
             if (_order.BuyerId == Guid.Empty)
                 throw new ArgumentException("BuyerId cannot be empty");
 
-            if (_order.Address == null)
-                    throw new ArgumentException("Address cannot be null");
-
             if (_order.Date == DateTime.MinValue)
                 throw new ArgumentException("Date cannot be empty");
         }
