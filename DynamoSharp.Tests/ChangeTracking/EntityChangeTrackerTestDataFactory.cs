@@ -25,6 +25,21 @@ public static class EntityChangeTrackerTestDataFactory
         return order;
     }
 
+    public static Order CreateOrder(Guid buyerId, int productCount = 0)
+    {
+        var order = new Order.Builder()
+            .WithBuyerId(buyerId)
+            .WithDate(DateTime.Now)
+            .Build();
+
+        for (int i = 1; i <= productCount; i++)
+        {
+            order.AddProduct(Guid.NewGuid(), $"Product {i}", 10);
+        }
+
+        return order;
+    }
+
     public static IModelBuilder CreateModelBuilder()
     {
         var modelBuilder = new ModelBuilder();
